@@ -1,0 +1,6 @@
+VertexLitGeneric
+{
+	"$baseTexture" "models\weapons\v_models\deagle.elites\partssilber"
+	"$envmap" "env_cubemap"
+	"$envmapmask" "models\weapons\v_models\deagle.elites\partssilber_ref"
+}

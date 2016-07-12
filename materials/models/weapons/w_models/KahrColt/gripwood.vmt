@@ -1,0 +1,7 @@
+VertexLitGeneric
+{
+	"$basetexture"	"models\weapons\v_models\KahrColt\gripwood"
+	"$bumpmap" "models\weapons\v_models\KahrColt\gripwood_normal"
+	"$envmap" "env_cubemap"
+	"$normalmapalphaenvmapmask" 1
+}

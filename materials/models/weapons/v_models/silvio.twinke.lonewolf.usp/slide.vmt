@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\weapons\v_models\silvio.twinke.lonewolf.usp/slide"
+	"$bumpmap" "models\weapons\v_models\silvio.twinke.lonewolf.usp\slide_norm"
+	"$envmap" "env_cubemap"
+	"$normalmapalphaenvmapmask" 1
+}

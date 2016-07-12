@@ -1,0 +1,71 @@
+/* Fiery Kevlar Vest */
+AddCSLuaFile("shared.lua")
+include("shared.lua")
+
+ENT.MODEL 			= "models/props/de_tides/vending_tshirt.mdl"
+ENT.MULTIPLY 		= 1
+ENT.ARMORGIFT		= 150 		// 2 armor is equal to about 1 health
+ENT.LASTHIT			= CurTime()
+
+function ENT:SpawnFunction( ply, tr ) 
+   
+ 	if ( !tr.Hit ) then return end 
+ 	 
+ 	local SpawnPos = tr.HitPos + tr.HitNormal * 16 
+ 	 
+ 	local 	ent = ents.Create( self.Classname ) 
+			ent:SetPos( SpawnPos ) 
+			ent:Spawn() 
+			ent:Activate() 
+ 	 
+ 	return ent 
+ 	 
+ end 
+
+function ENT:Initialize()	
+
+	self:SetModel( self.MODEL )
+	
+	self:PhysicsInit( SOLID_VPHYSICS )
+
+	local phys = self:GetPhysicsObject()  	
+	if phys:IsValid() then  		
+		phys:Wake()  	
+	end
+	
+	if( self.MASS )then
+		self.Entity:GetPhysicsObject():SetMass( self.MASS );
+	end
+	
+end
+
+function ENT:OnTakeDamage( dmginfo )
+ 
+	if ( self.LASTHIT >= CurTime()+1 ) then
+		self.Entity:TakePhysicsDamage( dmginfo ) 
+		self.Entity:EmitSound( "player/kevlar1.wav" )
+		self.LASTHIT = CurTime()+2
+	end
+ end
+
+function ENT:PhysicsCollide( data, physobj )
+	
+	// Play sound on impact
+	if (data.Speed > 15 && data.DeltaTime > 0.5 ) then
+		self.Entity:EmitSound( "player/kevlar1.wav" )
+	end
+end
+
+function ENT:Use(activator,caller)
+	
+	if ( activator:IsPlayer() and (activator:Armor() < self.ARMORGIFT) ) then
+		self.Entity:Remove()
+		self.Entity:EmitSound( "items/ammopickup.wav" )
+		local Armor = activator:Armor()
+		
+		activator:SetArmor( self.ARMORGIFT )
+		
+	end
+
+end
+

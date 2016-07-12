@@ -1,0 +1,49 @@
+"Weapon_cz75.Single"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"1.0"
+	"CompatibilityAttenuation"	"1.0"
+	"pitch"			"PITCH_NORM"
+
+	"wave"			"weapons\CZ75\1.wav" 
+}
+
+"Weapon_Glawk.Clipout"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"1.0"
+	"CompatibilityAttenuation"	"1.0"
+	"pitch"			"PITCH_NORM"
+
+	"wave"			"weapons\CZ75\clipout.wav" 
+}
+
+"Weapon_Glawk.Clipin"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"1.0"
+	"CompatibilityAttenuation"	"1.0"
+	"pitch"			"PITCH_NORM"
+
+	"wave"			"weapons\CZ75\clipin.wav" 
+}
+
+"Weapon_Glawk.Slideback"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"1.0"
+	"CompatibilityAttenuation"	"1.0"
+	"pitch"			"PITCH_NORM"
+
+	"wave"			"weapons\CZ75\slideback.wav" 
+}
+
+"Weapon_Glawk.Sliderelease"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"1.0"
+	"CompatibilityAttenuation"	"1.0"
+	"pitch"			"PITCH_NORM"
+
+	"wave"			"weapons\CZ75\sliderelease.wav" 
+}
