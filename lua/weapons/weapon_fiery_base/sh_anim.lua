@@ -129,6 +129,9 @@ function SWEP:SetHoldType( t )
 	self.ActivityTranslate [ ACT_RANGE_ATTACK1 ] 				= index+8
 	self.ActivityTranslate [ ACT_MP_SWIM ] 						= index+9
 	
+	
+	-- Add convar for using paassive or normal while taking cover. for rp 
+	
 	-- create schemes --
 	local pistol = ACT_HL2MP_IDLE_PISTOL
 	local norm   = ACT_HL2MP_IDLE
@@ -155,6 +158,7 @@ function SWEP:SetHoldType( t )
 		self.ActivityTranslate [ ACT_HL2MP_GESTURE_RELOAD ] 		= ACT_HL2MP_GESTURE_RELOAD_SMG1
 		self.ActivityTranslate [ ACT_MP_RELOAD_CROUCH ]		 		= ACT_HL2MP_GESTURE_RELOAD_SMG1
 	elseif t == "pistol" then
+		-- For irong sight stuff
 		self.ActivityTranslate [ ACT_HL2MP_GESTURE_RELOAD ] 		= ACT_HL2MP_GESTURE_RELOAD_REVOLVER 
 		self.ActivityTranslate [ ACT_MP_RELOAD_CROUCH ]		 		= ACT_HL2MP_GESTURE_RELOAD_REVOLVER 
 	elseif t == "grip" then
@@ -167,6 +171,9 @@ function SWEP:SetHoldType( t )
 		self.ActivityTranslate [ ACT_HL2MP_GESTURE_RELOAD ] 		= ACT_HL2MP_GESTURE_RELOAD_AR2
 		self.ActivityTranslate [ ACT_MP_RELOAD_CROUCH ]		 		= ACT_HL2MP_GESTURE_RELOAD_AR2
 		self.ActivityTranslate [ ACT_MP_ATTACK_CROUCH_PRIMARYFIRE ] = ACT_HL2MP_GESTURE_RANGE_ATTACK_AR2 
+	elseif t == "twohand" then -- @@@Add documentation, Should be applied for all 357 Hold types, for ironsights
+		// Ironshight hold type specific?
+		self.ActivityTranslate [ ACT_MP_ATTACK_CROUCH_PRIMARYFIRE ] = pistol+5
 	end
 	
 	self:Talk("Debug Point 3 - "..tostring(t))
@@ -182,7 +189,7 @@ end
 --
 function SWEP:SetWeaponHoldType( t )
 	--self:DebugTalk("[!]  SetWEAPONHoldType called instead!????")
-	return self:SetHoldType(t)
+	return self:SetHoldType(t) -- FOR LEGACY PURPOSES, #HOTFIX
 end
 --]]
 

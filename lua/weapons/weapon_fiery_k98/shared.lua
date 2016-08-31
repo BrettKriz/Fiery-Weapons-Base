@@ -50,6 +50,9 @@ SWEP.Primary.Ammo			= "ar2"
 SWEP.Chambers				= true
 SWEP.WorldModelHoldFix		= true -- Fix the DoD:S Model
 
+SWEP.Mag					= "models/shells/shell_large.mdl"
+SWEP.NoMag					= !true
+
 SWEP.Primary.EmptyAnim		= ACT_VM_PRIMARYATTACK_EMPTY
 SWEP.Primary.ShootAnim		= ACT_VM_PRIMARYATTACK_EMPTY
 SWEP.Primary.Chamber		= ACT_VM_PRIMARYATTACK

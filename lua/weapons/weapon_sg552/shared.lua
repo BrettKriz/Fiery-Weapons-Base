@@ -20,17 +20,18 @@ if ( CLIENT ) then
 end
 
 
-SWEP.Base				= "weapon_fiery_base_rifle"
-SWEP.Category			= "Fiery"
+SWEP.Base					= "weapon_fiery_base_rifle"
+SWEP.Category				= "Fiery"
 
-SWEP.Spawnable			= true
-SWEP.AdminSpawnable		= true
+SWEP.Spawnable				= true
+SWEP.AdminSpawnable			= true
 
-SWEP.HoldType			= "rifle"
-SWEP.HoldType2			= "hipfire2"
-SWEP.ViewModel			= "models/weapons/cstrike/c_rif_sg552.mdl"
-SWEP.WorldModel			= "models/weapons/w_rif_sg552.mdl"
-SWEP.Weight				= 8
+SWEP.HoldType				= "rifle"
+SWEP.HoldType2				= "hipfire2"
+SWEP.ViewModel				= "models/weapons/cstrike/c_rif_sg552.mdl"
+SWEP.WorldModel				= "models/weapons/w_rif_sg552.mdl"
+SWEP.Mag					= "models/weapons/w_rif_sg556_mag.mdl"
+SWEP.Weight					= 8
 
 SWEP.Primary.Sound			= Sound( "Weapon_sg552.Single" )
 SWEP.Primary.Recoil			= 1.2

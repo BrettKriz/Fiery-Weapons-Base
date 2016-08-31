@@ -21,17 +21,12 @@ if ( CLIENT ) then
 end
 
 SWEP.HL2WeaponDraw 			= true
-SWEP.Base					= "weapon_fiery_base"
+SWEP.Base					= "weapon_fiery_base_revolver"
 SWEP.Category				= "Fiery"
 
-SWEP.Spawnable				= true
-SWEP.AdminSpawnable			= true
-
-SWEP.HoldType				= "357"
-SWEP.HoldType2				= "357"
 SWEP.ViewModel				= "models/weapons/c_357.mdl"
 SWEP.WorldModel				= "models/weapons/w_357.mdl"
-SWEP.Weight					= 6
+SWEP.Weight					= 7
 
 SWEP.Primary.Sound			= Sound( "Weapon_357.Single" )
 SWEP.Primary.ReloadSound	= Sound( "Weapon_357.Reload" )

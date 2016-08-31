@@ -19,22 +19,20 @@ if ( CLIENT ) then
 	
 end
 
-SWEP.Base				= "weapon_fiery_base_smg" -- heh upgrade
-SWEP.Category			= "Fiery"
+SWEP.Base					= "weapon_fiery_base_smg" -- heh upgrade
+SWEP.Category				= "Fiery"
 
-SWEP.Spawnable			= true
-SWEP.AdminSpawnable		= true
+SWEP.Spawnable				= true
+SWEP.AdminSpawnable			= true
 
-SWEP.HoldType			= "mg"
-SWEP.HoldType2			= "hipfire2"
-SWEP.ReloadHoldType		= "rifle"
-SWEP.ViewModelFlip		= false
-SWEP.ViewModel			= "models/weapons/cstrike/c_mach_m249para.mdl"
-SWEP.WorldModel			= "models/weapons/w_mach_m249para.mdl"
+SWEP.HoldType				= "mg"
+SWEP.HoldType2				= "hipfire2"
+SWEP.ReloadHoldType			= "rifle"
 
-SWEP.Weight				= 5
-SWEP.AutoSwitchTo		= false
-SWEP.AutoSwitchFrom		= false
+SWEP.ViewModelFlip			= false
+SWEP.ViewModel				= "models/weapons/cstrike/c_mach_m249para.mdl"
+SWEP.WorldModel				= "models/weapons/w_mach_m249para.mdl"
+SWEP.Mag					= "models/weapons/w_mach_m249_mag.mdl"
 
 SWEP.Primary.Sound			= Sound( "Weapon_m249.Single" )
 SWEP.Primary.Recoil			= 1.2	 

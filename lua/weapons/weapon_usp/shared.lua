@@ -1,4 +1,4 @@
-/*=====================================*\
+w/*=====================================*\
 		NOVA PROSPEKT ~ 3/20/2014
 \*=====================================*/
 
@@ -46,6 +46,8 @@ SWEP.Primary.Ammo			= "357"
 SWEP.DryFires				= true -- Unlock Dry Fire
 SWEP.Silencer				= {false}
 SWEP.WorksUnderWater		= true
+
+SWEP.Mag					= "models/weapons/w_pist_223_mag.mdl"
 
 SWEP.IronSightsPos = Vector(-5.881, 0, 2.64)
 SWEP.IronSightsAng = Vector(-0.101, 0.045, 0)

@@ -550,7 +550,7 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 			self.Owner:SetAnimation( PLAYER_IDLE )
 			-- Send 3rd person anims for later
 			self:SafeTimer(self:GetSeqDur()*0.80, function() 
-				local b1 = self:GetIronsights()
+				local b1 = self.Weapon:GetNWBool("Ironsights")
 				if self:AreArmsDown() then
 					self:SetHoldType( self.RunHoldType or "normal" )
 				else

@@ -27,10 +27,11 @@ SWEP.AdminSpawnable			= true
 
 SWEP.HoldType				= "grip"
 SWEP.HoldType2				= "hipfire2"
-SWEP.ReloadHoldType			= "grip"
+SWEP.ReloadHoldType			= "rifle"
 
 SWEP.ViewModel				= "models/weapons/cstrike/c_smg_mp5.mdl"
 SWEP.WorldModel				= "models/weapons/w_smg_mp5.mdl"
+SWEP.Mag					= "models/weapons/w_smg_mp7_mag.mdl"
 SWEP.Weight					= 5
 
 SWEP.Primary.Sound			= Sound( "Weapon_MP5Navy.Single" )

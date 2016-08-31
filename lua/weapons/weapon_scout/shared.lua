@@ -20,18 +20,15 @@ if ( CLIENT ) then
 end
 
 
-SWEP.Base				= "weapon_fiery_base_sniper"
-SWEP.Category			= "Fiery"
+SWEP.Base					= "weapon_fiery_base_sniper"
+SWEP.Category				= "Fiery"
 
-SWEP.Spawnable			= true
-SWEP.AdminSpawnable		= true
+SWEP.Spawnable				= true
+SWEP.AdminSpawnable			= true
 
-SWEP.ViewModel			= "models/weapons/cstrike/c_snip_scout.mdl"
-SWEP.WorldModel			= "models/weapons/w_snip_scout.mdl"
-
-SWEP.Weight				= 5
-SWEP.AutoSwitchTo		= false
-SWEP.AutoSwitchFrom		= false
+SWEP.ViewModel				= "models/weapons/cstrike/c_snip_scout.mdl"
+SWEP.WorldModel				= "models/weapons/w_snip_scout.mdl"
+SWEP.Mag					= "models/weapons/w_snip_awp_mag.mdl"
 
 SWEP.Primary.Sound			= Sound( "Weapon_scout.Single" )
 SWEP.Primary.Recoil			= 1.6

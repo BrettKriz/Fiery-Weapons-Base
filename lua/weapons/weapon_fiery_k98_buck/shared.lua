@@ -27,8 +27,8 @@ SWEP.Spawnable				= true
 SWEP.AdminSpawnable			= true
 
 SWEP.UseHands				= false
-SWEP.ViewModel				= "models/weapons/v_garand.mdl"
-SWEP.WorldModel				= "models/weapons/w_k98.mdl"
+SWEP.ViewModel				= "models/weapons/v_k98.mdl"
+SWEP.WorldModel				= "models/weapons/w_k98_rg.mdl"
 SWEP.WorldModelFix			= true
 SWEP.ViewModelFlip			= false
 --SWEP.ViewModelFOV			= 72
@@ -45,8 +45,12 @@ SWEP.Primary.Delay			= 0.25
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "buckshot"
 
+SWEP.WorldModelHoldFix		= true -- Fix the DoD:S Model
 SWEP.Chambers				= false
 SWEP.DryFires				= true
+
+SWEP.Mag					= "models/shells/shell_large.mdl"
+SWEP.NoMag					= true
 
 SWEP.Primary.EmptyAnim		= ACT_VM_PRIMARYATTACK
 SWEP.Primary.ShootAnim		= ACT_VM_PRIMARYATTACK_EMPTY

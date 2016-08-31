@@ -55,3 +55,5 @@ SWEP.Secondary.Delay		= 0.5
 SWEP.Secondary.DefaultClip	= 6
 SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "357"
+
+SWEP.NoMag					= true

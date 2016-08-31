@@ -33,6 +33,7 @@ SWEP.HoldType2				= "onehand"
 SWEP.ViewModel				= "models/weapons/cstrike/c_pist_p228.mdl"
 SWEP.ViewModelFlip			= false
 SWEP.WorldModel				= "models/weapons/w_pist_p228.mdl"
+SWEP.Mag					= "models/weapons/w_pist_p250_mag.mdl"
 
 SWEP.Weight					= 3
 SWEP.AutoSwitchTo			= false

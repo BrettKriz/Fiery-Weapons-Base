@@ -33,6 +33,7 @@ SWEP.ReloadHoldType			= "onehand"
 
 SWEP.ViewModel				= "models/weapons/v_colt.mdl"
 SWEP.WorldModel				= "models/weapons/w_pistol.mdl"
+SWEP.Mag					= "models/weapons/w_pist_elite_mag.mdl"
 --SWEP.WorldModel				= "models/weapons/w_colt.mdl"
 SWEP.ViewModelFlip			= false
 SWEP.Weight					= 5

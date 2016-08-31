@@ -32,7 +32,8 @@ SWEP.ReloadHoldType			= "onehand"
 SWEP.ViewModel				= "models/weapons/c_pistol.mdl"
 SWEP.WorldModel				= "models/weapons/w_pistol.mdl"
 SWEP.ViewModelFlip			= false
-SWEP.Weight					= 4.20
+SWEP.Mag					= "models/weapons/w_pist_hkp2000_mag.mdl"
+SWEP.Weight					= 4
 
 SWEP.ReloadSound			= Sound( "weapons/pistol/pistol_reload1.wav" )
 
@@ -52,6 +53,7 @@ SWEP.Secondary.ClipSize		= -1
 SWEP.Secondary.DefaultClip	= -1
 SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "none"
+
 
 SWEP.WorksUnderWater		= true
 SWEP.UsesHands				= true

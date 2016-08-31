@@ -21,27 +21,26 @@ if ( CLIENT ) then
 end
 
 
-SWEP.Base				= "weapon_fiery_base_smg"
-SWEP.Category			= "Fiery"
+SWEP.Base					= "weapon_fiery_base_smg"
+SWEP.Category				= "Fiery"
 
-SWEP.Spawnable			= true
-SWEP.AdminSpawnable		= true
+SWEP.Spawnable				= true
+SWEP.AdminSpawnable			= true
 
-SWEP.HoldType			= "grip"
-SWEP.HoldType2			= "hipfire2"
-SWEP.ReloadHoldType		= "rifle"
-SWEP.ViewModel			= "models/weapons/cstrike/c_smg_mp5.mdl"
-SWEP.WorldModel			= "models/weapons/w_smg_mp5.mdl"
+SWEP.HoldType				= "grip"
+SWEP.HoldType2				= "hipfire2"
+SWEP.ReloadHoldType			= "rifle"
+SWEP.ViewModel				= "models/weapons/cstrike/c_smg_mp5.mdl"
+SWEP.WorldModel				= "models/weapons/w_smg_mp5.mdl"
+SWEP.Mag					= "models/weapons/w_smg_mp7_mag.mdl"
 
-SWEP.Weight				= 5
-SWEP.AutoSwitchTo		= false
-SWEP.AutoSwitchFrom		= false
+SWEP.Weight					= 5
 
 SWEP.Primary.Sound			= Sound( "Weapon_MP5Navy.Single" )
-SWEP.Primary.Recoil			= 0.21
-SWEP.Primary.Damage			= 22
+SWEP.Primary.Recoil			= 0.22
+SWEP.Primary.Damage			= 23
 SWEP.Primary.NumShots		= 1
-SWEP.Primary.Cone			= 0.016
+SWEP.Primary.Cone			= 0.0165
 SWEP.Primary.ClipSize		= 32
 SWEP.Primary.Delay			= 0.08
 SWEP.Primary.Automatic		= true

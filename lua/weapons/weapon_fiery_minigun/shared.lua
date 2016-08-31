@@ -51,6 +51,7 @@ SWEP.AdminSpawnable			= true
 
 SWEP.ViewModel				= "models/weapons/v_minigun.mdl"
 SWEP.WorldModel				= "models/weapons/w_minigun.mdl"
+SWEP.Mag					= "models/weapons/w_mach_negev_mag.mdl"
 SWEP.ReloadSound			= Sound("weapons/oicw/ar2_reload.wav")
 
 SWEP.Primary.Sound			= Sound( "weapons/hmg1/hmg1_" .. math.random( 7, 9 ) .. ".wav" )

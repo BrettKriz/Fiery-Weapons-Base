@@ -33,7 +33,8 @@ SWEP.AdminSpawnable			= true
 SWEP.HoldType				= "smg"
 SWEP.ViewModel				= "models/weapons/c_smg1.mdl"
 SWEP.WorldModel				= "models/weapons/w_smg1.mdl"
-SWEP.Weight					= 4.5
+SWEP.Mag					= "models/weapons/w_smg_mp7_mag.mdl"
+SWEP.Weight					= 6
 
 SWEP.ReloadSound			= Sound( "Weapon_SMG1.Reload" )
 SWEP.Primary.Sound			= Sound( "Weapon_SMG1.Single" )

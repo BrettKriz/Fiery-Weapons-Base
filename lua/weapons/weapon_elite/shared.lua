@@ -31,6 +31,7 @@ SWEP.ViewModel			= "models/weapons/v_pist_beretta_s.mdl"
 SWEP.ViewModelFlip		= true
 SWEP.ViewModelFOV		= 70
 SWEP.WorldModel			= "models/weapons/w_pist_elite_single.mdl"
+SWEP.Mag				= "models/weapons/w_pist_elite_mag.mdl"
 SWEP.UseHands			= false
 
 SWEP.Weight				= 5

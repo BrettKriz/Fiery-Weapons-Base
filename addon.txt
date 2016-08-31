@@ -1,18 +1,12 @@
 "AddonInfo"
 {
-	"name"		"CS:S Content"
-	"version"	"1.0"
-	"up_date"	"5th August 2006"
-	"author_name"	"Valve"
+	"name"		"Fiery Weapons Base ALPHA"
+	"version"	"3.0"
+	"up_date"	"31st of August, 2016"
+	"author_name"	"Nova Prospekt"
 	"author_email"	"n/a"
-	"author_url"	"http://www.counter-strike.net/"
+	"author_url"	"http://www.facepunch.com/"
 	
-	"info"		"Contains the default Garry's Mod content (spawnmenus, playermodels, map icons) for Counter-Strike"
+	"info"		"Contains only the LUA associated with Fiery Weapons Base"
 
-	// Won't be active unless the following GCFs are available and
-	// are mounted
-	"GCFRequires"
-	{
-		"0"		"240"
-	}
 }

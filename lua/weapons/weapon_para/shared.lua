@@ -29,6 +29,7 @@ SWEP.HoldType				= "mg"
 SWEP.ViewModel				= "models/weapons/cstrike/c_mach_m249para.mdl"
 SWEP.WorldModel				= "models/weapons/w_mach_m249para.mdl"
 SWEP.ViewModelFlip			= false
+SWEP.Mag					= "models/weapons/w_mach_m249_mag.mdl"
 SWEP.Weight					= 10
 
 SWEP.Primary.Sound			= Sound( "Weapon_m249.Single" )

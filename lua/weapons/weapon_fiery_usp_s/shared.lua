@@ -43,6 +43,8 @@ SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "357"
 
 SWEP.WorksUnderWater		= true
+
+SWEP.Mag					= "models/weapons/w_pist_223_mag.mdl"
 /*---------------------------------------------------------
 	Animation Index
 ---------------------------------------------------------*/

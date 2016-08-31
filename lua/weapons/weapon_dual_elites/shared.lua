@@ -23,6 +23,7 @@ SWEP.HoldType2				= "dual"
 SWEP.ViewModel 				= "models/weapons/cstrike/c_pist_elite.mdl"
 SWEP.ViewModelFlip 			= false
 SWEP.WorldModel 			= "models/weapons/w_pist_elite.mdl"
+SWEP.Mag					= "models/weapons/w_pist_elite_mag.mdl"
 
 SWEP.Primary.Sound 			= Sound("Weapon_Elite.Single")
 SWEP.Primary.Recoil 		= 1

@@ -33,7 +33,7 @@ if ( CLIENT ) then
 	SWEP.Author					= "Nova Prospekt"
 	SWEP.PrintName				= "~ Firey Weapons Base ~\nNot for use!"
 	SWEP.Contact				= "FacePunch: Nova Prospekt"
-	SWEP.Purpose				= "Weapons Base Development"
+	SWEP.Purpose				= ""
 	SWEP.Instructions			= "~ ~"
 	
 	SWEP.DrawAmmo				= true
@@ -177,7 +177,7 @@ SWEP.Range						= 55 *(12*3) -- Yards
 ---------------------------------
 -- Function Toggles--------------
 SWEP.Akimbo					= false -- {} something
-SWEP.DoesIdle				= false -- Enables Idle animations, @@@ASSERT_WORKING
+SWEP.DoesIdle				= !false -- Enables Idle animations, @@@ASSERT_WORKING
 SWEP.UseHands				= true  -- Projects player model specific hands onto a C_model 
 SWEP.ShotgunFunctions		= false -- Enables Shotgun code paths (Dominant layer for paths)
 SWEP.Chambers				= false -- {false} -- Meta value for having a chambering weapons
@@ -400,7 +400,10 @@ function SWEP:InitCorrectLogic()
 	if self.Secondary.DryFireSound == nil then
 		self.Secondary.DryFireSound = self.Secondary.Sound
 	end
-	
+
+	if self.Purpose == "" and string.find(self.ClassName, "_base") then
+		self.Purpose = "Weapons Base Development"
+	end
 	
 	--self:SetClip1(self.Primary.ClipSize)
 	self:SetClip1(0)
@@ -770,11 +773,21 @@ end
 
 function SWEP:SpawnMag(t)
 	if self.Chambers or self.NoMag == true then return false end
+	--self:Talk("MAG IS: "..tostring(self.Mag))
+	local mag2		= self.Mag or self:FindMagType()
+	-- Checks
+	
+	if not self.Mag and mag2 then
+		self.Mag = mag2
+	end
+	
+	--self:Talk("Mag to use is: " .. tostring(self.Mag))
 	self:SafeTimer( t, function()
 			--local mag		= Model("models/weapons/w_pist_deagle_mag.mdl")
 			--local mag		= Model("models/weapons/w_pist_cz_75_mag.mdl")
-			local tbl		= self:FindMagType()
-			local mag		= Model( tbl[ math.random( #tbl ) ] )
+			--local mag2		= self.Mag
+
+			local mag		= Model( mag2 or "models/weapons/w_pist_cz_75_mag.mdl" )
 			local t2		= 65
 			
 			local aim 		= self.Owner:GetAimVector()
@@ -2457,7 +2470,7 @@ function SWEP:SetIronsights( b ) -- @@@
 end
 
 function SWEP:GetIronsights()
-	return self.Weapon:GetNWBool("Ironsights")
+	return self.Weapon:GetNWBool("Ironsights") -- Sometimes fails
 end
 
 function SWEP:IronSights() -- @@@IRON 
@@ -2837,25 +2850,61 @@ function SWEP:AdjustForAimAssist()
 	end
 end
 
+function SWEP:StripVMName(arg)
+	if not arg then arg = self.ViewModel end
+	
+	local vm2 = string.reverse( tostring(arg) )
+	
+	local at = string.find(vm2,"_",5) -- find first
+	self:DebugTalk(tostring(at).."\t "..string.SetChar(vm2,at,"@"))
+	local vm3 = string.sub( vm2, 1, at-1 )
+	
+	local vm4 = string.reverse(vm3)
+	--self:Talk("2nd CUT: "..tostring(vm3).." -> "..tostring(vm4))
+	local vm = string.StripExtension(vm4) -- Got it stripped
+
+	--self:Talk("CUT: "..tostring(vm))
+	
+	
+	-- Search for more Underscores before split?
+	-- See function specs :/
+	local strs = string_split(vm,"_") -- Returns a table
+	
+	self:DebugTalk("VM: ".. arg .." -> "..vm.."\t Size: "..#strs)
+	
+	return strs
+end
+
 function SWEP:FindMagType()
+	if self.Mag ~= nil then return end -- Fix me!
+	
+	local ans =  nil
 	local tbl = self:GetMagTypes()
 	local go = true
-	local ans = nil
-	local x = string.Length(self.ViewModel)
+	local strs = self:StripVMName(string.lower(self.ViewModel))
+	local strl = #strs or 1
+	local x = #tbl
 	
 	while go do
 		if x <= 0 then
 			break
 		end
-	
-		-- IS tHIS YOUR MAG?
-		local cut = string.Replace(self.ViewModel, "models/weapons/", " ")
-		--cut = string.Sub(cut, string.Find(cut, "_",-5))
+
+		-- Start the search
 		
-		local strs = split_string(cut)
-		
-		string:Find()
-		
+		--for i=1,strl, 1 
+		--do
+			local res = string.find( tbl[x],strs[1] )
+			
+			self:DebugTalk( "ANS @ "..tostring(x)..": "..tostring(tbl[x]).."\t\t RES: "..tostring(res) )
+			
+			if res then
+				-- We got 1
+				ans = tostring(tbl[x]);
+				self:DebugTalk("Winner here!")
+				
+			end
+		--end
 		
 		x = x-1
 	end
@@ -2864,7 +2913,7 @@ function SWEP:FindMagType()
 end
 
 function SWEP:GetMagTypes()
-	local mags = {"models/weapons/w_pist_223_mag.mdl",
+	 mags = {"models/weapons/w_pist_223_mag.mdl",
 					"models/weapons/w_pist_cz_75_mag.mdl" ,
 					"models/weapons/w_pist_deagle_mag.mdl" ,
 					"models/weapons/w_pist_elite_mag.mdl" ,
@@ -2891,11 +2940,11 @@ function SWEP:GetMagTypes()
 					"models/weapons/w_snip_g3sg1_mag.mdl" ,
 					"models/weapons/w_snip_scar20_mag.mdl" ,
 					"models/weapons/w_mach_negev_mag.mdl" ,
-					"models/weapons/w_mach_m249_mag.mdl"
+					"models/weapons/w_mach_m249_mag.mdl" ,
+					"models/shells/garand_clip.mdl"
 					}
-	-- Find the right one for the swep
-	-- @@@
 	return mags
+	-- Find the right one for the swep
 end
 
 function SWEP:GetSeqDur() -- @@@Process me!
@@ -2970,6 +3019,10 @@ function SWEP:SetNextPrimAndSecon(p1, p2) --of animation time
 end
 
 function SWEP:PrintStats(p,s)
+	-- This function is ment to report back key stats
+	-- This function may be modified and integrated at will
+	-- It is currently only used for balancing sweps
+	
 	if p == nil then p = true end
 	if s == nil then p = self.Akimbo or false end
 	--self:Talk(tostring(self.Primary).." , ")
@@ -3025,7 +3078,8 @@ function SWEP:ReportStats( side )
 	return true
 end
 
-function string_split(str, delimiter) -- Split String
+function string_split(str, delimiter) -- @@@Split String
+	-- Not for modification!!
 	if not str or not type(str) == "string" then Error("\n[!] BAD STRING @ string_split") return end
 	if not delimiter then delimiter = " " end
 	
@@ -3113,7 +3167,7 @@ function OnHeadshot ( attacker, btr, dmginfo ) --boom headshot
 	if b1 and b2 then
 		if CLIENT then killicon.AddFont( self.WepFolderPath, self.WepSelectFont, self.IconLetter.."D", self.IconColor ) end
 		self:Talk("Nice Shot!")
-		attacker:EmitSound("vo/The one and only.wav")
+		attacker:EmitSound("vo/the one and only.wav")
 	
 	else
 		if CLIENT then killicon.AddFont( self.WepFolderPath, self.WepSelectFont, self.IconLetter, self.IconColor ) end
