@@ -1,6 +1,0 @@
-VertexLitGeneric
-{
-	"$basetexture"	"models\weapons\v_models\Dual Glocks\glock18"
-	"$bumpmap" "models\weapons\v_models\Dual Glocks\glock18_norm"
-	"$normalmapalphaenvmapmask" 1
-}

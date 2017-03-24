@@ -21,18 +21,18 @@ if ( CLIENT ) then
 end
 
 
-SWEP.Base				= "weapon_fiery_base_pistol"
-SWEP.Category			= "Fiery"
+SWEP.Base					= "weapon_fiery_base_pistol"
+SWEP.Category				= "Fiery"
 
-SWEP.Spawnable			= true
-SWEP.AdminSpawnable		= true
+SWEP.Spawnable				= true
+SWEP.AdminSpawnable			= true
 
-SWEP.ViewModel			= "models/weapons/cstrike/c_pist_fiveseven.mdl"
-SWEP.WorldModel			= "models/weapons/w_pist_fiveseven.mdl"
+SWEP.HoldType				= "csspistol"
+SWEP.ReloadHoldType				= "csspistol"
+SWEP.ViewModel				= "models/weapons/cstrike/c_pist_fiveseven.mdl"
+SWEP.WorldModel				= "models/weapons/w_pist_fiveseven.mdl"
 
-SWEP.Weight				= 5
-SWEP.AutoSwitchTo		= false
-SWEP.AutoSwitchFrom		= false
+SWEP.Weight					= 6
 
 SWEP.Primary.Sound			= Sound( "Weapon_FiveSeven.Single" )
 SWEP.Primary.Recoil			= 1

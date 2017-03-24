@@ -25,23 +25,21 @@ if ( CLIENT ) then
 end
 
 
-SWEP.Base				= "weapon_fiery_base_pistol"
-SWEP.Category			= "Fiery"
+SWEP.Base					= "weapon_fiery_base_pistol"
+SWEP.Category				= "Fiery"
 
-SWEP.Spawnable			= true
-SWEP.AdminSpawnable		= true
+SWEP.Spawnable				= true
+SWEP.AdminSpawnable			= true
 
-SWEP.HoldType			= "csspistol"
-SWEP.HoldType2			= "onehand"
-SWEP.ViewModel			= "models/weapons/v_pist_beretta.mdl"
-SWEP.WorldModel			= "models/weapons/w_pist_elite_single.mdl"
-SWEP.ViewModelFlip		= !false -- Defaults true
+SWEP.HoldType				= "csspistol"
+SWEP.HoldType2				= "onehand"
+SWEP.ViewModel				= "models/weapons/v_pist_beretta.mdl"
+SWEP.WorldModel				= "models/weapons/w_pist_elite_single.mdl"
+SWEP.ViewModelFlip			= !false -- Defaults true
 
-SWEP.Weight				= 5
-SWEP.AutoSwitchTo		= false
-SWEP.AutoSwitchFrom		= false
+SWEP.Weight					= 4
 
-SWEP.Primary.Sound			= Sound( "weapon/M9/fire.wav" )
+SWEP.Primary.Sound			= Sound( "weapons/m9_beretta/fire.wav" )
 SWEP.Primary.Recoil			= 1.3
 SWEP.Primary.Damage			= 20
 SWEP.Primary.NumShots		= 1

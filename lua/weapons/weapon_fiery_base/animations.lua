@@ -402,11 +402,16 @@ function SWEP:EXESound(snd, vol) -- Can recieve either just a sound or a table
 		end
 	end
 
-	--[Created by Nova Prospekt 	6/28/2011]
-	-- May need a revision soon, 	8/29/2015
-	-- Yeah I wish I had more time 	4/05/2016
-function SWEP:VMEXEAnim(anim_name, dmg)
-	-- NPC STOP
+	--[Created by Nova Prospekt 	06/28/2011]
+	-- May need a revision soon, 	08/29/2015
+	-- Yeah I wish I had more time 	04/05/2016
+	-- Maybe time soon?				11/03/2016
+function SWEP:VMEXEAnim(anim_name, dmg) 
+	-- GOALS:
+	-- Define needed variables in each option block
+	-- Create a standard format for func args
+	-- Modularize the option blocks (via functions)
+	-- [i] Arguments list as last option #MaxModular
 	
 	if (anim_name == nil) or (self.Owner:IsNPC()) then return end
 	local NOW = CurTime()
@@ -431,7 +436,7 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 		-- @@@Primary/Secondary COnsideration!!
 		if self.Weapon:Clip1() < 1 then -- 0 and below
 			isempty = true
-			addaft = "_EMPTY"
+			addaft = "_EMPTY" -- @@@ Reconsider useage cases!
 		elseif (self.DoDModelFunction) and isTbl(self.HMG) then
 			local clip = self.Weapon:Clip1()
 			if (clip < 9) and (clip > 0) then -- To show the magazine accurately
@@ -451,11 +456,9 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 				-- Biipod, Tripod, whatever...
 			end	
 		end
-		if isTbl(self.Silencer) then -- @@@ May have changed!
-			if (self.Silencer[0] == true) then
-				addin = "_SILENCED"
-				
-			end
+
+		if (self.Silencer == true) then
+			addin = "_SILENCED"
 		end
 
 -- PRIMARY	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -486,8 +489,9 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 			end
 				
 			-- ADD CODE FOR AKIMBO @@@AKIMBO
-			if (self.DryFires) and isempty then -- self.VMact("primary") is called before the bullet is used?
-				if (DoDModelFunction)  then
+			if (self.DryFires == true) and isempty then -- self.VMact("primary") is called before the bullet is used?
+				self.DebugTalk("\n\tVMEXECAnim - DoDModelFunction = "..tostring(self.DoDModelFunction).."\n")
+				if (self.DoDModelFunction)  then
 					ANIM = self.Primary.EmptyAnim or ACT_VM_PRIMARYATTACK_EMPTY
 				else
 					ANIM = self.Primary.EmptyAnim or ACT_VM_DRYFIRE
@@ -495,11 +499,12 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 				self:AddHeat(-0.15) -- Let some extra heat escape
 			else
 				-- Nothing New
+				self.DebugTalk("\n\tVMEXECAnim - Missed Dryfire Section\n")
 			end
 				
 			if (ANIM == "ACT_VM_PRIMARY") then
 				-- Just to make sure
-				ANIM = "ACT_VM_PRIMARYATTACK" 
+				ANIM = "ACT_VM_PRIMARYATTACK" -- @@@USE ENUM-int instead
 			end
 		--end
 			
@@ -537,8 +542,8 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 		elseif an == "DRAW" then
 			ANIM = "ACT_VM_DRAW"
 			if ( self.Primary.EmptyReloadAnim != "" 
-				or not self.Primary.EmptyReloadAnim == nil ) 
-				and (self.CanBeEmpty or self.DoDModelFunction) and isempty then
+			or not self.Primary.EmptyReloadAnim == nil ) 
+			and (self.CanBeEmpty or self.DoDModelFunction) and isempty then
 				self:DebugTalk("Using Empty")
 				ANIM = self.EmptyDrawAnim or ANIM.."_EMPTY" -- Just keep it ANIM
 			else
@@ -585,6 +590,7 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 		end
 		
 		--print("Currently ANIM has these values - Type: " .. type(ANIM) .. " \nToString: " .. tostring(ANIM))
+		-- @@@ RE  - WRITE ME!
 		if (ANIM == "ACT_VM_PRIMARYATTACK" or ANIM == "ACT_VM_PRIMARY" or ANIM == "ACT_VM_DRYFIRE") and addaft == "_EMPTY" and not self.DoDModelFunction then
 			if (self.DryFires) then
 				ANIM = "ACT_VM_DRYFIRE"
@@ -602,13 +608,14 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 
 		if type(answer) == "string" then
 			answer = self:STRtoACT(answer)
-			ErrorNoHalt("[!] Rare error: Double ACT look up! "..tostring(answer).."\n")
+			ErrorNoHalt("[!] Rare error: Double ACT look up!\tResult: "..tostring(answer).."\n")
 		end
 		--		if not isint(ANIM) then
-			--print("Sending to SendWeaponAnim ~~~~~~~~> " .. tostring(answer) .. " Type: " .. type(answer))
+			self:DebugTalk("\n\tVMEXECAnim Result: " .. tostring(answer) .. " Type: " .. type(answer) .. "\n")
 		self.Weapon:SendWeaponAnim( answer ) -- NUMBER
 		
 	elseif isint(anim_name) then 
+	self.DebugTalk("\n\tVMEXECAnim Sending an Int:  "..anim_name.."\n")
 		self.Weapon:SendWeaponAnim(anim_name) -- Just yeah, do it, no help, they sent a number
 	elseif type(anim_name) == "string" then
 		model:SetSequence(model:LookupSequence(anim_name))

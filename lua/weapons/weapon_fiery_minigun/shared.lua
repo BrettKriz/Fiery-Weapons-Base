@@ -43,7 +43,7 @@ SWEP.Base					= "weapon_fiery_base_smg"
 SWEP.Category 				= "Fiery"	// -- SWEP Category
 SWEP.HoldType				= "hipfire2"
 SWEP.HoldType2				= "hipfire1"
-SWEP.ReloadHoldType			= "rifle"
+SWEP.ReloadHoldType			= "smg"
 SWEP.UseHands				= false
 
 SWEP.Spawnable				= !false
@@ -55,12 +55,12 @@ SWEP.Mag					= "models/weapons/w_mach_negev_mag.mdl"
 SWEP.ReloadSound			= Sound("weapons/oicw/ar2_reload.wav")
 
 SWEP.Primary.Sound			= Sound( "weapons/hmg1/hmg1_" .. math.random( 7, 9 ) .. ".wav" )
-SWEP.Primary.Recoil			= .26
+SWEP.Primary.Recoil			= .27
 SWEP.Primary.Damage			= 22
 SWEP.Primary.NumShots		= 2
 SWEP.Primary.Cone			= 0.062
-SWEP.Primary.ClipSize		= 350		// -- Feel free to put a higher number
-SWEP.Primary.Delay			= 0.060
+SWEP.Primary.ClipSize		= 385		// -- Feel free to put a higher number
+SWEP.Primary.Delay			= 0.061
 SWEP.Primary.Clips			= 5
 SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "ar2"

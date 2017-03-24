@@ -1,7 +1,0 @@
-VertexLitGeneric
-{
-	"$baseTexture" "models\weapons\v_models\glockxusp\FRAME"
-	"$envmap" "env_cubemap"
-	"$bumpmap" "models\weapons\v_models\glockxusp\FRAME_normal"
-	"$normalmapalphaenvmapmask" "1"
-}

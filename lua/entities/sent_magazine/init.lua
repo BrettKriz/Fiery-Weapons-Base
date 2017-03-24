@@ -3,11 +3,10 @@ AddCSLuaFile("shared.lua")
 include("shared.lua")
 
 ENT.MODEL 			= "models/weapons/armor/armor.mdl"
-ENT.MULTIPLY 		= 1
-ENT.ARMORGIFT		= 150 		// 2 armor is equal to about 1 health
-ENT.LASTHIT			= CurTime()
-
-local snd			= "player/kevlar1.wav"
+ENT.AMMOTYPE		= "pistol"
+ENT.AMOUNT			= 1 
+-- Otherwise I think were just going to make a gib
+-- Because optimizations
 
 function ENT:SpawnFunction( ply, tr ) 
    
@@ -41,23 +40,6 @@ function ENT:Initialize()
 	
 end
 
-function ENT:OnTakeDamage( dmginfo )
- 
-	if ( self.LASTHIT >= CurTime()+1 ) then
-		self.Entity:TakePhysicsDamage( dmginfo ) 
-		self.Entity:EmitSound( snd )
-		self.LASTHIT = CurTime()+2
-	end
- end
-
-function ENT:PhysicsCollide( data, physobj )
-	
-	// Play sound on impact
-	if (data.Speed > 15 && data.DeltaTime > 0.5 ) then
-		self.Entity:EmitSound( snd )
-	end
-end
-
 function ENT:Use(activator,caller)
 	
 	if ( activator:IsPlayer() and (activator:Armor() < self.ARMORGIFT) ) then
@@ -70,3 +52,4 @@ function ENT:Use(activator,caller)
 	end
 
 end
+

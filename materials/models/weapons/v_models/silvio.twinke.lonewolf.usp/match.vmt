@@ -1,7 +1,0 @@
-"VertexLitGeneric"
-{
-	"$baseTexture" "models\weapons\v_models\silvio.twinke.lonewolf.usp/match"
-	"$bumpmap" "models\weapons\v_models\silvio.twinke.lonewolf.usp\match_norm"
-	"$envmap" "env_cubemap"
-	"$normalmapalphaenvmapmask" 1
-}

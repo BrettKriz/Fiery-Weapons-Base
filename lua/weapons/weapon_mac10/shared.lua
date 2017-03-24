@@ -30,7 +30,7 @@ SWEP.AdminSpawnable			= true
 SWEP.ViewModel				= "models/weapons/cstrike/c_smg_mac10.mdl"
 SWEP.WorldModel				= "models/weapons/w_smg_mac10.mdl"
 
-SWEP.HoldType				= "autopistol"
+SWEP.HoldType				= "smg"
 SWEP.HoldType2				= "autopistol"
 SWEP.ReloadHoldType			= "smg"
 SWEP.Weight					= 4

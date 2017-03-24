@@ -31,7 +31,7 @@ if ( CLIENT ) then
 end
 
 SWEP.HoldType				= "smg"
-SWEP.HoldType2				= "autopistol"
+SWEP.HoldType2				= "onehand"
 SWEP.ReloadHoldType			= "smg"
 
 SWEP.Base					= "weapon_fiery_base_pistol"

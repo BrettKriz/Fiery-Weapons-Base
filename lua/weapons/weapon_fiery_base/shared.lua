@@ -175,7 +175,7 @@ SWEP.Secondary.DelayShots	= false
 
 SWEP.Range						= 55 *(12*3) -- Yards
 ---------------------------------
--- Function Toggles--------------
+-- Function Toggles-------------- 
 SWEP.Akimbo					= false -- {} something
 SWEP.DoesIdle				= !false -- Enables Idle animations, @@@ASSERT_WORKING
 SWEP.UseHands				= true  -- Projects player model specific hands onto a C_model 
@@ -185,12 +185,13 @@ SWEP.DoDModelFunction		= false -- Used to enable DoD:S specific animation patter
 SWEP.DoDWeaponDraw			= false -- Enforces DoD:S drawing methods. Note: The font for DoD:S is VERY limited!!
 SWEP.HL2WeaponDraw			= false -- Enforces HL2 drawing methods.
 										-- can be {true} to be pre-chambered
+SWEP.FireMode				= 1		-- Fire mode data
 SWEP.DryFires				= false --((SWEP.Primary.Ammo == "pistol") or (SWEP.Primary.Ammo == "357") or (SWEP.Primary.Ammo == "alyxgun"))  -- Evaluates for a bool
 SWEP.WorksUnderWater		= false  -- BOOL Just to make it fancy, its as easy as that
 -- Modify toggles----------------
 SWEP.Scope					= false -- {0.00} -- Not sure, ill work it out later
 SWEP.ScopeMAX				= 12 -- Adjust at will, no negative numbers!
-SWEP.Silencer				= nil 	-- {false} -- Booled on and off
+SWEP.Suppressor				= nil 	-- {false} -- Booled on and off
 SWEP.SuppressedVolume		= 45	-- Sound level in game
 SWEP.FireModes				= false 	-- {1,1,2,3} -- As in, ON 1 of options 1,2,3; 1 and 1 will just be whatever; 3 and 1 will initially have it on that setting
 SWEP.Bipod					= nil 	-- {false} -- Booled on and off
@@ -200,6 +201,17 @@ SWEP.DoubleShot				= false -- Enables double shot function, possible @@@Trinary
 SWEP.HMG					= false -- {0} -- Activating this will cause heat to activate too (?) @@@EDIT
 SWEP.Heat					= nil	-- 00 -- Winds up
 ---------------------------------
+
+SWEP.data 					= {} -- VERY IMPORTANT
+SWEP.data.modes				= {}
+-- NOTE: Index does not reflect ints value
+-- This is done so that the ordering can be
+-- Arranged as wanted
+/*
+SWEP.data.modes[1]			= 1 -- SEMI
+SWEP.data.modes[2]			= 2 -- BURST
+SWEP.data.modes[3]			= 3 -- AUTO
+*/
 
 /*---------------------------------------------------------
 	Animation Index
@@ -214,6 +226,7 @@ SWEP.Secondary.ShootAnim	= nil // Melee, Special action, Secondary fire
 -- Abnormal reload, as in HL2 and DODS style pistol reloads
 SWEP.ReloadAnim				= nil
 SWEP.EmptyReloadAnim		= nil
+SWEP.RemoveMagAnim			= nil
 -- Once agian, Abnormal as defined above
 SWEP.DrawAnim				= nil
 SWEP.EmptyDrawAnim			= nil
@@ -225,6 +238,7 @@ SWEP.Primary.CantAttack		= nil
 SWEP.Secondary.CantAttack	= nil
 
 SWEP.Primary.Chamber		= ACT_VM_DRAW
+
 
 /*---------------------------------------------------------*/
 
@@ -361,8 +375,9 @@ end
 
 function SWEP:InitCorrectLogic()
 	-- Used to correct logic at SWEP start
+	ErrorNoHalt("\n\n@@@ isInitialized: "..tostring(self.isInitialized).."\n\n")
 	if (self.isInitialized == true) then return end
-	
+	self.DebugTalk("[InitCorrectLogic] Entering function...\n")
 	--self.Owner:SetAllowWeaponsInVehicle(true)
 	
 	-- Handle Killicons and select icons
@@ -418,10 +433,10 @@ function SWEP:InitCorrectLogic()
 		self.Weapon:SetVar("SecondaryMagOut", true)
 	end
 	
-	self:AdjustForAimAssist() -- Cant remember relivance 
+	self:AdjustForAimAssist() -- Cant remember relivance, but needed
 	
 	// -----------------------------------------------------------------------------------------//   
-	if self.Silencer == true then
+	if self.Suppressor == true then
 		self.CSMuzzleFlashes	= true
 		self.CSMuzzleX			= true -- Pew pew! X
 	end
@@ -465,7 +480,7 @@ function SWEP:InitCorrectLogic()
 	
 	local isC = string.find(self.ViewModel, "/c_", 8)
 	if not isC  then -- and self.DoDModelFunction
-		-- Correct for some things.  
+		-- Correct for some things.   
 		
 		self.UseHands = false
 		self.ArmOffset = self.ArmOffset or Vector(0.319, 0, 2.2) -- self.ArmOffset or 
@@ -477,6 +492,7 @@ function SWEP:InitCorrectLogic()
 	end
 	
 	if (self.DryFires and self.Primary.EmptyAnim == nil and self.Akimbo != true) then
+		self.DebugTalk("[InitCorrectLogic] Correcting Empty Anim to ACT_VM_DRYFIRE\n")
 		self.Primary.EmptyAnim		= ACT_VM_DRYFIRE
 	end
 	
@@ -503,6 +519,7 @@ function SWEP:InitCorrectLogic()
 	self:GrabAnimIndex()
 	
 	self:CorrectLogic()
+	self.DebugTalk("@@@ LEAVING InitCorrectLogic\n")
 end
 
 function SWEP:LoadUserProfile( filepath ) -- IMPLEMENT ME!
@@ -618,6 +635,7 @@ function SWEP:Deploy()
 
 	--self:UpdateBones()
 	--self:Talk("Properties: " .. tostring(self.DryFires))
+	self.Weapon:SetNetworkedBool("reloading", false)
 
 	self:AdjustForAimAssist() -- Recoil still applies!!
 	
@@ -642,6 +660,8 @@ function SWEP:Holster()
 			self:SetHoldType( "normal" )
 		end
         
+		self.Weapon:SetNetworkedBool("reloading", false)
+		
         return true
 end
 
@@ -684,14 +704,14 @@ end
 
 --[[---------------------------------------------------------
    Name: SWEP:RemoveClip( )  Aka UnloadClip
-   Desc: Drop the magazine
+   Desc: Drop magazine
 -----------------------------------------------------------]]
 function SWEP:RemoveClip()
 	-- Refund ammunition to player
 	-- Built for RP mostly
-	self:DebugTalk("[1] Entering RemoveClip()")
+	self:DebugTalk("[1] Entering RemoveClip()\n")
 	if not self.Owner:KeyDown( IN_ATTACK2 ) then return false end
-	self:DebugTalk("[1.25] RemoveClip()")
+	self:DebugTalk("[1.25] RemoveClip()\n")
 	local cur = CurTime()
 	local b1 = self.Weapon:GetNextPrimaryFire() > cur
 	local b2 = self.Weapon:GetNextSecondaryFire() > cur
@@ -713,7 +733,7 @@ function SWEP:RemoveClip()
 	--  self.EmptyReloadAnim or self.ReloadAnim or  
 	-- Animate a reload with no idle after and iron off
 			--	anim_name, pbr, snd, volume, idle_after, iron_off
-	self:VMact( self.EmptyReloadAnim or self.ReloadAnim or ACT_VM_RELOAD , 1, nil, nil, false, true)
+	self:VMact( self.RemoveMagAnim or self.EmptyReloadAnim or self.ReloadAnim or ACT_VM_RELOAD , 1, nil, nil, false, true)
 	self.Owner:SetAnimation( PLAYER_RELOAD )
 	self:SetNextPrimAndSecon(0.025)
 	self:CancelShotgunReload()
@@ -721,7 +741,7 @@ function SWEP:RemoveClip()
 	dur = self:SequenceDuration()
 	-- Set an animation for later
 	local point =(dur * cutat)
-	self:DebugTalk("[3] ".. tostring(point) .." |DUR : ".. dur .."")
+	self:DebugTalk("[3] ".. tostring(point) .." |DUR : ".. dur .."\n")
 	self.ReloadingTime = CurTime() + point
 	
 	
@@ -730,7 +750,7 @@ function SWEP:RemoveClip()
 		self:SpawnMag(dur/2)
 	end
 	
-	self:DebugTalk("[4] Starting the timer")
+	self:DebugTalk("[4] Starting the timer\n")
 	self:SafeTimer( point , function()
 		-- Refund primary and secondary
 		self.Weapon:SetVar("PrimaryMagOut", true) -- @@@OPTIMIZE to self var. for speed in think cycles
@@ -749,11 +769,18 @@ function SWEP:RemoveClip()
 		-- Stop the animation at the desired point
 		--self:VMact("idle", 1.1, nil, nil) -- Volume left undefined]
 		-- self.EmptyIdleAnim or self.IdleAnim or ACT_VM_IDLE
-		
-		local anim = self.EmpytyIdleAnim or ACT_VM_IDLE
-		if (self.EmptyIdleAnim == nil and self.DryFires == true) then
-			anim = self.Primary.EmptyAnim or ACT_VM_DRYFIRE
+		local b1 = self.EmptyIdleAnim == nil
+		local b2 = self.DryFires == true
+		local anim = self.EmpytyIdleAnim or ACT_VM_DRAW or ACT_VM_IDLE
+		ErrorNoHalt("~~~~ B1: "..tostring(b1).."\tB2:"..tostring(b2).."\tAnim:"..tostring(anim).."\n")
+		if ( b1 and b2) then
+			if self.DoDModelFunction == true then
+				anim = ACT_VM_IDLE_EMPTY -- self.Primary.EmptyAnim 
+			else
+				anim = ACT_VM_DRYFIRE
+			end
 		end		
+		
 		--self:Idle( 0, anim )
 		--	anim_name, pbr, snd, volume, idle_after, iron_off
 		self:VMact(anim)
@@ -772,7 +799,7 @@ function SWEP:RemoveClip()
 end
 
 function SWEP:SpawnMag(t)
-	if self.Chambers or self.NoMag == true then return false end
+	if self.Chambers or self.NoMag == true or (self.Primary.ClipSize < 2 and self.Secondary.ClipSize < 2) then return false end
 	--self:Talk("MAG IS: "..tostring(self.Mag))
 	local mag2		= self.Mag or self:FindMagType()
 	-- Checks
@@ -833,7 +860,7 @@ function SWEP:SpawnMag(t)
 					dissolver:SetKeyValue("dissolvetype",4)
 					dissolver:Spawn()
 					dissolver:Activate()
-					dissolver:Fire("Dissolve")
+					dissolver:Fire("Dissolve") -- Vanish
 			end)
 	end)
 end
@@ -843,7 +870,7 @@ end
    Desc: CheckReload -- unhooked?
 -----------------------------------------------------------]]
 function SWEP:CheckReload()-- USE ME!
-	
+	-- @@@ Research usage!
 end
 -- GOD MODE (inf ammo) VAR SWITCH HERE!!
 /*---------------------------------------------------------
@@ -851,7 +878,9 @@ end
 ---------------------------------------------------------*/
 --
 function SWEP:Reload() -- @@@ DECLUTER!
-	--self:Talk("RELOAD START")
+	--self:Talk("RELOAD START") 
+	if (self.ReloadingTime and CurTime() <= self.ReloadingTime) or (self.Weapon:GetNetworkedBool("reloading", true))  then return end
+	
 	-- Check feild of view and direct target
 	if self.Owner:KeyDown( IN_USE ) then
 		local ent = nil
@@ -879,10 +908,8 @@ function SWEP:Reload() -- @@@ DECLUTER!
 			return true
 		end
 	end
-	
-	if(self.ReloadingTime and CurTime() <= self.ReloadingTime) then return end
-	-- ENTER RELOADING PHASE
 
+	-- ENTER RELOADING PHASE
 	local arg1 = (self.Weapon:Clip1() < self.Primary.ClipSize  
 					and self.Owner:GetAmmoCount(self.Primary.Ammo) > 0) 
 					and (((self.Owner:KeyPressed( IN_RELOAD ) and
@@ -893,40 +920,38 @@ function SWEP:Reload() -- @@@ DECLUTER!
 		if (self.Primary.Chambered == false) then
 			self:ChamberPrimary()
 			self.Weapon:SetVar("PrimaryMagOut", false)
-			return
+			return true
 		elseif(self.Secondary.Chambered == false) then
 			self:ChamberSecondary()
 			self.Weapon:SetVar("SecondaryMagOut", false)
-			return
+			return true
 		end
 	end
 	
 	self:DebugTalk("<> Attempting to call shotgun reload <> "..tostring(arg1).. " & "..tostring(self.ShotgunFunctions))
 	
 	if self.ShotgunFunctions then
-		
 		if arg1 then
 			-- So We can use the Think Function
 			
 			self:ShotgunReload() -- @@@ShotgunReload
-			return
+			return true
 		else
 			--self:CancelShotgunReload()
-			return
+			return false
 		end
-
 	end
-
+	self.Weapon:SetNetworkedBool("reloading", true)
 	--self:Talk("End-ish of reload")
 	local flag = nil
 	-- Regular Reload Params
-	if not arg1 then return end
+	if not arg1 then self.Weapon:SetNetworkedBool("reloading", false) return end --@@@ Owner dead
 	flag = self.Weapon:DefaultReload( ACT_VM_RELOAD ) -- It'll do what i needs to
-	if not flag then return end
+	if not flag then self.Weapon:SetNetworkedBool("reloading", false) return end
 	--self:PrintStats(true, false)
 	
 	self:SetHoldType( self.ReloadHoldType or self.HoldType )
-	self:StandardReload() -- This really should get called btw
+	self:StandardReload() -- This really should get called btw.. important.
 	
 	self.Weapon:SetVar("PrimaryMagOut", false)
 	self.Weapon:SetVar("SecondaryMagOut", false)	
@@ -935,19 +960,21 @@ function SWEP:Reload() -- @@@ DECLUTER!
 end
 --]]
 function SWEP:StandardReload()
-	--PLEASE GOD CLEAN ME @@@
 	local da_pbr = 1
+	local at
+	local m1 = not self.Weapon:GetVar("PrimaryMagOut")
+	local m2 = not self.Weapon:GetVar("SecondaryMagOut")
+	
 		  --	anim_name, pbr, snd, volume, idle_after, iron_off
 	self:VMact("RELOAD", da_pbr, nil) -- self.ReloadSound
 	self:SetNextIdle("SOON")
+	at = self:GetSeqDur()
 	
-	local at = self:GetSeqDur()
 	self.ReloadingTime = CurTime() + (at * da_pbr)
 	self:SetNextPrimAndSecon(0.98) 
 	
 	-- SafeTimers
-	local m1 = not self.Weapon:GetVar("PrimaryMagOut")
-	local m2 = not self.Weapon:GetVar("SecondaryMagOut")
+
 	if m1 then
 		self:SpawnMag(at/3)
 	end
@@ -956,12 +983,12 @@ function SWEP:StandardReload()
 	end
 	
 	self:SafeTimer( at, function()
-						
 						-- Fall back included
+						self.Weapon:SetNetworkedBool("reloading", false)
 						if self:AreArmsDown()  then
 							self:SetHoldType( self.RunHoldType or "normal" ) -- 
 						elseif self.Akimbo then
-							self:SetHoldType( "dual" ) -- Theres a glitch...
+							self:SetHoldType( "dual" ) -- Theres a glitch! @@@FIXME!
 						else
 							if self.Weapon:GetNetworkedBool( "Ironsights" ) then
 								self:SetHoldType( self.HoldType ) -- 
@@ -969,8 +996,8 @@ function SWEP:StandardReload()
 								self:SetHoldType( self.HoldType2 or self.HoldType ) -- 
 							end
 						end
-				end )
-	
+					end )
+	-- Continue with checks
 	
 	if (self.Primary.ClipSize > 6) and (self.Weapon:Clip1() <= self.Primary.ClipSize/2 ) then
 		-- Check a minimum clipsize for shotguns and revolvers..
@@ -1003,7 +1030,7 @@ function SWEP:ChamberPrimary()
 	self.Primary.Chambering = true
 	-- For later
 	self:SafeTimer(t, function()
-		self.Primary.Chambered = true
+		self.Primary.Chambered 	= true
 		self.Primary.Chambering = false
 		
 	end)
@@ -1079,7 +1106,7 @@ function SWEP:CanPrimaryAttack()
 	if (self.Primary.ClipSize < 0) then -- and (self:Ammo1() > 0)
 		return true, ent -- MELEE
 	end
-	self:DebugTalk("Can Attack: " .. tostring(eval).. " b1:" .. tostring(b1))
+	self:DebugTalk("Can Attack: " .. tostring(eval).. " b1:" .. tostring(b1).."\n\n")
 
 	-- Clip is empty
 	if eval then
@@ -1091,6 +1118,7 @@ function SWEP:CanPrimaryAttack()
 			self.Weapon:SetNextPrimaryFire(CurTime() + delay)
 			self:EXESound( {"Default.ClipEmpty_Pistol", self.Owner} )
 			self:VMact(self.Primary.CantAttack) -- HL2 Animation trick
+			self.Owner:SetAnimation( PLAYER_ATTACK1 ) -- @@@ Use reduced recoil animation? Or trash it
 		end
 		
 		return false, ent
@@ -1122,9 +1150,10 @@ function SWEP:PrimaryAttack()
 	local arg1 = ( not b1 or self.Weapon:GetNetworkedBool( "reloading", false) == true)
 	if arg1 or self.Owner:KeyDown( IN_RELOAD ) then return end
 
-	self.Weapon:SetVar("AkimboSide", false)
+	self.Weapon:SetVar("AkimboSide", false) -- @@@ Implement
 	
-	local b2 = target ~= nil and target:GetPos():Distance( self.Owner:GetShootPos() ) < 30
+	local b2 = target ~= nil and target:GetPos():Distance( self.Owner:GetShootPos() ) < 30 -- @@@ Make sv_var!
+	--[[
 	local doMod = (not(self.Owner:IsNPC()) -- Create a very clear key pattern 
 		and self.Owner:KeyDown( IN_ATTACK ) 
 		and self.Owner:KeyPressed( IN_ATTACK2 )
@@ -1140,7 +1169,9 @@ function SWEP:PrimaryAttack()
 				self:Reload()	
 			return true
 		end
-	elseif b2 then
+	else
+	--]]
+	if b2 then
 		-- The target is close and right infront of us
 		-- So lets do some damage 
 		
@@ -1148,9 +1179,10 @@ function SWEP:PrimaryAttack()
 	end
 		
 	-- FIRE PARAMS
-	if self.Primary.BurstFire > 0 then
+	if self.Primary.BurstFire > 0 and self.FireMode == 2 then
 		-- They've called for Burst Only functions
-		self:DebugTalk("Entering Primary Burstfire")
+		self:DebugTalk("Entering Primary Burstfire   MODE:"..tostring(self.FireMode).."\n")
+		ErrorNoHalt("Entering Primary Burstfire   MODE:"..tostring(self.FireMode).."\n")
 		self:PrimaryBurst(self.Primary.BurstFire)
 		return true
 
@@ -1161,6 +1193,12 @@ function SWEP:PrimaryAttack()
 		
 		local b1 = not (GetConVar("swep_physical_bullets"):GetBool())
 		local b2 = not self.Primary.DelayShots == true
+		local anim = true
+		if self.Weapon:Clip1()-1 < 1 then
+			anim = self.Primary.EmptyAnim or true
+		else
+			anim = self.Primary.ShootAnim or true
+		end
 
 		if b1 and b2 then -- @@@See why the ConVar is messing up
 			
@@ -1169,8 +1207,9 @@ function SWEP:PrimaryAttack()
 								self.Primary.Recoil,
 								self.Primary.NumShots,
 								self.Primary.Cone,
-								self.Primary.Ammo
-							)
+								self.Primary.Ammo,
+								anim
+							) -- @@@ Add Forced Anim?
 		elseif not b1 and b2 then
 			self:ShootPhysicalBullet(
 										self.Primary.Damage,
@@ -1179,7 +1218,7 @@ function SWEP:PrimaryAttack()
 										self.Primary.Cone
 									)
 		elseif not b2 then
-			 -- IMPLEMENT!
+			 -- IMPLEMENT!  
 			self:PrimaryDelayShot()
 		else
 			ErrorNoHalt("[!] Case-Leak in SWEP:PrimaryAttack()! @@@PA1")
@@ -1364,7 +1403,7 @@ end
 function SWEP:SecondaryAttack( arg )
 
 	local eval = not self:CanSecondaryAttack() // Creates a false return if trues
-	self:DebugTalk("Secondary Attack - Can Attack? "..tostring(eval))
+	self:DebugTalk("Secondary Attack - Can Attack? "..tostring(eval).."\n")
 	if self.NextSecondaryAttack == 0 then self.NextSecondaryAttack = CurTime() return false end
 	if (eval and self.Akimbo == true) then Msg("Rejected") return false end
 	
@@ -1372,17 +1411,19 @@ function SWEP:SecondaryAttack( arg )
 -- tobool(tonumber(self.DEBUG))
 	--Msg("TF "..tostring(self:TesterFunc()))
 	local hm = self:HasModify()
-	
-	if self.Owner:KeyDown( IN_USE ) and not self.Owner:KeyDown( IN_RELOAD ) then  
+	ErrorNoHalt("[~] Has Modify? " .. tostring(hm))
+	if not self.Owner:KeyDown( IN_RELOAD ) and (self.Owner:KeyDown( IN_USE ) and not self.Owner:KeyReleased( IN_USE ) ) then  
 			--self.Owner:RemoveSuit()
 			--self:SetIronsights( !self.Weapon:GetNetworkedBool( "Ironsights", false ) )
-			--self.Weapon:SetNextSecondaryFire( CurTime() + 0.06 )
+			--self.Weapon:SetNextSecondaryFire( CurTime() + 0.06 ) 
 		if hm then	
 			-- Use a modifier
+			ErrorNoHalt("[~] Modify going toward burst")
 			self:Modify()
 			
 			return true
-		--else
+		else
+			self:Idle()
 			--self:TesterFunc()
 		end
 	else	
@@ -1390,10 +1431,10 @@ function SWEP:SecondaryAttack( arg )
 		-- Standard click
 		if isTbl(self.Akimbo) then -- @@@ I dont think Akimbo is a table anymore
 			self:FireSpare()
-			--self:Talk("Im in secondary at FIRE SPARE")
+			--self:Talk("Im in secondary at FIRE SPARE") 
 		elseif (self.AimAssist != false and GetConVar("swep_AutoAim"):GetBool()) then
-			self:AimAssist()
-			self:DebugTalk("Im in secondary at AIM ASSIST")
+			local t = self:AimAssist()
+			self:DebugTalk("Im in secondary at AIM ASSIST, returned "..tostring(t).."\n")
 		else
 			--self:Beep("SIGHTS")
 			self:Sights()
@@ -1542,7 +1583,7 @@ function SWEP:ShootEffects( side, recoil, anim, snd, numshot )
 	-- @@@ Expand me!
 	--local eval = tobool(self.Weapon:GetVar("AkimboSide"))
 
-	self:DebugTalk("ShootEffects: SIDE=" ..tostring(side)..", RECOIL"..tostring(recoil).."; ANIM: "..tostring(anim)..","..tostring(snd).."\n" )
+	self:DebugTalk("\nShootEffects\n\tSIDE=" ..tostring(side)..", RECOIL"..tostring(recoil).."; ANIM: "..tostring(anim)..","..tostring(snd).."\n" )
 	if (side == 1) then -- Determine side, include trinary, OCIW
 		self:PrimaryShootEffects( recoil, anim, snd, numshot )
 	elseif (side == 2) then
@@ -1609,7 +1650,11 @@ function SWEP:PrimaryShootEffects( recoil, anim, snd, numshot )
 	
 	if anim ~= nil then
 		if type(anim) == "boolean" then
-			anim = "PRIMARY"
+			if isempty then
+				anim = "DRYFIRE"
+			else
+				anim = "PRIMARY"
+			end
 		end
 		if type(anim) == "number" and anim == 0 then
 			anim = ""
@@ -1675,6 +1720,7 @@ end
 /*---------------------------------------------------------
    Name: SWEP:ShootBullets
    Desc: An attack has been sent
+   @@@Ensure no owner needed!!
 ---------------------------------------------------------*/
 function SWEP:ShootBullet( side, dmg, recoil, numbul, cone, ammo, forcedAnim)
 	--if (self.Weapon:Clip1() <= 0 and self.Primary.ClipSize > 0) then self:Reload() return false end
@@ -1708,7 +1754,7 @@ function SWEP:ShootBullet( side, dmg, recoil, numbul, cone, ammo, forcedAnim)
 			dir1:Add( correction )
 	local src = self.Owner:GetShootPos()			-- Source
 	
-	self:DebugTalk("\nSB- dir: "..tostring(dir1).." , src: "..tostring(src).." , Xcone: "..tostring(cone*0.5))
+	self:DebugTalk("\nSHOOT BULLET\n\tdir: "..tostring(dir1).." , src: "..tostring(src).." , Xcone: "..tostring(cone*0.5))
 	
 	bullet.Num 			= numbul
 	bullet.Src 			= src
@@ -1748,6 +1794,7 @@ function SWEP:ShootBullet( side, dmg, recoil, numbul, cone, ammo, forcedAnim)
 	util.Effect(self.MuzzleEffect,fx)		-- Additional muzzle effects
 	--]]
 	
+	-- @@@ LEGACY (Use CallBack)
 	self:BreakDoor() -- If applicable
 	if (side == 1 and self.Primary.Ignite == true) then
 	--	self:IgniteTarget( math.Rand(11,120), self.Primary.Damage*1.5 )
@@ -1767,7 +1814,14 @@ function DoCallback( ply, tr, dmginfo )
 	end
 	
 	-- @@@IGNITE TARGET CODE HERE
-	if (ply:GetActiveWeapon()).Primary.Ignite == true then
+	local ent
+	if ply:IsWeapon() then
+		ent = ply
+	else
+		ent = ply:GetActiveWeapon()
+	end
+	
+	if (ent).Primary.Ignite == true then
 		IgniteTarget( ply,tr.Entity, math.Rand(11,120), dmginfo:GetDamage()*1.5)
 	end
 	
@@ -1783,7 +1837,9 @@ function SWEP:BreakDoor()
 	if f1 or f2 then return end
 
 	if trace.Entity:GetClass() == "prop_door_rotating" and (SERVER) then
-
+		-- Important ordering for the effect
+		-- Just think about it for a bit...
+		-- #RaceConditions
 		trace.Entity:Fire("open", "", 0.001)
 		trace.Entity:Fire("unlock", "", 0.001)
 
@@ -1816,7 +1872,7 @@ function SWEP:BreakDoor()
 		self:SafeTimer(0.01, function() 
 							ent:GetPhysicsObject():ApplyForceCenter(push)
 						end)
-		self:SafeTimer(50, function()
+		self:SafeTimer(51, function()
 							trace.Entity:SetNotSolid(false)
 							trace.Entity:SetNoDraw(false)
 							ent:Remove()
@@ -1927,11 +1983,13 @@ function SWEP:Think()
 	end
 	--self:BoneThink()
 	--self:NextThink(CurTime());  
-	--return true
+	--return true 
 	--]]
 	
 	self:ArmsThink()
-	
+	--self:AimAssistThink() 
+	-- ^ This is now controlled under SecondaryAttack
+	-- (And requires secondary attack be automatic)
 end
 
 /*---------------------------------------------------------
@@ -2139,9 +2197,9 @@ function SWEP:DrawWorldModel()
 		end
 		
 		hand = self.Owner:GetAttachment(self.Owner:LookupAttachment("anim_attachment_rh"))
-		local x = hand.Ang:Right() 		* self.WMx or 2
-		local y = hand.Ang:Forward() 	* self.WMy or -4
-		local z = hand.Ang:Up() 		* self.WMz or -0.25
+		local x = hand.Ang:Right() 		* (self.WMx or 2)
+		local y = hand.Ang:Forward() 	* (self.WMy or -4)
+		local z = hand.Ang:Up() 		* (self.WMz or -0.25)
 		--local x = hand.Ang:Right() 		* 2
 		--local y = hand.Ang:Forward() 	* -4
 		--local z = hand.Ang:Up() 		* -0.5
@@ -2159,6 +2217,26 @@ function SWEP:DrawWorldModel()
 	self:DrawModel()
 end
 
+--]]
+
+--[[
+function SWEP:GetTracerOrigin() -- @@@TRACER START
+	local ans -- CLIENT SIDE
+	--	local vm = ply:GetViewModel()
+	-- local obj = vm:LookupAttachment( "muzzle" )
+	-- local muzzlepos = vm:GetAttachment( obj )
+	local gun = self.Weapon
+	local aID --gun:LookupAttachment("ValveBiped.flash")
+	if ~ then
+		aID = "1"
+	else
+		aID = "muzzle"
+	end
+	local pos = gun:GetAttachment(aID) -- Should be "1" for CSS models or "muzzle" for hl2 models
+	ans = pos.Pos
+	ErrorNoHalt("TracerOrigin: "..tostring(ans).."\n")
+	return ans
+end
 --]]
 
 function SWEP:CustomAmmoDisplay()
@@ -2305,10 +2383,10 @@ end
 
 function SWEP:GetArmPosition( pos, ang )
 --self:Talk("PRE: "..tostring(pos).." \n& "..tostring(ang))
-	local DashDelta = 0 -- self:GetIronsights()
+	local DashDelta = 1 -- self:GetIronsights()
 	--local b1 	= self:AreArmsDown()
 	--local b1 	= self.Owner:KeyDown( IN_SPEED )
-	local b1 	= true
+	local b1 	= true -- Tester
 --self:Talk("@ArmPos B1: "..tostring(b1).." & "..tostring(self.Weapon:GetNetworkedBool( "Ironsights" )))
 	if b1 == true and self.ArmAngle and self.ArmOffset then
 		
@@ -2323,7 +2401,7 @@ function SWEP:GetArmPosition( pos, ang )
 			self.DashStartTime = CurTime()
 		end
 		
-		DashDelta = math.Clamp( ((CurTime() - self.DashStartTime) / 0.1) ^ 1.2, 0, 1 )
+		DashDelta = math.Clamp( ((CurTime() - self.DashStartTime) / 0.1) ^ 1.2, 0, 1 ) -- @@@OPTIMIZE: *10 rather than /0.1
 		
 	else
 	
@@ -2339,10 +2417,10 @@ function SWEP:GetArmPosition( pos, ang )
 	
 		if ( self.DashEndTime ) then
 		
-			DashDelta = math.Clamp( ((CurTime() - self.DashEndTime) / 0.1) ^ 1.2, 0, 1 )
-			DashDelta = 1 - DashDelta
-			if ( DashDelta == 0 ) then self.DashEndTime = nil end
-		
+			DashDelta = 1 - math.Clamp( ((CurTime() - self.DashEndTime) / 0.1) ^ 1.2, 0, 1 )
+			if ( DashDelta == 0 ) then 
+				self.DashEndTime = nil
+			end
 		end
 		self.DashStartTime = nil
 	end
@@ -2366,11 +2444,11 @@ function SWEP:GetArmPosition( pos, ang )
 			local Up 		= ang:Up()
 			local Forward 	= ang:Forward()
 			
-			pos = pos + Offset.x * Right * DashDelta
-			pos = pos + Offset.y * Forward * DashDelta
-			pos = pos + Offset.z * Up * DashDelta
+			pos = pos + Offset.x * Right	* DashDelta
+			pos = pos + Offset.y * Forward	* DashDelta
+			pos = pos + Offset.z * Up		* DashDelta
 	end
---self:Talk("POST: "..tostring(pos).." \n& "..tostring(ang))
+	self:Talk("POS: "..tostring(pos).." \n& "..tostring(DashDelta).."\t Start: "..tostring(self.DashStartTime).." End: "..tostring(self.DashEndTime).."\n\n" )
 	return pos, ang
 end
 
@@ -2515,12 +2593,18 @@ end
 --]]
 -- MODIFY =====================================================================+++++++++++++++===========
 function SWEP:HasModify()
-	local mods = self.Silencer 
-				or self.FireModes
-				or self.Bipod 
-				or (self.Melee and (self.Primary.ClipSize > 0)) 
-				or self.Launcher 
-				or self.DoubleShot
+
+	local b1,b2,b3,b4,b5,b6
+	b1 = self.Suppressor
+	b2 = (self.FireModes ~= false)
+	b3 = self.Bipod
+	b4 = (self.Melee and (self.Primary.ClipSize > 0))
+	b5 = self.Launcher
+	b6 = self.DoubleShot
+	
+	local mods = b1 or b2 or b3 or b4 or b5 or b6
+				
+	ErrorNoHalt("[~] HasModify::b1 " .. tostring(b1).." b2 "..tostring(b2).." b3 "..tostring(b3).." b4 "..tostring(b4).." b5 "..tostring(b5).." b6 ".. tostring(b6).."\n")	
 	return mods
 end
 
@@ -2548,7 +2632,7 @@ end
 
 function SWEP:Modify( i ) -- for Secondary.
 	--if not i then i = 0 end
-	self:DebugTalk("MODIFY: "..tostring(self.Silencer) .. " ~ " .. tostring(self.FireModes) .. " ~ " ..tostring(self.Bipod) .. " ~ " ..tostring(self.Melee) .. " ~ " ..tostring(self.Launcher) .. " ~ " ..tostring(self.DoubleShot))
+	self:DebugTalk("MODIFY: "..tostring(self.Suppressor) .. " ~ " .. tostring(self.FireModes) .. " ~ " ..tostring(self.Bipod) .. " ~ " ..tostring(self.Melee) .. " ~ " ..tostring(self.Launcher) .. " ~ " ..tostring(self.DoubleShot))
 	-- Sights don't count as modifiers
 	-- 0 Suppressor
 	-- 0 Bipod
@@ -2557,10 +2641,10 @@ function SWEP:Modify( i ) -- for Secondary.
 	-- 4 Launcher
 	-- 5 Double tap (Burst?)
 	local flag = false
-	if isTbl(self.Silencer) and (nil == i or i == 0) then
+	if self.Suppressor ~= nil and (nil == i or i == 0) then
 		self:DebugTalk("Suppressor")
 		flag = self:Silence()
-	elseif isTbl(self.FireModes) and (nil == i or i == 1) then
+	elseif self.FireMode ~= false and (nil == i or i == 1) then -- self.FireModes 
 		self:DebugTalk("Fire Mode")
 		flag = self:DoFireModes()
 	elseif isTbl(self.Bipod) and (nil == i or i == 0) then -- Keep different lol
@@ -2587,13 +2671,13 @@ end
 function SWEP:Silence() -- NEEDS ALTERATION@@@
 	-- Get a variable de networka
 	if (self.Owner) then
-		local b1 = isTbl(self.Silencer) and self.Silencer[1] == false
+		local b1 = self.Suppressor == false
 		-- self.Weapon:SetNetworkedBool("Suppressor", b)
 		--(self.Primary.Sound == self.Primary.NoSuppressorSound)
 		
 		if (b1) then
 			self.Weapon:SendWeaponAnim(ACT_VM_ATTACH_SILENCER)
-			self.Silencer = {true}
+			self.Suppressor = true
 			self.Primary.NoSuppressorSound = self.Primary.Sound
 			self.Primary.Sound = Sound(self.Primary.SuppressorSound or "")
 
@@ -2612,7 +2696,7 @@ function SWEP:Silence() -- NEEDS ALTERATION@@@
 			self:DebugTalk("[i] Suppressor ON")
 		else
 			self.Weapon:SendWeaponAnim(ACT_VM_DETACH_SILENCER)
-			self.Silencer = {false}
+			self.Suppressor = false
 			self.Primary.Sound = Sound(self.Primary.NoSuppressorSound or "")
 
 			if (IsValid(self.Owner) and self.Owner:GetViewModel()) then
@@ -2633,21 +2717,61 @@ function SWEP:Silence() -- NEEDS ALTERATION@@@
 	end
 end
 
-function SWEP:DoFireModes()
+function SWEP:DoFireModes() -- @@@ In development
 	-- self.FireModes
-	if (self.Owner) then
-		if (self.Primary.Automatic == false) then
-			self.Weapon:EmitSound("weapons/smg1/switch_burst.wav")
-			self.Primary.Automatic = true
-			self:Talk(self.SwitchModeMsg or "Auto")
-		else
-			self.Weapon:EmitSound("weapons/smg1/switch_single.wav")
-			self.Primary.Automatic = false
-			self:Talk(self.SwitchSingleMsg or "Semi")
-			
-		end
+	if not self:CanSecondaryAttack() then return false end
+	
+	local i = self.FireMode + 1
+	local m = -1
+	if i > #self.data.modes then
+		i = 1
 	end
-	-- Add burst setting here!
+	self.FireMode = self.data.modes[i]
+	m = self.FireMode
+	
+	--if (self.Primary.Automatic == false) then
+	if (m == 1) then
+		
+		self.Primary.Automatic = false
+		if (self.Owner) then
+			self.Weapon:EmitSound("weapons/smg1/switch_single.wav")
+			self.Weapon:SendWeaponAnim( ACT_VM_DEPLOY ) 
+			self:Talk(self.SwitchModeMsg or "Semi")
+		end
+	elseif (m == 2) then
+		// Burst
+		self.Primary.Automatic = false
+		if (self.Owner) then
+			--self.Weapon:EmitSound("weapons/smg1/switch_burst.wav")
+			--self.Weapon:EmitSound("weapons/alyxgun/alyx_gun_switch_burst.wav")
+			self.Weapon:EmitSound("weapons/awp/awp_bolt.wav")
+			self.Weapon:SendWeaponAnim( ACT_VM_UNDEPLOY ) 
+			self:Talk(self.SwitchModeMsg or "Burst")
+		end
+	elseif (m == 3)  then
+		self.Primary.Automatic = true
+		if (self.Owner) then
+			self.Weapon:EmitSound("weapons/smg1/switch_burst.wav")
+			self.Weapon:SendWeaponAnim( ACT_VM_UNDEPLOY ) 
+			self:Talk(self.SwitchSingleMsg or "Auto")
+		end
+	else
+		-- Just to make sure everthing runs well
+		ErrorNoHalt("[!] Ms value failed - M: "..tostring(m).."\t i: "..tostring(i).." "..tostring(self.data.modes[i]).."\n")
+		i = 1
+	end
+	-- Set a timer to end this sequence
+	local t	= self:GetSeqDur()*0.925
+	self.Weapon:SetNextPrimaryFire( CurTime() + t )
+	self.Weapon:SetNextSecondaryFire( CurTime() + t )
+	self.Weapon:SetNetworkedBool("reloading", true)
+	self:SafeTimer( t, function()
+				-- Hmm...
+				self.Weapon:SetNetworkedBool("reloading", false)
+				self:DebugTalk("<> I can do stuff now @@@ Implement me!\n")
+			end)
+	-- Add burst setting here!\
+	return true
 end
 
 function SWEP:Tripod() -- @@@FINISHME
@@ -3154,7 +3278,12 @@ end
 
 function OnHeadshot ( attacker, btr, dmginfo ) --boom headshot
 
-	local self = attacker:GetActiveWeapon() -- Because, wow...
+	local self
+	if attacker:IsWeapon() then
+		self = attacker -- That was easy!
+	else
+		self = attacker:GetActiveWeapon() or attacker
+	end
 
 	local b1 = btr.HitGroup == HITGROUP_HEAD
 	local targ = btr.Entity:GetPos() or Vector(0,0)
@@ -3264,7 +3393,14 @@ function PenetrateBullet( ply, tr, dmginfo )
 	local exit_point = nil
 	
 	local halflife = 1024
-	local infl_wep = ply:GetActiveWeapon()
+	local infl_wep
+
+	if ply:IsWeapon() then
+		infl_wep = ply
+	else
+		infl_wep = ply:GetActiveWeapon()
+	end
+
 	if IsValid(infl_wep) and isnumber(infl_wep.HalfDamageDistance) then
 		halflife = infl_wep.HalfDamageDistance
 	end

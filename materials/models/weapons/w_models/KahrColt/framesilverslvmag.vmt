@@ -1,7 +1,0 @@
-VertexLitGeneric
-{
-	"$basetexture"	"models\weapons\v_models\KahrColt\frameblackblkmag"
-	"$envmap" "env_cubemap"
-	"$envmapmask" "models\weapons\v_models\KahrColt\frameblackblkmag_ref"
-
-}

@@ -177,9 +177,14 @@ end
 
 function SWEP:AimAssistThink()
 	-- self.Owner:KeyDown(IN_ATTACK2)
-	if not self:CheckCanPrimaryAttack() then return end
+	if not self:CheckCanPrimaryAttack() then 
+		return
+	else
+		//self:DebugTalk("AAT: Check Primary WORKED!\n")
+	end
 	local ent = self:GetClosestTarget()
     self.Aimbot.Target = (ent ~= 0) and ent or nil
+	return ent
 end
 
 function SWEP:CheckCanPrimaryAttack()
@@ -199,11 +204,14 @@ end
 
 function SWEP:AimAssist(ent)
 	-- Toggle the auto aim
+	ErrorNoHalt("AAT: "..tostring(t).."\n")
 	if not ent then
-		self:AimAssistThink()
+		local t = self:AimAssistThink()
+		ErrorNoHalt("AAT2: "..tostring(t).."\n")
 	elseif not (ent:IsNPC() or ent:IsPlayer())  then
 		-- Make sure this is a valid enemy
 		--self:AimAssistThink()
+		self:DebugTalk("AimAssist target not valid! Returning...\n")
 		return false
 	else
 		self.Aimbot.Target = ent
@@ -212,8 +220,13 @@ function SWEP:AimAssist(ent)
 	local flag = self:DoAimAssist()
 	if (flag == true) then
 		self:OnTarget()
+		self:DebugTalk("Target Aquired! "..tostring(ent).."\n")
+		return true
+		else
+		ErrorNoHalt("Target Not Found!\n")
 	end
 	self.Weapon:SetNextSecondaryFire(CurTime() + self.Secondary.Delay) -- @@@ NEW VAR FOR THIS!
+	return false
 end
 
 function SWEP:DoAimAssist()

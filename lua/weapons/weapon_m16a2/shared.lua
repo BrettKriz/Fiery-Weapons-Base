@@ -10,7 +10,7 @@ if ( CLIENT ) then
 
 	SWEP.PrintName			= "M16A2"
 	SWEP.Author				= "Nova Prospekt"
-	SWEP.Lore				= "The only option is 3 shot burst.."
+	--SWEP.Lore				= "The only option is 3 shot burst.."
 	SWEP.Slot				= 3
 	SWEP.SlotPos			= 1
 	SWEP.IconLetter			= "w"
@@ -33,9 +33,7 @@ SWEP.ReloadHoldType			= "smg"
 SWEP.ViewModel				= "models/weapons/cstrike/c_rif_m4a1.mdl"
 SWEP.WorldModel				= "models/weapons/w_rif_m4a1_silencer.mdl"
 
-SWEP.Weight					= 5
-SWEP.AutoSwitchTo			= false
-SWEP.AutoSwitchFrom			= false
+SWEP.Weight					= 8
 
 SWEP.Primary.Sound			= Sound( "Weapon_M4A1.Silenced" )
 SWEP.Primary.Recoil			= 1.24
@@ -49,6 +47,12 @@ SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "ar2"
 SWEP.Primary.BurstFire		= 3
 
+SWEP.FireMode				= 1 -- INDEX
+SWEP.data 					= {} -- VERY IMPORTANT
+SWEP.data.modes				= {} -- DIDO 
+SWEP.data.modes[1]			= 1 -- SEMI
+SWEP.data.modes[2]			= 2 -- BURST
+SWEP.data.modes[3]			= 3 -- AUTO
 
 /*---------------------------------------------------------
 	Animation Index
