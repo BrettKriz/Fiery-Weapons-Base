@@ -23,7 +23,7 @@ end
 SWEP.HoldType				= "rifle"
 SWEP.HoldType2				= "hipfire1"
 SWEP.ReloadHoldType			= "smg"
-SWEP.Base					= "weapon_fiery_base_rifle"
+SWEP.Base					= "weapon_fiery_base_auto_rifle"
 SWEP.Category 				= "Fiery"
 
 SWEP.Spawnable				= true

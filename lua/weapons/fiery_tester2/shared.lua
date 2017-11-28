@@ -236,6 +236,7 @@ function SWEP:ShootBullet( side, dmg, recoil, numbul, cone, ammo, forcedAnim)
 	end
 	--self:ShootEffects(side, recoil, forcedAnim, nil, numbul)
 	self:ShootEffects(side, recoil, ACT_VM_PRIMARYATTACK, nil, numbul)
+	
 	--[[
 	local fx 		= EffectData()
 	fx:SetEntity(self.Weapon)

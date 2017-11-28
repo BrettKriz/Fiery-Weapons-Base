@@ -20,7 +20,7 @@ if ( CLIENT ) then
 end
 
 SWEP.HoldType				= "ar2"
-SWEP.Base					= "weapon_fiery_base_rifle"
+SWEP.Base					= "weapon_fiery_base_auto_rifle"
 SWEP.Category 				= "Fiery"
 
 SWEP.Spawnable				= true

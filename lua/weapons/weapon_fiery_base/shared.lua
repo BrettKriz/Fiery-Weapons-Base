@@ -193,7 +193,7 @@ SWEP.Scope					= false -- {0.00} -- Not sure, ill work it out later
 SWEP.ScopeMAX				= 12 -- Adjust at will, no negative numbers!
 SWEP.Suppressor				= nil 	-- {false} -- Booled on and off
 SWEP.SuppressedVolume		= 45	-- Sound level in game
-SWEP.FireModes				= false 	-- {1,1,2,3} -- As in, ON 1 of options 1,2,3; 1 and 1 will just be whatever; 3 and 1 will initially have it on that setting
+SWEP.FireModes				= -1 	-- {1,1,2,3} -- As in, ON 1 of options 1,2,3; 1 and 1 will just be whatever; 3 and 1 will initially have it on that setting
 SWEP.Bipod					= nil 	-- {false} -- Booled on and off
 SWEP.Melee					= nil	-- If clip is 0 then melee will be primary
 SWEP.Launcher				= false -- or info table -- Might just be true or false
@@ -309,10 +309,11 @@ SWEP.NextSecondaryAttack = 0 -- Keep 0
  local s_swep_penetration			= "Toggles weather SWEPs (that use this variable and do not use physical bullets) can penetrate materials in the world"
  local s_swep_IgnoreCrouchRunning	= "Toggles weather SWEPs (that use this variable) will ignore crouching players as running, which prevents them from attacking"
  
- local swep_AutoReload 			= CreateConVar("swep_AutoReload", 			0, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_AutoReload)
- local swep_AutoAim				= CreateConVar("swep_AutoAim", 				0, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_AutoAim)
- local swep_penetration			= CreateConVar("swep_penetration", 			1, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_penetration)
- local swep_IgnoreCrouchRunning = CreateConVar("swep_IgnoreCrouchRunning", 	0, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_IgnoreCrouchRunning)
+ local swep_AutoReload 			= CreateConVar("swep_AutoReload", 				0, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_AutoReload)
+ local swep_AutoAim				= CreateConVar("swep_AutoAim", 					0, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_AutoAim)
+ local swep_penetration			= CreateConVar("swep_penetration", 				1, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_penetration)
+ local swep_IgnoreCrouchRunning = CreateConVar("swep_IgnoreCrouchRunning", 		0, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_IgnoreCrouchRunning)
+ local swep_FireVarience		= CreateConVar("swep_FireVarience", 		0.042, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_FireVarience)
  
 SWEP.isInitialized = false and false and false -- FALSE ONLY!
 /*---------------------------------------------------------
@@ -612,7 +613,7 @@ function SWEP:Deploy()
 	
 	-- Need to use in swep function
 	self:SetFOV(GetConVarNumber("cl_swep_FOV") , 0.33 )
-	
+	self.FireVariance = GetConVar("swep_FireVarience"):GetFloat()
 	-- UPDATE SCRIPT! @@@
 	-- Play animations
 	--	anim_name, pbr, snd, volume, idle_after, iron_off
@@ -1115,9 +1116,12 @@ function SWEP:CanPrimaryAttack()
 			self:Talk("Im in!")
 			self:Reload()
 		elseif (self.Owner:KeyPressed(IN_ATTACK)) then
+			-- COMBINE THESE INTO 1 VMACT CALL!
 			self.Weapon:SetNextPrimaryFire(CurTime() + delay)
+			
 			self:EXESound( {"Default.ClipEmpty_Pistol", self.Owner} )
 			self:VMact(self.Primary.CantAttack) -- HL2 Animation trick
+			
 			self.Owner:SetAnimation( PLAYER_ATTACK1 ) -- @@@ Use reduced recoil animation? Or trash it
 		end
 		
@@ -1179,7 +1183,7 @@ function SWEP:PrimaryAttack()
 	end
 		
 	-- FIRE PARAMS
-	if self.Primary.BurstFire > 0 and self.FireMode == 2 then
+	if self.Primary.BurstFire > 0 and self.data.modes[self.FireMode] == 2 then
 		-- They've called for Burst Only functions
 		self:DebugTalk("Entering Primary Burstfire   MODE:"..tostring(self.FireMode).."\n")
 		ErrorNoHalt("Entering Primary Burstfire   MODE:"..tostring(self.FireMode).."\n")
@@ -1280,7 +1284,9 @@ end
 	Desc: A built in burst fire function
 ---------------------------------------------------------*/
 function SWEP:PrimaryBurst( NumShot )
-	if (not NumShot) or (NumShot < 2) then NumShot = math.max(self.Primary.BurstFire,3) end
+	if (not NumShot) or (NumShot < 2) then 
+		NumShot = math.max(self.Primary.BurstFire,3) -- Check Relevance
+	end
 	
 	local cone = self.Primary.Cone
 	local delay = self.Primary.BurstDelay or self.Primary.Delay
@@ -1291,7 +1297,7 @@ function SWEP:PrimaryBurst( NumShot )
 	-- Lock it to prevent weird timer overlaps
 	--self:CSShootBullet( self.Primary.Damage, self.Primary.Recoil, self.Primary.NumShots,  cone)
 	
-	-- Make more broad cased?
+	-- Make more broad cased? @@@
 	if (self.Primary.Ammo == "ar2") then
 		anim = "PRIMARY" -- @@@ Make burst an arg?
 	else
@@ -1332,7 +1338,7 @@ function SWEP:PrimaryBurst( NumShot )
 		
 	end
 end
-
+---------------------------------------------------------------------------------
 -- self:FireAnimationEvent()
 function SWEP:CanSecondaryAttack() -- Needs work!
 	if self.Weapon:GetVar("SecondaryMagOut") then return false end
@@ -1403,7 +1409,9 @@ end
 function SWEP:SecondaryAttack( arg )
 
 	local eval = not self:CanSecondaryAttack() // Creates a false return if trues
+	self:DebugTalk("\nFireModes: "..tostring(self.FireModes).."\n")
 	self:DebugTalk("Secondary Attack - Can Attack? "..tostring(eval).."\n")
+	self:DebugTalk("FIreModes: "..tostring(self.FireModes).."\n\n")
 	if self.NextSecondaryAttack == 0 then self.NextSecondaryAttack = CurTime() return false end
 	if (eval and self.Akimbo == true) then Msg("Rejected") return false end
 	
@@ -1411,7 +1419,7 @@ function SWEP:SecondaryAttack( arg )
 -- tobool(tonumber(self.DEBUG))
 	--Msg("TF "..tostring(self:TesterFunc()))
 	local hm = self:HasModify()
-	ErrorNoHalt("[~] Has Modify? " .. tostring(hm))
+	--ErrorNoHalt("[~] Has Modify? " .. tostring(hm))
 	if not self.Owner:KeyDown( IN_RELOAD ) and (self.Owner:KeyDown( IN_USE ) and not self.Owner:KeyReleased( IN_USE ) ) then  
 			--self.Owner:RemoveSuit()
 			--self:SetIronsights( !self.Weapon:GetNetworkedBool( "Ironsights", false ) )
@@ -1614,17 +1622,30 @@ function SWEP:PrimaryShootEffects( recoil, anim, snd, numshot )
 		self.Weapon:SetNetworkedFloat( "LastPrimaryShootTime", CurTime() ) -- @@@ USEFUL
 
 		local isempty = self.Weapon:Clip1() == 1 
-		
-		-- Prevent pistols from using this
+		-- @@@VARIANCE @@@
+		-- Prevent semi's from using this
+		-- @@@ Feature Plan
+		-- Model the spring to be based on 
+		-- # of shots per tick to decide
+		-- The variance!
 		local go = 0
-		if self.Primary.Automatic then go = 1 end
+		if self.Primary.Automatic then
+			go = 1 
+		end
+		
+		if not self.FireVariance then
+			self.FireVariance = GetConVar("swep_FireVarience"):GetFloat()
+		end
 		
 		-- @@@DELAY VAR HERE!!!!
-		local amount	= 0.11--0.357
+		local amount	= self.FireVariance
+		-- 0.042 -- @@@@@@@
 		local variance 	= amount * go
+		-- Get a number thats +/- a scaler less than 0.05 usually
+		local scaler = math.random(1 - variance, 1 + variance )
+		-- Make this area more compact!
 		
-		
-		self.Weapon:SetNextPrimaryFire( CurTime() + self.Primary.Delay * math.random(1-variance, 1+variance ) )
+		self.Weapon:SetNextPrimaryFire( CurTime() + (self.Primary.Delay * scaler) )
 										-- Remove 1 bullet from our clip
 		if ( self.Owner:IsNPC() ) then return end
 		--self:Recoil(dmg)
@@ -2448,21 +2469,49 @@ function SWEP:GetArmPosition( pos, ang )
 			pos = pos + Offset.y * Forward	* DashDelta
 			pos = pos + Offset.z * Up		* DashDelta
 	end
-	self:Talk("POS: "..tostring(pos).." \n& "..tostring(DashDelta).."\t Start: "..tostring(self.DashStartTime).." End: "..tostring(self.DashEndTime).."\n\n" )
+	--self:Talk("POS: "..tostring(pos).." \n& "..tostring(DashDelta).."\t Start: "..tostring(self.DashStartTime).." End: "..tostring(self.DashEndTime).."\n\n" )
 	return pos, ang
 end
 
 function SWEP:SetIronDataFromFile( fname, path ) -- FINISH ME!
+	-- Finish soulutions for all kinds of files!!
 	if type(fname) != "string" or type(fname) != "string" then self:DebugTalk("Bad input!") return end
 	local a = {}
-	a = file.Read(fname, path)
-	-- lol 
-	self:Beep("Contents:")
-	for x=0, x<#a, 1 do
-		self:Talk(a[x])
+	
+	if path == nil then
+		path = "DATA"
 	end
-	--self.IronSightsPos
-	--self.IronSightsAng
+	
+	self:Talk("\t>> FNAME: ".. tostring(fname).. "\n")
+	a = file.Read(fname, path)
+	self:Talk("\n\nContents:")
+	if a == nil or a == {} then
+		self:Talk("A came back nil or {}!")
+	else
+		self:Talk("~\n"..tostring(a).."\n~\nTYPE: "..type(a).."\n")
+	end
+	-- METHOD 1.
+	local p1 = 28
+	local p2 = (string.find(a, ")", p1, true))
+	
+	local c1 = string.Replace(string.sub(a,p1,p2), ",", "")  
+	c1 = string.Replace(string.Replace(c1,")",""),"(","")
+	
+	local p3 = (string.find(a,"SWEP.IronSightsAng = Vector(",1,true))+27
+	local p4 = (string.find(a, ")", p3, true))
+	
+	local c2 = string.Replace(string.sub(a,p3,p4), ",", "")
+	c2 = string.Replace(string.Replace(c2,")",""),"(","")
+	self:Talk("SUBS: 1\n"..tostring(c1).."\nSUBS: 2\n"..tostring(c2).."\n\n")
+	-- Now convert to floats
+	local pos = util.StringToType( c1 , "Vector")
+	local ang = util.StringToType( c2 , "Vector")
+	
+	self:Talk("POS: \t".. tostring(pos).. "\n")
+	self:Talk("ANG: \t".. tostring(ang).. "\n")
+	
+	--self.IronSightsPos = pos
+	--self.IronSightsAng = ang
 	
 	
 end
@@ -2471,28 +2520,39 @@ function SWEP:GetIronData( known ) -- FINISH ME!
 	self:Talk("Getting Iron Sight data")
 	-- Get the ironsight file for the view model
 	local vmp = self.ViewModel
+	--local smp = string.Replace(self.Folder, "weapons/", "") .. ".txt"
+	local smp = self.ClassName.. ".txt"
 	-- "models/weapons/cstrike/c_smg1.mdl"
-	local path = "DATA/ironsights/"
-	local path2 = "DATA/ironsights/Fiery_Ironsights/"
+	local path = "ironsights/"
+	local path2 = "ironsights/Fiery_Ironsights/"..smp
 	local CModelGiven = string.find(vmp,"/c_")
-	local fname = string.Replace(string.Replace(vmp,"models/weapons/cstrike/c_smg1.mdl", ""),".mdl", "") 
-	fname = fname .. ".txt" -- See that, good?
+	local fname = string.Replace(string.Replace(vmp,"models/weapons/cstrike/", ""),".mdl", ".txt") 
+	path = "ironsights/" .. fname
+	
+	local b1 = file.Exists(path2, "DATA")
+	local b2 = file.Exists(path, "DATA")
+	local b3 = (known == true)
+	--self:Talk("<> Is dir? "..tostring(file.IsDir("ironsights/Fiery_Ironsights", "DATA")).."\n\n")
+	self:Talk(path2.."\n\texists?1 \t"..tostring(b1))
+	self:Talk(path.." '\n\texists?2 \t"..tostring(b2))
+	self:Talk("b3? \n\texists?3 \t"..tostring(b3).."\n")
+	
 	
 	-- Look for sights in path 2 then path 1
 	-- 
-	if (file.Exists(fname, path2)) then
-		self:SetIronDataFromFile(fname, path2)
+	if (b1) then
+		self:SetIronDataFromFile(path2)
 		return true
-	elseif (file.Exists(fname, path)) then
-		self:SetIronDataFromFile(fname, path)
+	elseif (b2) then
+		self:SetIronDataFromFile(path)
 		return true
-	elseif (known == true) then 
+	elseif (b3) then 
 		-- Called by Debuging
 		-- Build the ironsights 
 		self:DefaultAnIronSightsFile()
-
+		self:Talk("Defaulting Iron File: ")
 	else
-		self:DebugTalk("Couldn't find ironsight file for: " .. fname)
+		self:Talk("Couldn't find ironsight file for: " .. fname)
 		return false
 	end
 end
@@ -2501,13 +2561,19 @@ function SWEP:DefaultIronSightsFile() -- @@@ EXPAND ME!
 		if not(file.Exists("DATA/ironsights")) then
 			file.CreateDir("ironsights")
 		end
+		-- Create a file type 
 		
 		-- make sure its not somehow false
 		if (self.IronSightsPos) then
 			local content = ""
-			content = "SWEP.IronSightsPos = Vector " .. tostring(self.IronSightsPos) -- JUST THIS
+			local with = self.IronSightsPos
+			local x,y,z = with.x,with.y,with.z
+			content = "SWEP.IronSightsPos = Vector("..x..","..y..","..z..")"
+			
 			if (self.IronSightsAng) then
-			content = content  .. "\n" .. "SWEP.IronSightsAng = Vector (" .. tostring(self.IronSightsAng)
+			with = self.IronSightsAng
+			x,y,z = with.x,with.y,with.z
+			content = content  .. "\n" .. "SWEP.IronSightsAng = Vector("..x..","..y..","..z..")"
 			end
 			file.Write("/ironsights/Fiery_Ironsights/" .. fname, content) 
 			-- Write an ironsight file if it doesnt exist
@@ -2593,18 +2659,18 @@ end
 --]]
 -- MODIFY =====================================================================+++++++++++++++===========
 function SWEP:HasModify()
-
-	local b1,b2,b3,b4,b5,b6
-	b1 = self.Suppressor
-	b2 = (self.FireModes ~= false)
+	local ModeLimit = 6
+	local b1,b2,b3,b4,b5,b6 -- Add or cases here to keep boolean
+	b2 = #self.data.modes > 1
+	
 	b3 = self.Bipod
 	b4 = (self.Melee and (self.Primary.ClipSize > 0))
 	b5 = self.Launcher
 	b6 = self.DoubleShot
 	
-	local mods = b1 or b2 or b3 or b4 or b5 or b6
+	local mods = b1 or b2 or b3 or b4 or b5 or b6 -- 
 				
-	ErrorNoHalt("[~] HasModify::b1 " .. tostring(b1).." b2 "..tostring(b2).." b3 "..tostring(b3).." b4 "..tostring(b4).." b5 "..tostring(b5).." b6 ".. tostring(b6).."\n")	
+	--ErrorNoHalt("[~] HasModify::b1-SUPP " .. tostring(b1).." \nb2-FIREMODES "..tostring(b2).." \nb3-BIPOD "..tostring(b3).." \nb4-Melee "..tostring(b4).." \nb5-LAUNCH "..tostring(b5).." \nb6-DBLShot ".. tostring(b6).."\n")	
 	return mods
 end
 
@@ -2719,15 +2785,32 @@ end
 
 function SWEP:DoFireModes() -- @@@ In development
 	-- self.FireModes
-	if not self:CanSecondaryAttack() then return false end
-	
-	local i = self.FireMode + 1
+	if not self:CanSecondaryAttack() then 
+		--ErrorNoHalt("~~~~~~~~ REJECTED FROM FIRE MODE! CANT SATTACK!\n")
+		return false 
+	end
+	--ErrorNoHalt("IN FIRE MODES\n")
+	-- Iterate the selction
+	local pre = self.data.modes[ self.FireMode ]
+	local i = (self.FireMode or 1) + 1
 	local m = -1
 	if i > #self.data.modes then
-		i = 1
+		i = 1 -- Loop back around
 	end
-	self.FireMode = self.data.modes[i]
-	m = self.FireMode
+	
+	-- Firmly establish the existance of FireMode
+	-- And its data
+	--ErrorNoHalt("~~~~~~~~ ADJUSTING FIREMODE VALUE to: "..tostring(self.data.modes[i]).."\n\n")
+	self.FireMode = i -- Set the new index
+	--[[
+	if pre == self.data.modes[i] then
+		-- Nothing to do here! This 
+		self.data = {} -- May create problems?
+		self.FireMode = -1
+		return
+	end
+	--]]
+	m = self.data.modes[ self.FireMode ]
 	
 	--if (self.Primary.Automatic == false) then
 	if (m == 1) then
@@ -2736,7 +2819,7 @@ function SWEP:DoFireModes() -- @@@ In development
 		if (self.Owner) then
 			self.Weapon:EmitSound("weapons/smg1/switch_single.wav")
 			self.Weapon:SendWeaponAnim( ACT_VM_DEPLOY ) 
-			self:Talk(self.SwitchModeMsg or "Semi")
+			self:Talk(self.SwitchModeMsg or "\t~ Semi")
 		end
 	elseif (m == 2) then
 		// Burst
@@ -2744,24 +2827,28 @@ function SWEP:DoFireModes() -- @@@ In development
 		if (self.Owner) then
 			--self.Weapon:EmitSound("weapons/smg1/switch_burst.wav")
 			--self.Weapon:EmitSound("weapons/alyxgun/alyx_gun_switch_burst.wav")
-			self.Weapon:EmitSound("weapons/awp/awp_bolt.wav")
+			--self.Weapon:EmitSound("weapons/awp/awp_bolt.wav")
+			self.Weapon:EmitSound("weapons/sg552/sg552_boltpull.wav")
 			self.Weapon:SendWeaponAnim( ACT_VM_UNDEPLOY ) 
-			self:Talk(self.SwitchModeMsg or "Burst")
+			self:Talk(self.SwitchModeMsg or "\t~ Burst ("..tostring(self.Primary.BurstFire)..")")
 		end
 	elseif (m == 3)  then
 		self.Primary.Automatic = true
 		if (self.Owner) then
 			self.Weapon:EmitSound("weapons/smg1/switch_burst.wav")
 			self.Weapon:SendWeaponAnim( ACT_VM_UNDEPLOY ) 
-			self:Talk(self.SwitchSingleMsg or "Auto")
+			self:Talk(self.SwitchSingleMsg or "\t~ Auto")
 		end
 	else
 		-- Just to make sure everthing runs well
-		ErrorNoHalt("[!] Ms value failed - M: "..tostring(m).."\t i: "..tostring(i).." "..tostring(self.data.modes[i]).."\n")
+		ErrorNoHalt("[!] Ms value failed - M: "..tostring(m).."\t i: "..tostring(i).." MODE@i: "..tostring(self.data.modes[i]).."\n")
+		ErrorNoHalt("Reverting to i = 1\n")
 		i = 1
 	end
+	self:DebugTalk("<>i: "..tostring(i))
 	-- Set a timer to end this sequence
-	local t	= self:GetSeqDur()*0.925
+	local t	= self:GetSeqDur()*0.92 -- This may need edit!
+	ErrorNoHalt("T: "..tostring(t).."\n")
 	self.Weapon:SetNextPrimaryFire( CurTime() + t )
 	self.Weapon:SetNextSecondaryFire( CurTime() + t )
 	self.Weapon:SetNetworkedBool("reloading", true)
@@ -2770,7 +2857,8 @@ function SWEP:DoFireModes() -- @@@ In development
 				self.Weapon:SetNetworkedBool("reloading", false)
 				self:DebugTalk("<> I can do stuff now @@@ Implement me!\n")
 			end)
-	-- Add burst setting here!\
+	-- Add burst setting here!
+	
 	return true
 end
 

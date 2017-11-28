@@ -44,7 +44,7 @@ SWEP.EjectDelay			= 0.7
 
 SWEP.Instructions 			= "Damage: 72% \nRecoil: 74% \nPrecision: 92% \nType: Bolt Action"
 
-SWEP.Base					= "weapon_fiery_base_rifle"
+SWEP.Base					= "weapon_fiery_base_auto_rifle"
 SWEP.Category 				= "Fiery"	// -- SWEP Category
 
 SWEP.HoldType				= "rifle"

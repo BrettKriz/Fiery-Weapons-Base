@@ -55,3 +55,11 @@ SWEP.WorldModelHoldFix		= true -- Fix the World Model
 
 SWEP.Primary.EmptyAnim		= ACT_VM_DRYFIRE
 SWEP.EmpytyIdleAnim			= ACT_VM_DRYFIRE
+
+SWEP.Primary.BurstFire		= 2
+SWEP.FireMode				= 1 -- INDEX
+SWEP.data 					= {} -- VERY IMPORTANT
+SWEP.data.modes				= {} -- DIDO 
+SWEP.data.modes[1]			= 3 -- AUTO
+SWEP.data.modes[2]			= 2 -- BURST
+SWEP.data.modes[3]			= 1 -- SEMI

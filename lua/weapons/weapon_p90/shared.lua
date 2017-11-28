@@ -39,11 +39,20 @@ SWEP.Primary.Sound			= Sound( "Weapon_p90.Single" )
 SWEP.Primary.Recoil			= 0.78
 SWEP.Primary.Damage			= 26
 SWEP.Primary.NumShots		= 1
+SWEP.Primary.BurstFire		= 2
 SWEP.Primary.Cone			= 0.044
 SWEP.Primary.ClipSize		= 50
 SWEP.Primary.Delay			= 0.088
 SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "smg1"
 
+SWEP.FireMode				= 1 -- INDEX
+SWEP.data 					= {} -- VERY IMPORTANT
+SWEP.data.modes				= {} -- DIDO 
+SWEP.data.modes[1]			= 3 -- AUTO
+SWEP.data.modes[2]			= 2 -- BURST
+SWEP.data.modes[3]			= 1 -- SEMI
+
 SWEP.IronSightsPos = Vector(-5.6, -5, 1.759)
 SWEP.IronSightsAng = Vector(0.3, 0.3, 0)
+

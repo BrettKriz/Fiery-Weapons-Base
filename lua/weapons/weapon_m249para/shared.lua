@@ -19,7 +19,7 @@ if ( CLIENT ) then
 	
 end
 
-SWEP.Base					= "weapon_fiery_base_smg" -- heh upgrade
+SWEP.Base					= "weapon_fiery_base_rifle" -- heh upgrade
 SWEP.Category				= "Fiery"
 
 SWEP.Spawnable				= true
@@ -44,11 +44,16 @@ SWEP.Primary.Delay			= 0.09
 SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "ar2"
 
-
 SWEP.Secondary.ClipSize		= -1
 SWEP.Secondary.DefaultClip	= -1
 SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "none"
 
+SWEP.FireMode				= 1 -- INDEX
+SWEP.data 					= {} -- VERY IMPORTANT
+SWEP.data.modes				= {} -- DIDO 
+SWEP.data.modes[1]			= 3 -- AUTO
+
 SWEP.IronSightsPos = Vector(-5.921, -3, 2.23)
 SWEP.IronSightsAng = Vector(0.2, 0.039, 0)
+

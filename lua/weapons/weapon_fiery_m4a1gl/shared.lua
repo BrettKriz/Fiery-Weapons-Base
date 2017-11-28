@@ -39,7 +39,7 @@ SWEP.ShellEjectAttachment	= "1" -- Should be "2" for CSS models or "1" for hl2 m
 
 SWEP.Instructions 			= "Damage: 17% \nRecoil: 43% \nPrecision: 88% \nType: Automatic \nRate of Fire: 750 rounds per minute"
 
-SWEP.Base					= "weapon_fiery_base_rifle"
+SWEP.Base					= "weapon_fiery_base_auto_rifle"
 SWEP.Category 				= "Fiery Weapons"	// -- SWEP Category
 
 SWEP.HoldType				= "rifle"

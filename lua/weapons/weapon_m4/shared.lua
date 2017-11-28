@@ -46,6 +46,12 @@ SWEP.Primary.Ammo			= "ar2"
 
 SWEP.DoesIdle				= true
 
+SWEP.FireMode				= 1 -- INDEX
+SWEP.data 					= {} -- VERY IMPORTANT
+SWEP.data.modes				= {} -- DIDO 
+SWEP.data.modes[1]			= 1 -- SEMI
+SWEP.data.modes[2]			= 1 -- SEMI
+
 SWEP.IronSightsPos = Vector(-8.32, 0, 0.079)
 SWEP.IronSightsAng = Vector(2.799, -2.901, -1.9)
 

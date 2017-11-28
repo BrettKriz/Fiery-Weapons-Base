@@ -43,6 +43,7 @@ SWEP.Primary.ClipSize		= 28
 SWEP.Primary.Delay			= 0.1085
 SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "357"
+SWEP.Primary.BurstFire		= 2
 
 --[[
 SWEP.IronSightsPos = Vector(-8.76, -7, 4.2)
@@ -50,3 +51,10 @@ SWEP.IronSightsAng = Vector(-1.4, -0.31, -2)
 --]]
 SWEP.IronSightsPos = Vector(-8.761, -5, 4.28)
 SWEP.IronSightsAng = Vector(-1.5, -0.201, -1.5)
+
+SWEP.FireMode				= 3 -- INDEX
+SWEP.data 					= {} -- VERY IMPORTANT
+SWEP.data.modes				= {} -- DIDO 
+SWEP.data.modes[1]			= 3 -- AUTO
+SWEP.data.modes[2]			= 2 -- BURST
+SWEP.data.modes[3]			= 1 -- SEMI

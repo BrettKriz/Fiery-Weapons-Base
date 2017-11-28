@@ -46,7 +46,7 @@ SWEP.EjectDelay				= 0.02
 
 SWEP.Instructions 			= "Damage: 20% \nRecoil: 36% \nPrecision: 75% \nType: Automatic and Burst \nRate of Fire: 630 rounds per minute"
 
-SWEP.Base					= "weapon_fiery_base_rifle"
+SWEP.Base					= "weapon_fiery_base_auto_rifle"
 SWEP.Category 				= "Fiery Weapons"	// -- SWEP Category
 SWEP.HoldType				= "rifle"
 SWEP.HoldType2				= "hipfire2"

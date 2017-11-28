@@ -8,30 +8,33 @@ end
 
 if ( CLIENT ) then
 
-	SWEP.PrintName			= "FIREY TESTER 1\nFire Modes"
+	SWEP.PrintName			= "FIREY TESTER 1\nMISC"
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 1
 	SWEP.SlotPos			= 3
 	SWEP.IconLetter			= "X"
 	SWEP.ViewModelFOV		= 90
+	SWEP.AutomaticFrameAdvance =  true -- animations
+
+
 	
 	killicon.AddFont( "fiery_tester1", "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 
-SWEP.Base					= "weapon_fiery_base_rifle"
+SWEP.Base					= "weapon_fiery_base_auto_rifle"
 SWEP.Category				= "Fiery"
 
 SWEP.Spawnable				= true
 SWEP.AdminSpawnable			= true
 
-SWEP.HoldType2				= "rifle"
-SWEP.HoldType				= "hipfire1"
+SWEP.HoldType2				= "357"
+SWEP.HoldType				= "pistol"
 
-SWEP.ViewModel				= "models/weapons/v_mp44.mdl"
-SWEP.WorldModel				= "models/weapons/w_mp44.mdl"
+SWEP.ViewModel				= "models/weapons/cstrike/c_rif_m4a1.mdl"
+SWEP.WorldModel				= "models/alyx_emptool_prop.mdl"
 SWEP.ViewModelFlip			= false
---SWEP.ViewModelFOV			= 72
+SWEP.ViewModelFOV			= 72
 
 SWEP.Weight					= 7
 
@@ -40,200 +43,102 @@ SWEP.Primary.Recoil			= 1
 SWEP.Primary.Damage			= 20
 SWEP.Primary.NumShots		= 1
 SWEP.Primary.Cone			= 0.04
-SWEP.Primary.ClipSize		= 30+0 // AA mag is 40
+SWEP.Primary.ClipSize		= 30
 SWEP.Primary.Delay			= 0.1
-SWEP.Primary.Automatic		= true
+SWEP.Primary.Automatic		= false
 SWEP.Primary.BurstFire 		= 3
 
 
 SWEP.DryFires				= true
-
-
-SWEP.FireMode				= 1
-SWEP.data 					= {} -- VERY IMPORTANT
-SWEP.data.modes				= {}
--- NOTE: Index does not reflect ints value
--- This is done so that the ordering can be
--- Arranged as wanted
-SWEP.data.modes[1]			= 1 -- SEMI
-SWEP.data.modes[2]			= 2 -- BURST
-SWEP.data.modes[3]			= 3 -- AUTO
---SWEP.FireModes				= {} 	-- {1,1,2,3} -- As in, ON 1 of options 1,2,3; 1 and 1 will just be whatever; 3 and 1 will initially have it on that setting
---SWEP.FireModes				= {1, 2}
 SWEP.WorldModelHoldFix		= true -- Fix the Model
+SWEP.WMx					= 0.5
+SWEP.WMy					= 2
+SWEP.WMz					= 2
+SWEP.WMa					= Angle(0, 180, 0)
 
-SWEP.IronSightsPos = Vector(2.839, 0, 1.639)
-SWEP.IronSightsAng = Vector(0.3, -1.201, 0)
+SWEP.IronSightsPos = Vector(-8.32, 0, 0.079)
+SWEP.IronSightsAng = Vector(2.799, -2.901, -1.9)
+
+SWEP.ArmOffset = Vector(0.759, -2.481, 0.079)
+SWEP.ArmAngle = Vector(-9.2, -5.5, -12.7)
 
 SWEP.EmptyReloadAnim		= ACT_VM_RELOAD
 SWEP.DryFires				= true
 
 -- ACT_VM_RELOAD_SILENCED 
 -- self.Weapon:SetNetworkedBool("reloading", true)
+--  Entity:SetupBones
+function SWEP:PrimaryAttack( arg )
+if !self.Owner:KeyPressed(IN_ATTACK) then return end 
+self.Owner:SetAnimation( PLAYER_ATTACK1 )
+local anim_name = "open"
 
-function SWEP:DoFireModes()
-	-- self.FireModes
-	if not self:CanSecondaryAttack() then return false end
-	
-	local i = self.FireMode + 1
-	local m = -1
-	if i > #self.data.modes then
-		i = 1
-	end
-	self.FireMode = self.data.modes[i]
-	m = self.FireMode -- copy the value
-	
-	
-	--if (self.Primary.Automatic == false) then
-	if (m == 1) then
-		
-		self.Primary.Automatic = false
-		if (self.Owner) then
-			self.Weapon:EmitSound("weapons/smg1/switch_single.wav")
-			self.Weapon:SendWeaponAnim( ACT_VM_DEPLOY ) 
-			self:Talk(self.SwitchModeMsg or "Semi")
-		end
-	elseif (m == 2) then
-		// Burst
-		self.Primary.Automatic = false
-		if (self.Owner) then
-			--self.Weapon:EmitSound("weapons/smg1/switch_burst.wav")
-			--self.Weapon:EmitSound("weapons/alyxgun/alyx_gun_switch_burst.wav")
-			self.Weapon:EmitSound("weapons/awp/awp_bolt.wav")
-			self.Weapon:SendWeaponAnim( ACT_VM_UNDEPLOY ) 
-			self:Talk(self.SwitchModeMsg or "Burst")
-		end
-	elseif (m == 3)  then
-		self.Primary.Automatic = true
-		if (self.Owner) then
-			self.Weapon:EmitSound("weapons/smg1/switch_burst.wav")
-			self.Weapon:SendWeaponAnim( ACT_VM_UNDEPLOY ) 
-			self:Talk(self.SwitchSingleMsg or "Auto")
-		end
-	else
-		ErrorNoHalt("[!] Ms value failed - M: "..tostring(m).."\t i: "..tostring(i).." "..tostring(self.data.modes[i]).."\n")
-	end
-	
-	local t	= self:GetSeqDur()*0.925
-	self.Weapon:SetNextPrimaryFire( CurTime() + t )
-	self.Weapon:SetNextSecondaryFire( CurTime() + t )
-	self.Weapon:SetNetworkedBool("reloading", true)
-	self:SafeTimer( t, function()
-				-- Hmm
-				self.Weapon:SetNetworkedBool("reloading", false)
-				self:DebugTalk("<> I can do stuff now @@@ Implement me!\n")
-			end)
-	-- Add burst setting here!\
-	return true
+if self.WMEnt and false then
+	self:Talk("Have self.WMEnt already... animating")
+	self.WMEnt:SetSequence(self.WMEnt:LookupSequence(anim_name))
+
 end
 
+local tc = self.ViewModel
+local t1 = "models/alyx_emptool_prop.mdl"
+local t = t1 
+local m1 = ents.FindByModel(tc)
+local m2 = ents.FindInSphere(self.Owner:GetPos(), 200)
+local m = m2
+
+	for k, v in pairs( m ) do 
+	local model = v:GetModel() or "<No Model>"
+	local vmodel = "<VM>"
+	if v:IsWeapon() and false then
+		vmodel = v:GetViewModel()
+	end
+		self:Talk( type(v).." ("..model..")&("..vmodel..") ->Wep? "..tostring(v:IsWeapon()) )
+		
+		if model == tc then
+			self:Talk("Target found! Attmepting Anim")
+			self.WMEnt = v
+			v:SetAnimation(v:LookupSequence(anim_name))
+			v:SetSequence(v:LookupSequence(anim_name))
+
+		end
+	end
+
+end
 
 /*---------------------------------------------------------
-	PrimaryAttack
----------------------------------------------------------*/
-/*
-function SWEP:PrimaryAttack()
-	--local ar = not(self.Akimbo) and (self.Weapon:Clip1() <= 0) and (self.Primary.ClipSize > 0) and (self:Ammo1() > 0)
-	local b1, target = self:CanPrimaryAttack()
-	local arg1 = ( not b1 or self.Weapon:GetNetworkedBool( "reloading", false) == true)
-	if arg1 or self.Owner:KeyDown( IN_RELOAD ) then return end
-
-	self.Weapon:SetVar("AkimboSide", false) -- @@@ Implement xor Remove
+   Name: SWEP:DrawWorldModel() 
+   Desc: Draws the world model (not the viewmodel).
+---------------------------------------------------------*/ 
+function SWEP:DrawWorldModel()
+	local b1 = self.WorldModelHoldFix == true
 	
-	local b2 = target ~= nil and target:GetPos():Distance( self.Owner:GetShootPos() ) < 30 -- @@@ Make sv_var!
-	local doMod = (not(self.Owner:IsNPC()) -- Create a very clear key pattern 
-		and self.Owner:KeyDown( IN_ATTACK ) 
-		and self.Owner:KeyPressed( IN_ATTACK2 )
-		and not self.Owner:KeyDown( IN_ATTACK2 ))
-
-	if doMod  then
+	if b1 then
+		local hand, offset, rotate
 		
-		if self:HasModify() and self:CanSecondaryAttack() then
-			self:Modify() -- USE MODIFYER
-			self.Weapon:SetNextSecondaryFire( CurTime() + 0.02 ) -- SET UP INDIVIDUAL VALUE FOR THIS!!! Not just Secondary attack
-			return true
-		elseif self.Akimbo and (self.Primary.ClipSize > 0) and( self.Weapon:Clip1() == 0) then -- lol
-				self:Reload()	
-			return true
+		if not IsValid(self.Owner) then
+			self:DrawModel()
+			return
 		end
-	elseif b2 then
-		-- The target is close and right infront of us
-		-- So lets do some damage 
 		
-		self:AimAssist(target)
+		
+		hand = self.Owner:GetAttachment(self.Owner:LookupAttachment("anim_attachment_rh"))
+		local x = hand.Ang:Right() 		* (self.WMx or 2)
+		local y = hand.Ang:Forward() 	* (self.WMy or -4)
+		local z = hand.Ang:Up() 		* (self.WMz or -0.25)
+		--local x = hand.Ang:Right() 		* 2
+		--local y = hand.Ang:Forward() 	* -4
+		--local z = hand.Ang:Up() 		* -0.5
+
+		offset = x + y + z
+		
+		hand.Ang:RotateAroundAxis(hand.Ang:Right(), 0)
+		hand.Ang:RotateAroundAxis(hand.Ang:Forward(), 0)
+		hand.Ang:RotateAroundAxis(hand.Ang:Up(), 0)
+		
+		self:SetRenderOrigin(hand.Pos + offset)
+		self:SetRenderAngles(hand.Ang + self.WMa)
 	end
-		
-	-- FIRE PARAMS
-	if self.Primary.BurstFire > 0 then
-		-- They've called for Burst Only functions
-		self:DebugTalk("Entering Primary Burstfire")
-		self:PrimaryBurst(self.Primary.BurstFire)
-		return true
-
-	elseif not(self.Weapon:Clip1() <= 0 and self.Primary.ClipSize > 0) and self.Weapon:GetNetworkedBool( "reloading", false ) == false then
-		
-		--self:PrimaryShootEffects() -- Get this goin to reference the animation length
-		--OBSOLEET --self:CSShootBullet( self.Primary.Damage, self.Primary.Recoil, self.Primary.NumShots, self.Primary.Cone )
-		
-		local b1 = not (GetConVar("swep_physical_bullets"):GetBool())
-		local b2 = not self.Primary.DelayShots == true
-		local anim = true
-		if self.Weapon:Clip1()-1 < 1 then
-			anim = self.Primary.EmptyAnim or true
-		else
-			anim = self.Primary.ShootAnim or true
-		end
-
-		if b1 and b2 then -- @@@See why the ConVar is messing up
-			
-			self:ShootBullet( 	1,
-								self.Primary.Damage,
-								self.Primary.Recoil,
-								self.Primary.NumShots,
-								self.Primary.Cone,
-								self.Primary.Ammo,
-								anim
-							) -- @@@ Add Forced Anim?
-		elseif not b1 and b2 then
-			self:ShootPhysicalBullet(
-										self.Primary.Damage,
-										self.Primary.Recoil,
-										self.Primary.NumShots,
-										self.Primary.Cone
-									)
-		elseif not b2 then
-			 -- IMPLEMENT!  
-			self:PrimaryDelayShot()
-		else
-			ErrorNoHalt("[!] Case-Leak in SWEP:PrimaryAttack()! @@@PA1")
-		end
-
-		self.Weapon:SetNetworkedBool( "reloading", false )
-		return true
-	--elseif (self.Weapon:GetNetworkedBool( "reloading", false )) then
-		--self.Weapon:SetNetworkedBool( "reloading", true )
-		--return false
-	elseif self:IsMelee() then -- @@@FFFF
-		-- Stab or whatever
-		self:AltMelee()
-	else
-		self.Weapon:SetNetworkedBool( "reloading", false )
-		return false
-	end
+	
+	self:DrawModel()
 end
-*/
-/*---------------------------------------------------------
-   Name: SWEP:SecondaryAttack( )
-   Desc: +attack2 has been pressed
----------------------------------------------------------*/
-function SWEP:SecondaryAttack()
 
-	if (self.Owner:KeyDown( IN_USE ) and not self.Owner:KeyReleased( IN_USE ) ) then
-	-- Important counter intuitive call!
-		self:DoFireModes()
-		
-	else
-		bIronsights = !self.Weapon:GetNetworkedBool( "Ironsights", false )
-		self:SetIronsights( bIronsights )
-	end
-end

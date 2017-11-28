@@ -19,28 +19,28 @@ if ( CLIENT ) then
 	
 end
 
-SWEP.Base				= "weapon_fiery_base_pistol"
-SWEP.Category			= "Fiery"
+SWEP.Base					= "weapon_fiery_base_smg"
+SWEP.Category				= "Fiery"
 
-SWEP.Spawnable			= true
-SWEP.AdminSpawnable		= true
+SWEP.Spawnable				= true
+SWEP.AdminSpawnable			= true
 
-SWEP.HoldType			= "autopistol"
-SWEP.HoldType2			= "hipfire3"
-SWEP.ReloadHoldType		= "onehand"
-SWEP.ViewModel			= "models/weapons/cstrike/c_pist_glock18.mdl"
-SWEP.WorldModel			= "models/weapons/w_pist_glock18.mdl"
+SWEP.HoldType				= "autopistol"
+SWEP.HoldType2				= "hipfire3"
+SWEP.ReloadHoldType			= "onehand"
+SWEP.ViewModel				= "models/weapons/cstrike/c_pist_glock18.mdl"
+SWEP.WorldModel				= "models/weapons/w_pist_glock18.mdl"
 
-SWEP.Weight				= 5
-SWEP.AutoSwitchTo		= false
-SWEP.AutoSwitchFrom		= false
+SWEP.Weight					= 2
+SWEP.AutoSwitchTo			= true
+SWEP.AutoSwitchFrom			= false
 
 SWEP.Primary.Sound			= Sound( "Weapon_Glock.Single" )
 SWEP.Primary.Recoil			= 1.7
 SWEP.Primary.Damage			= 17
 SWEP.Primary.NumShots		= 1
 SWEP.Primary.Cone			= 0.045
-SWEP.Primary.ClipSize		= 33
+SWEP.Primary.ClipSize		= 28
 SWEP.Primary.Delay			= 0.072
 SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "pistol"
@@ -55,3 +55,4 @@ SWEP.DryFires				= true -- Unlock Dry Fire
 SWEP.IronSightsPos = Vector(-5.801, 0, 2.64)
 SWEP.IronSightsAng = Vector(0.639, -0.055, 0)
 SWEP.DryFires				= true -- Unlock Dry Fire
+

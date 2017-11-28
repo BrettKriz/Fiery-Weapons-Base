@@ -55,3 +55,10 @@ SWEP.WorksUnderWater		= true -- NAVY ;D
 
 SWEP.IronSightsPos = Vector(-5.361, -2, 1.639)
 SWEP.IronSightsAng = Vector(1.7, -0.06, 0)
+
+SWEP.FireMode				= 1 -- INDEX
+SWEP.data 					= {} -- VERY IMPORTANT
+SWEP.data.modes				= {} -- DIDO 
+SWEP.data.modes[1]			= 3 -- AUTO
+SWEP.data.modes[2]			= 2 -- BURST
+SWEP.data.modes[3]			= 1 -- SEMI

@@ -45,4 +45,10 @@ SWEP.Primary.Ammo			= "ar2"
 SWEP.Primary.Ignite			= true
 SWEP.BeltFed				= true
 
-SWEP.IronSightsPos 		= Vector( -4.4, -3, 2 )
+--SWEP.IronSightsPos 		= Vector( -4.4, -3, 2 )
+SWEP.IronSightsPos = Vector(-5.935, -3.31, 2.3)
+
+SWEP.FireMode				= 1 -- INDEX
+SWEP.data 					= {} -- VERY IMPORTANT
+SWEP.data.modes				= {} -- DIDO 
+SWEP.data.modes[1]			= 3 -- AUTO

@@ -20,7 +20,7 @@ if ( CLIENT ) then
 end
 
 
-SWEP.Base				= "weapon_fiery_base"
+SWEP.Base				= "weapon_fiery_base_auto_rifle"
 SWEP.Category			= "Fiery"
 
 SWEP.Spawnable			= true
@@ -50,11 +50,11 @@ SWEP.Primary.Ammo			= "ar2"
 SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "none"
 
---SWEP.IronSightsPos = Vector(-8.521, 0, 1.279)
---SWEP.IronSightsAng = Vector(1.2, -2.901, -12)
-
---SWEP.IronSightsPos = Vector(-8.521, 0, 1.2)
---SWEP.IronSightsAng = Vector(1, -2.901, -7.801)
+SWEP.FireMode				= 1 -- INDEX
+SWEP.data 					= {} -- VERY IMPORTANT
+SWEP.data.modes				= {} -- DIDO 
+SWEP.data.modes[1]			= 3 -- AUTO
+SWEP.data.modes[2]			= 1 -- SEMI
 
 --SWEP.IronSightsPos = Vector(-8.521, 0, 1.2)
 --SWEP.IronSightsAng = Vector(-1.5, -3, -7.802)

@@ -50,5 +50,12 @@ SWEP.Secondary.Ammo			= "none"
 
 SWEP.DryFires				= true -- Unlock Dry Fire
 
+SWEP.FireMode				= 1 -- INDEX
+SWEP.data 					= {} -- VERY IMPORTANT
+SWEP.data.modes				= {} -- DIDO 
+SWEP.data.modes[1]			= 1 -- SEMI
+SWEP.data.modes[2]			= 2 -- BURST
+
+
 SWEP.IronSightsPos = Vector(-5.801, 0, 2.64)
 SWEP.IronSightsAng = Vector(0.639, -0.055, 0)

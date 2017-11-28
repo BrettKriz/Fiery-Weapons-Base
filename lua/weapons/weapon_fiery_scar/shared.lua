@@ -36,7 +36,7 @@ SWEP.ShellEjectAttachment	= "1" -- Should be "2" for CSS models or "1" for hl2 m
 
 SWEP.Instructions 			= "Damage: 32% \nRecoil: 61% \nPrecision: 72% \nType: Automatic \nRate of Fire: 650 rounds per minute"
 
-SWEP.Base					= "weapon_fiery_base_rifle"
+SWEP.Base					= "weapon_fiery_base_auto_rifle"
 SWEP.Category 				= "Fiery Weapons"	// -- SWEP Category
 SWEP.HoldType				= "rifle"
 SWEP.HoldType2				= "hipfire2"
@@ -92,3 +92,11 @@ SWEP.IronSightZoom			= 1.2 -- How much the player's FOV should zoom in ironsight
 SWEP.ScopeScale 			= 0.4 -- The scale of the scope's reticle in relation to the player's screen size.
 SWEP.ScopeZooms				= {2} -- The possible magnification levels of the weapon's scope.   If the scope is already activated, secondary fire will cycle through each zoom level in the table.
 SWEP.DrawParabolicSights	= false -- Set to true to draw a cool parabolic sight (helps with aiming over long distances)
+
+SWEP.Primary.BurstFire		= 2
+SWEP.FireMode				= 2 -- INDEX
+SWEP.data 					= {} -- VERY IMPORTANT
+SWEP.data.modes				= {} -- DIDO 
+SWEP.data.modes[1]			= 3 -- AUTO
+SWEP.data.modes[2]			= 2 -- BURST
+SWEP.data.modes[3]			= 1 -- SEMI

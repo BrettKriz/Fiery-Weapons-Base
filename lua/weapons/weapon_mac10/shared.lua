@@ -33,8 +33,7 @@ SWEP.WorldModel				= "models/weapons/w_smg_mac10.mdl"
 SWEP.HoldType				= "smg"
 SWEP.HoldType2				= "autopistol"
 SWEP.ReloadHoldType			= "smg"
-SWEP.Weight					= 4
-
+SWEP.Weight					= 3
 
 SWEP.Primary.Sound			= Sound( "Weapon_mac10.Single" )
 SWEP.Primary.Recoil			= 1.2
@@ -48,3 +47,4 @@ SWEP.Primary.Ammo			= "357"
 
 SWEP.IronSightsPos = Vector(-10.10, -4.20, 1.5)
 SWEP.IronSightsAng = Vector(1.25, -5.5, -6.5)
+

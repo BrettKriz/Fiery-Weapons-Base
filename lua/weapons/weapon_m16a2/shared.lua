@@ -39,20 +39,20 @@ SWEP.Primary.Sound			= Sound( "Weapon_M4A1.Silenced" )
 SWEP.Primary.Recoil			= 1.24
 SWEP.Primary.Damage			= 30
 SWEP.Primary.NumShots		= 1
+SWEP.Primary.BurstFire		= 3
 SWEP.Primary.Cone			= 0.035
 SWEP.Primary.ClipSize		= 30
-SWEP.Primary.Delay			= 0.4
+SWEP.Primary.Delay			= 0.085
 SWEP.Primary.BurstDelay		= 0.089
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "ar2"
-SWEP.Primary.BurstFire		= 3
 
-SWEP.FireMode				= 1 -- INDEX
+SWEP.FireMode				= 2 -- INDEX
 SWEP.data 					= {} -- VERY IMPORTANT
 SWEP.data.modes				= {} -- DIDO 
-SWEP.data.modes[1]			= 1 -- SEMI
+SWEP.data.modes[1]			= 3 -- AUTO
 SWEP.data.modes[2]			= 2 -- BURST
-SWEP.data.modes[3]			= 3 -- AUTO
+SWEP.data.modes[3]			= 1 -- SEMI
 
 /*---------------------------------------------------------
 	Animation Index
