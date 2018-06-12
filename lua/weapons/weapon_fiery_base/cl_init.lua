@@ -23,14 +23,14 @@ cl_crosshair_g 		= CreateClientConVar("cl_crosshair_g", 120, true, false)		-- Gr
 cl_crosshair_b 		= CreateClientConVar("cl_crosshair_b", 45, true, false)			-- Blue
 cl_crosshair_a 		= CreateClientConVar("cl_crosshair_a", 200, true, false)		-- Alpha
 cl_crosshair_l 		= CreateClientConVar("cl_crosshair_l", 30, true, false)			-- Length
-cl_crosshair_t 		= CreateClientConVar("cl_crosshair_t", 1, true, false)			-- Enable/Disable
-cl_crosshair_type  	= CreateClientConVar("cl_crosshair_type", 1, true, false)
+cl_crosshair_t 		= CreateClientConVar("cl_crosshair_t", 1, true, false)	 		-- Toggle Crosshair		-- Enable/Disable
+cl_crosshair_type  	= CreateClientConVar("cl_crosshair_type", 1, true, false)		-- Type
 
 /*---------------------------------------------------------
 	Print Info
 ---------------------------------------------------------*/
 function SWEP:PrintWeaponInfo( x, y, alpha )
-	-- Add a reading setting
+	-- Add a reading setting 
 	if ( self.DrawWeaponInfoBox == false ) then return end
 	
 	if (self.InfoMarkup == nil ) then
@@ -322,6 +322,7 @@ function SWEP:DrawSight_CrossHairs()
 	local y_d_f		= (y + (far*0.7))	*1 -- y DOWN far
 
 	local user_clr = Color(color[1], color[2], color[3], color[4])
+	--self:DebugTalk("Crosshair Color: "..tostring(user_clr))
 	surface.SetDrawColor(user_clr)
 	-- XHAIR TYPE SETTINGS --
 	local maxty = 12
