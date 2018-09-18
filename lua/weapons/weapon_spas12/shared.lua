@@ -33,10 +33,7 @@ SWEP.WorldModel				= "models/weapons/w_shotgun.mdl"
 SWEP.Weight					= 6
 
 SWEP.ReloadSound			= Sound( "weapons/shotgun/shotgun_reload" .. math.random( 1, 3 ) .. ".wav" ) -- Need to find a way to select multiple sounds
-<<<<<<< HEAD
 							-- Make a list 1-3 of sounds?
-=======
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 SWEP.Primary.ChamberSound	= Sound( "weapons/shotgun/shotgun_cock.wav" )
 
 SWEP.Primary.Sound			= Sound( "Weapon_Shotgun.Single" )
@@ -48,11 +45,8 @@ SWEP.Primary.ClipSize		= 6
 SWEP.Primary.Delay			= 0.5
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "buckshot"
-<<<<<<< HEAD
 SWEP.Primary.Chambered		= not true -- Show players they need to pump it with R 	
-=======
-SWEP.Primary.Chambered		= !true -- Show players they need to pump it
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
+
 
 SWEP.IronSightsPos = Vector (-8.9786, -12.7623, 4.3214)
 SWEP.IronSightsAng = Vector (-0.5638, -0.0598, -0.8275)
@@ -66,13 +60,9 @@ SWEP.IronSightsAng = Vector (-0.5638, -0.0598, -0.8275)
 
 SWEP.Chambers				= true
 SWEP.ShotgunFunction		= true
-<<<<<<< HEAD
 SWEP.DoubleShot				= true
 SWEP.ForceModifier			= 5
 
 SWEP.Primary.Chamber		= ACT_SHOTGUN_PUMP
 SWEP.Secondary.ShootAnim	= ACT_VM_SECONDARYATTACK 
-=======
 
-SWEP.Primary.Chamber		= ACT_SHOTGUN_PUMP
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67

@@ -35,11 +35,7 @@ SWEP.ViewModelFlip			= true
 SWEP.WorldModel				= "models/weapons/w_pist_ot33pemac.mdl"
 SWEP.Weight					= 4
 
-<<<<<<< HEAD
 SWEP.Primary.Sound			= Sound( "weapons/ot33/fiveseven-1.wav" )
-=======
-SWEP.Primary.Sound			= Sound( "weapons/pistol_ots33/ots33_fire1.wav" )
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 SWEP.Primary.Recoil			= 0.91
 SWEP.Primary.Damage			= 19
 SWEP.Primary.NumShots		= 1

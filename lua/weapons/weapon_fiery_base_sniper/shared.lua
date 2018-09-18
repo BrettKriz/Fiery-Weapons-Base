@@ -60,20 +60,12 @@ SWEP.Secondary.EmptyAnim	= ACT_VM_FIDGET
 SWEP.Secondary.ShootAnim	= ACT_VM_SECONDARYATTACK
 
 SWEP.ReloadAnim				= ACT_VM_RELOAD
-<<<<<<< HEAD
 SWEP.EmptyReloadAnim		= ACT_VM_RELOAD --_EMPTY
-=======
-SWEP.EmptyReloadAnim		= ACT_VM_RELOAD_EMPTY
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 
 SWEP.DrawAnim				= ACT_VM_DRAW
 SWEP.EmptyDrawAnim			= ACT_VM_DRAW_EMPTY
 
-<<<<<<< HEAD
 SWEP.EmpytyIdleAnim			= ACT_VM_IDLE --_EMPTY
-=======
-SWEP.EmpytyIdleAnim			= ACT_VM_IDLE_EMPTY
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 SWEP.IdleAnim 				= ACT_VM_IDLE
 /*---------------------------------------------------------*/
 

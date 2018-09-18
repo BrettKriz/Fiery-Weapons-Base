@@ -5,12 +5,6 @@ if (SERVER) then
   
 	AddCSLuaFile ("shared.lua")
 	SWEP.Weight 			= 5
-<<<<<<< HEAD
-
-=======
-	SWEP.AutoSwitchTo 		= false
-	SWEP.AutoSwitchFrom 		= false
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 end
 
 if (CLIENT) then
@@ -20,6 +14,7 @@ if (CLIENT) then
 	SWEP.SlotPos 			= 1
 	SWEP.DrawAmmo 			= true
 	SWEP.DrawCrosshair 		= false
+	
 	SWEP.ViewModelFOV		= 62
 	SWEP.ViewModelFlip		= false
 	SWEP.CSMuzzleFlashes	= false
@@ -33,10 +28,7 @@ end
 
 SWEP.Primary.NumNades 			= 1 
 
-<<<<<<< HEAD
 SWEP.Base						= "weapon_fiery_base"
-=======
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 SWEP.Author 					= "Nova Prospekt"
 SWEP.Category					= "Fiery Weapons"
 
@@ -44,7 +36,6 @@ SWEP.Spawnable 					= true
 SWEP.AdminSpawnable 			= true
 
 SWEP.HoldType					= "grenade"
-<<<<<<< HEAD
 SWEP.HoldType2					= "grenade"
 
 SWEP.ViewModel 					= "models/weapons/v_eq_fraggrenade.mdl"
@@ -56,16 +47,6 @@ SWEP.Thrown						= true
 SWEP.Primary.ClipSize 			= -1
 SWEP.Primary.DefaultClip 		= 1
 SWEP.Primary.Automatic 			= true		-- Test me
-=======
-SWEP.HoldType					= "slam"
-
-SWEP.ViewModel 					= "models/weapons/v_eq_fraggrenade.mdl"
-SWEP.WorldModel 				= "models/weapons/w_eq_fraggrenade.mdl"
-
-SWEP.Primary.ClipSize 			= -1
-SWEP.Primary.DefaultClip 		= 1
-SWEP.Primary.Automatic 			= true
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 SWEP.Primary.Ammo 				= "grenade"
 
 SWEP.Secondary.ClipSize 		= -1
@@ -90,23 +71,16 @@ end
 /*---------------------------------------------------------
 Reload
 ---------------------------------------------------------*/
-<<<<<<< HEAD
 function SWEP:Reload() -- Drop the egg straight down?
 
-=======
-function SWEP:Reload()
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 end
 
 /*---------------------------------------------------------
 Think
 ---------------------------------------------------------*/
 function SWEP:Think()
-<<<<<<< HEAD
 	self:StandardThink() -- Provide the standard thoughts of Fiery
 
-=======
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 	if self.Proned and not self.Owner:KeyDown ( IN_ATTACK) and self.Owner:KeyReleased(IN_ATTACK) then
 		self.Proned = false
 		self.Throwing = true
@@ -300,10 +274,6 @@ end
 SecondaryAttack
 ---------------------------------------------------------*/
 function SWEP:SecondaryAttack()
-<<<<<<< HEAD
 	self:PrimaryAttack() -- Shorthand
-=======
-	self:PrimaryAttack()
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 end
 

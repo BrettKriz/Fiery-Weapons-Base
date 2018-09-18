@@ -43,11 +43,7 @@ function ENT:Initialize()
 	
 	local colmin = Vector( 0-(width/2), 0-(length/2), 0 )
 	local colmax = Vector( width/2, length/2, height )
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
+	-- No memes here
 	self:PhysicsInitBox(colmin, colmax)
 	self:SetCollisionBounds(colmin, colmax)
 

@@ -58,35 +58,13 @@ function ENT:SpawnFunction( ply, tr, pos) -- pos, ang, mag, n, ammot
 	else
 		SpawnPos = tr.HitPos + tr.HitNormal * 16 
 	end
-=======
-/* Fiery Kevlar Vest */
-AddCSLuaFile("shared.lua")
-include("shared.lua")
-
-ENT.MODEL 			= "models/weapons/armor/armor.mdl"
-ENT.AMMOTYPE		= "pistol"
-ENT.AMOUNT			= 1 
--- Otherwise I think were just going to make a gib
--- Because optimizations
-
-function ENT:SpawnFunction( ply, tr ) 
-   
- 	if ( !tr.Hit ) then return end 
- 	 
- 	local SpawnPos = tr.HitPos + tr.HitNormal * 16 
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
  	 
  	local 	ent = ents.Create( self.Classname ) 
 			ent:SetPos( SpawnPos ) 
 			ent:Spawn() 
 			ent:Activate() 
-<<<<<<< HEAD
- 	 ErrorNoHalt("\n\nPICKUP DATA1 - AMMO: " .. tostring(ammot) .. " x".. tostring(n) .."\n")
+ 	ErrorNoHalt("\n\nPICKUP DATA1 - AMMO: " .. tostring(ammot) .. " x".. tostring(n) .."\n")
 	ErrorNoHalt("PICKUP DATA2 - AMMO: " .. self.AMMOTYPE.. " x"..self.AMOUNT.."\n\n")
-		
-=======
- 	 
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
  	return ent 
  	 
  end 
@@ -99,29 +77,11 @@ function ENT:PhysicsCollide( data, phys )
 	
 	--if ent:IsPlayer() then
 		-- Make a sound?
-	--end
-=======
-function ENT:Initialize()	
-
-	self:SetModel( self.MODEL )
-	
-	self:PhysicsInit( SOLID_VPHYSICS )
-
-	local phys = self:GetPhysicsObject()  	
-	if phys:IsValid() then  		
-		phys:Wake()  	
-	end
-	
-	if( self.MASS )then
-		self.Entity:GetPhysicsObject():SetMass( self.MASS );
-	end
-	
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
+	--end	
 end
 
 function ENT:Use(activator,caller)
 	
-<<<<<<< HEAD
 	if activator:IsPlayer() then
 		
 		self.Entity:EmitSound( "items/ammo_pickup.wav" ) -- No sound option?
@@ -129,20 +89,7 @@ function ENT:Use(activator,caller)
 		
 		--self:DebugTalk("PICKUP DATA - AMMO: " .. tostring(self.AMMOTYPE).. " x"..tostring(self.AMOUNT).."\n\n")
 		
-		activator:GiveAmmo( self.AMOUNT, self.AMMOTYPE )
-=======
-	if ( activator:IsPlayer() and (activator:Armor() < self.ARMORGIFT) ) then
-		self.Entity:Remove()
-		self.Entity:EmitSound( "items/armor_pickup.wav", 75, 60 )
-		local Armor = activator:Armor()
-		
-		activator:SetArmor( self.ARMORGIFT )
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
-		
+		activator:GiveAmmo( self.AMOUNT, self.AMMOTYPE )	
 	end
 
 end
-<<<<<<< HEAD
-=======
-
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67

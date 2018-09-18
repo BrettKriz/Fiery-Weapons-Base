@@ -1,4 +1,4 @@
-SWEP.Name = "weapon_k98"
+SWEP.Name = "weapon_k98" -- Clean up this
 SWEP.WepFolderPath = SWEP.Name
 
 if ( SERVER ) then
@@ -29,10 +29,8 @@ SWEP.AdminSpawnable			= true
 SWEP.UseHands				= false
 SWEP.ViewModel				= "models/weapons/v_garand.mdl"
 SWEP.WorldModel				= "models/weapons/w_k98_rg.mdl"
-<<<<<<< HEAD
 SWEP.Mag                    = "models/shells/garand_clip.mdl"
-=======
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
+
 SWEP.WorldModelFix			= true
 SWEP.ViewModelFlip			= false
 --SWEP.ViewModelFOV			= 72
@@ -51,10 +49,9 @@ SWEP.Primary.ClipSize		= 10
 SWEP.Primary.Delay			= 0.25
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "buckshot"
-<<<<<<< HEAD
-SWEP.Primary.DryMagEject	= true
-=======
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
+
+SWEP.Primary.DryMagEject	= true -- PING!!
+
 
 SWEP.WorldModelHoldFix		= true -- Fix the DoD:S Model
 SWEP.Chambers				= false
@@ -62,19 +59,11 @@ SWEP.DryFires				= true
 
 SWEP.DoDModelFunction		= true
 
-<<<<<<< HEAD
 --SWEP.Mag					= "models/shells/shell_large.mdl"
 SWEP.NoMag					= !true
-
 SWEP.Primary.EmptyAnim		= ACT_VM_PRIMARYATTACK_EMPTY
 SWEP.Primary.ShootAnim		= ACT_VM_PRIMARYATTACK
-=======
-SWEP.Mag					= "models/shells/shell_large.mdl"
-SWEP.NoMag					= true
 
-SWEP.Primary.EmptyAnim		= ACT_VM_PRIMARYATTACK
-SWEP.Primary.ShootAnim		= ACT_VM_PRIMARYATTACK_EMPTY
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 SWEP.RemoveMagAnim			= ACT_VM_PRIMARYATTACK_EMPTY
 --SWEP.EmptyIdleAnim			= ACT_VM_IDLE_EMPTY
 

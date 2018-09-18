@@ -50,11 +50,8 @@ SWEP.Primary.Ammo			= "ar2"
 SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "none"
 
-<<<<<<< HEAD
 --SWEP.Range = 1
 
-=======
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 SWEP.IronSightsPos = Vector(-6.281, -2, 1.32)
 SWEP.IronSightsAng = Vector(0.2, -0.201, -2.5)
 

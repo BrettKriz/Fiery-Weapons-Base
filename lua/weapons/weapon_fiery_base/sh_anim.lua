@@ -71,14 +71,9 @@ function SWEP:SetHoldType( t )
 	self:Talk("SWHT : " .. t .. "\n")
 
 	if not t then 
-<<<<<<< HEAD
 		local def = "magic"
 		self:Talk("? Wheres the Key?  <<<<<<<<<<<<< Defaulting to "..tostring(def))
 		t = def
-=======
-		self:Talk("? Wheres the Key?  <<<<<<<<<<<<< Defaulting to 357")
-		t = "magic"
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 	end
 	
 	--local ActIndex = self.HoldIndex
@@ -139,7 +134,6 @@ function SWEP:SetHoldType( t )
 	-- Add convar for using paassive or normal while taking cover. for rp 
 	
 	-- create schemes --
-<<<<<<< HEAD
 	local pistol 	= ACT_HL2MP_IDLE_PISTOL
 	local norm   	= ACT_HL2MP_IDLE
 	local slam		= ACT_HL2MP_IDLE_SLAM
@@ -150,13 +144,6 @@ function SWEP:SetHoldType( t )
 		--else
 			self.ActivityTranslate [ ACT_MP_JUMP ] 						= ACT_HL2MP_JUMP_SLAM
 		--end
-=======
-	local pistol = ACT_HL2MP_IDLE_PISTOL
-	local norm   = ACT_HL2MP_IDLE
-		-- "normal" jump animation doesn't exist -- 
-	if t == "normal" then
-		self.ActivityTranslate [ ACT_MP_JUMP ] 						= ACT_HL2MP_JUMP_SLAM
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 		self:Talk("Debug Point1")
 	elseif t == "passive" then
 		self.ActivityTranslate [ ACT_MP_CROUCH_IDLE ] 				= norm+3
@@ -193,7 +180,6 @@ function SWEP:SetHoldType( t )
 	elseif t == "twohand" then -- @@@Add documentation, Should be applied for all 357 Hold types, for ironsights
 		// Ironshight hold type specific?
 		self.ActivityTranslate [ ACT_MP_ATTACK_CROUCH_PRIMARYFIRE ] = pistol+5
-<<<<<<< HEAD
 	elseif t == "grenade" then
 		self.ActivityTranslate [ ACT_MP_STAND_IDLE ] 				= slam
 		self.ActivityTranslate [ ACT_MP_WALK ] 						= slam+1
@@ -207,8 +193,6 @@ function SWEP:SetHoldType( t )
 		--self.ActivityTranslate [ ACT_MP_JUMP ] 						= index+7
 		--self.ActivityTranslate [ ACT_RANGE_ATTACK1 ] 				= index+8
 		self.ActivityTranslate [ ACT_MP_SWIM ] 						= slam+9
-=======
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 	end
 	
 	self:Talk("Debug Point 3 - "..tostring(t))

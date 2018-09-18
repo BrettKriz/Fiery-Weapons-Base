@@ -50,12 +50,10 @@ SWEP.Primary.Ammo			= "ar2"
 SWEP.Chambers				= true
 SWEP.WorldModelHoldFix		= true -- Fix the DoD:S Model
 
-<<<<<<< HEAD
+
 --SWEP.Mag					= "models/shells/shell_large.mdl"
-SWEP.Mag					= "models/props_junk/watermelon01.mdl"
-=======
-SWEP.Mag					= "models/shells/shell_large.mdl"
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
+SWEP.Mag					= "models/props_junk/watermelon01.mdl" -- Show up darn you
+
 SWEP.NoMag					= !true
 
 SWEP.Primary.EmptyAnim		= ACT_VM_PRIMARYATTACK_EMPTY

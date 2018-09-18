@@ -52,22 +52,5 @@ SWEP.Secondary.Ammo			= "none"
 SWEP.IronSightsPos = Vector(-7, -1, 2.68)
 SWEP.IronSightsAng = Vector(-0.101, -0.796, 0)
 
-<<<<<<< HEAD
-function SWEP:PrimaryAttack()
-	local trace = self.Owner:GetEyeTrace()
-	local targ = trace.Entity
-	local phys = targ:GetPhysicsObject()
-	if (targ == nil) then return end
-	
-	ErrorNoHalt("TARGET: " .. tostring(targ:GetClass()) .. " PHYS NAME: ".. tostring(phys:GetName()).. "\n\n")
-	ErrorNoHalt("COLLISION GROUP: "..targ:GetCollisionGroup().."\n")
-	ErrorNoHalt("COLLISION BOUNDS-MIN: "..tostring(targ:GetCollisionBounds()[1]).." MAX: "..tostring(targ:GetCollisionBounds()[2]).."\n\n")
-	
-	ErrorNoHalt("SOLID? "..tostring(targ:IsSolid()) .."\n")
-	ErrorNoHalt("VOL: "..tostring(phys:GetVolume())  .. " - SA: " .. tostring(phys:GetSurfaceArea()) .."\n")
-	ErrorNoHalt("AABB: "..tostring(phys:GetAABB()) .. "\n")
-	
-end
-=======
 SWEP.DoesIdle				= true
->>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
+
