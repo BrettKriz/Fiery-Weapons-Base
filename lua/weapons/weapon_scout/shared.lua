@@ -37,12 +37,18 @@ SWEP.Primary.NumShots		= 1
 SWEP.Primary.Cone			= 0.005
 SWEP.Primary.ClipSize		= 10
 SWEP.Primary.Delay			= 1.4
+<<<<<<< HEAD
 SWEP.Primary.Automatic		= true	-- Meh
 --SWEP.Primary.Ammo			= "smg1"
+=======
+SWEP.Primary.Automatic		= true
+SWEP.Primary.Ammo			= "smg1"
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 
 SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "none"
 
+<<<<<<< HEAD
 --SWEP.ForceModifier			=
 
 SWEP.Scope					= 1 -- xZoom
@@ -53,3 +59,7 @@ SWEP.data.zooms[1]			= 6
 SWEP.data.zooms[2]			= 12
 
 
+=======
+SWEP.IronSightsPos = Vector(-6.68, -5, 3.359)
+SWEP.IronSightsAng = Vector(0, 0, -4)
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67

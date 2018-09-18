@@ -52,6 +52,7 @@ SWEP.Secondary.Ammo			= "none"
 SWEP.IronSightsPos = Vector(-7, -1, 2.68)
 SWEP.IronSightsAng = Vector(-0.101, -0.796, 0)
 
+<<<<<<< HEAD
 function SWEP:PrimaryAttack()
 	local trace = self.Owner:GetEyeTrace()
 	local targ = trace.Entity
@@ -67,3 +68,6 @@ function SWEP:PrimaryAttack()
 	ErrorNoHalt("AABB: "..tostring(phys:GetAABB()) .. "\n")
 	
 end
+=======
+SWEP.DoesIdle				= true
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67

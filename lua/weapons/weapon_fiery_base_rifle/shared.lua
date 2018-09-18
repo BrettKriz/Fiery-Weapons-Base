@@ -62,7 +62,11 @@ SWEP.data.modes[1]			= 1 -- SEMI
 /*---------------------------------------------------------
 	Animation Index
 ---------------------------------------------------------*/
+<<<<<<< HEAD
 SWEP.Primary.EmptyAnim		= ACT_VM_PRIMARYATTACK
+=======
+SWEP.Primary.EmptyAnim		= ACT_VM_DRYFIRE
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 SWEP.Primary.ShootAnim		= ACT_VM_PRIMARYATTACK
 
 SWEP.Secondary.EmptyAnim	= ACT_VM_FIDGET

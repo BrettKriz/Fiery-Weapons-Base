@@ -20,7 +20,11 @@ if ( SERVER ) then
 	AddCSLuaFile( "shared.lua" )
 
 	-- Change between here and init  
+<<<<<<< HEAD
 	SWEP.Weight				= 3 -- CONVERT FOR THE BETTER?
+=======
+	SWEP.Weight				= 5 -- CONVERT FOR THE BETTER?
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 	SWEP.AutoSwitchTo		= false
 	SWEP.AutoSwitchFrom		= false
 	
@@ -634,8 +638,12 @@ function SWEP:Deploy()
 	-- Check ironsights
 	local b1 = tobool(self.IronSightsPos == nil)
 	local b2 = tobool(GetConVarNumber("swep_IronSights_FromFile"))
+<<<<<<< HEAD
 	local b3 = tobool(self.Thrown == true)
 	if (b1 or b2) and not b3 then
+=======
+	if (b1 or b2) then
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 		self:GetIronData()
 		self:DebugTalk("Ironsights missing or swep_IronSights_FromFile = 1!\nSearching...")
 	end
@@ -721,7 +729,11 @@ function SWEP:DropMagPrimary(t)
 	local ammot = self.Primary.Ammo
 	self.Weapon:SetClip1( math.min( self.Primary.ClipSize 	, 0 ) ) 
 	local useMags = GetConVar("swep_DropMags"):GetBool()
+<<<<<<< HEAD
 	if useMags == true and not self.NoMag then
+=======
+	if useMags == true then
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 		-- Create Mag
 		self:SpawnMag( t, amt, ammot )
 	else
@@ -736,8 +748,12 @@ function SWEP:DropMagSecondary(t)
 	local amt = math.max(self.Weapon:Clip2(),0)
 	local ammot = self.Secondary.Ammo
 	self.Weapon:SetClip2( math.min( self.Secondary.ClipSize	, 0 ) )	
+<<<<<<< HEAD
 	local useMags = GetConVar("swep_DropMags"):GetBool()
 	if useMags == true and not self.NoMag then
+=======
+	if GetConVar("swep_DropMags"):GetBool() then
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 		-- Create Mag
 		self:SpawnMag( t, amt, ammot)
 	else
@@ -835,11 +851,15 @@ cleanup.Register("Fiery Magazine")
 function SWEP:SpawnMag(t, n, ammot)
 	if self.Chambers or self.NoMag == true or (self.Primary.ClipSize < 2 and self.Secondary.ClipSize < 2) then return false end
 	--self:Talk("MAG IS: "..tostring(self.Mag))
+<<<<<<< HEAD
 	local genericMag = "models/weapons/w_pist_cz_75_mag.mdl"
 	if ammot ~= "smg1" and ammot ~= "pistol" and ammot ~= "357" and ammot ~= "alyxgun" then
 		genericMag = "models/weapons/w_rif_m4a1_s_mag.mdl"
 	end
 	local mag2		= self.Mag or self:FindMagType() or genericMag
+=======
+	local mag2		= self.Mag or self:FindMagType() or "models/weapons/w_pist_cz_75_mag.mdl"
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 	-- Checks
 	
 	if not self.Mag and mag2 then
@@ -1857,6 +1877,7 @@ function SWEP:ShootBullet( side, dmg, recoil, numbul, cone, ammo, forcedAnim, fo
 		forcedAnim = true
 	end
 	-- self.Weapon:setVar("AkimboSide") == false
+<<<<<<< HEAD
 	local Trace = self.Owner:GetEyeTrace() -- @@@Use different trace style!!!
 	local ent = Trace.Entity
 	local Distance = Trace.HitPos:Distance( self.Owner:GetShootPos() )
@@ -1865,6 +1886,8 @@ function SWEP:ShootBullet( side, dmg, recoil, numbul, cone, ammo, forcedAnim, fo
 		self:AimAssist(ent) -- Give a clean shot
 		self:DebugTalk("Using aim assist for targeting")
 	end
+=======
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 
 	-- local DEBUG = true
 	-- FOR self.DEBUGING AND FUN LOL
@@ -2100,10 +2123,19 @@ function SWEP:Think()
 		-- Required for real time HUD
 	end
 	--]]
+<<<<<<< HEAD
 	self:StandardThink()
 	-- local wl = self.Weapon:WaterLevel()
 
 	
+=======
+	self:ShotgunThink()
+	self:IdleThink()
+	self:RecoilThink()
+	-- local wl = self.Weapon:WaterLevel()
+
+	--self:HeatThink()
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 	--[[
 	if (CLIENT) then
 	local wep = self.Weapon:GetViewModel()
@@ -2115,6 +2147,7 @@ function SWEP:Think()
 	--self:NextThink(CurTime());  
 	--return true 
 	--]]
+<<<<<<< HEAD
 
 end
 
@@ -2128,6 +2161,9 @@ function SWEP:StandardThink()
 	self:IdleThink()
 	self:RecoilThink()
 	--self:HeatThink()
+=======
+	
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 	self:ArmsThink()
 	--self:AimAssistThink() 
 	-- ^ This is now controlled under SecondaryAttack
@@ -2594,7 +2630,11 @@ function SWEP:GetArmPosition( pos, ang )
 			local Offset = self.ArmOffset --or Vector(0,0,0)
 			
 			if Offset == nil then
+<<<<<<< HEAD
 				-- Correct this BS 
+=======
+				-- Correct this BS
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 				-- @@@BS
 			end
 			
@@ -2661,13 +2701,20 @@ function SWEP:SetIronDataFromFile( fname, path ) -- FINISH ME!
 end
 
 function SWEP:GetIronData( known ) -- FINISH ME!
+<<<<<<< HEAD
 	if tobool(self.Thrown == true) then return end
+=======
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 	self:Talk("Getting Iron Sight data")
 	-- Get the ironsight file for the view model
 	local vmp = self.ViewModel
 	--local smp = string.Replace(self.Folder, "weapons/", "") .. ".txt"
 	local smp = self.ClassName.. ".txt"
+<<<<<<< HEAD
 	-- "models/weapons/cstrike/c_smg1.mdl" 
+=======
+	-- "models/weapons/cstrike/c_smg1.mdl"
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 	local path = "ironsights/"
 	local path2 = "ironsights/Fiery_Ironsights/"..smp
 	local CModelGiven = string.find(vmp,"/c_")
@@ -3306,7 +3353,11 @@ function SWEP:AreArmsDown()
 	local b2, ent = self:IsAgainstWall()
 	local b3 = self.Owner:OnGround() -- Might make it look weird
 	local b4 = self:IsFlooded()
+<<<<<<< HEAD
 	local b5 = ent:IsValid() and (ent:IsNPC() )--or ent:ClassName() == "func_breakable" or ent:ClassName() == "func_breakable_surf")
+=======
+	local b5 = ent:IsValid() and ent:IsNPC()
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 	--local mp = self.Weapon:GetVar("PrimaryMagOut", false) == true
 	--local ms = self.Weapon:GetVar("SecondaryMagOut", false) == true
 	--local b4 = ( mp or ms )
@@ -3867,4 +3918,8 @@ util.PrecacheModel("models/weapons/w_snip_g3sg1_mag.mdl" )
 util.PrecacheModel("models/weapons/w_snip_scar20_mag.mdl" )
 util.PrecacheModel("models/weapons/w_mach_negev_mag.mdl" )
 util.PrecacheModel("models/weapons/w_mach_m249_mag.mdl" )
+<<<<<<< HEAD
 util.PrecacheModel("models/shells/garand_clip.mdl")
+=======
+util.PrecacheModel("models/shells/garand_clip.mdl")
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67

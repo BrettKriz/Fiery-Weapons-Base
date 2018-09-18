@@ -25,6 +25,7 @@ if ( CLIENT ) then
 end
 
 
+<<<<<<< HEAD
 SWEP.Base					= "weapon_fiery_base_pistol"
 SWEP.Category				= "Fiery"
 
@@ -40,6 +41,22 @@ SWEP.ViewModelFlip			= false -- Defaults true
 SWEP.Weight					= 4
 
 SWEP.Primary.Sound			= Sound( "weapons/m9_beretta/fire.wav" )
+=======
+SWEP.Base				= "weapon_fiery_base_pistol"
+SWEP.Category			= "Fiery"
+
+SWEP.Spawnable			= true
+SWEP.AdminSpawnable		= true
+
+SWEP.HoldType			= "csspistol"
+SWEP.HoldType2			= "onehand"
+SWEP.ViewModel			= "models/weapons/v_trh_92fs.mdl"
+SWEP.WorldModel			= "models/weapons/w_trh_92fs.mdl"
+SWEP.ViewModelFlip		= false -- Defaults true
+SWEP.Weight				= 5
+
+SWEP.Primary.Sound			= Sound( "weapon/M9/fire.wav" )
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 SWEP.Primary.Recoil			= 1.25
 SWEP.Primary.Damage			= 19
 SWEP.Primary.NumShots		= 1

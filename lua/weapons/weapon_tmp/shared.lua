@@ -30,10 +30,17 @@ SWEP.HoldType				= "grip"
 SWEP.HoldType2				= "hipfire2" -- 
 SWEP.ReloadHoldType			= "csspistol"
 								-- "models/weapons/v_smg_tmp.mdl"
+<<<<<<< HEAD
 SWEP.ViewModel				= "models/weapons/cstrike/c_smg_tmp.mdl"
 --	SWEP.ViewModel				= "models/weapons/v_smg_tmp.mdl"
 SWEP.WorldModel				= "models/weapons/w_smg_tmp.mdl"
 SWEP.Mag					= "models/weapons/w_smg_mp9_mag.mdl"
+=======
+								-- "models/weapons/cstrike/c_smg_tmp.mdl"
+SWEP.ViewModel				= "models/weapons/cstrike/c_smg_tmp.mdl"
+--	SWEP.ViewModel				= "models/weapons/v_smg_tmp.mdl"
+SWEP.WorldModel				= "models/weapons/w_smg_tmp.mdl"
+>>>>>>> 1f84fd01b25195a8a4ec6e4641a1cffdd4a0cd67
 
 SWEP.Weight					= 8
 SWEP.AutoSwitchTo			= false
