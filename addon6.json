@@ -1,0 +1,11 @@
+{
+	"title"		:	"Fiery Weapons Base ALPHA 3.0",
+	"type"		:	"weapon",
+	"tags"		:	[ "fun", "roleplay", "realism" ],
+	"ignore"	:
+	[
+		"*.psd",
+		"*.vcproj",
+		"*.svn*"
+	]
+}

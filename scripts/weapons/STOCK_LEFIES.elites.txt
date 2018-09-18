@@ -1,0 +1,50 @@
+"Weapon_Elite.Magin"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"1.0"
+	"CompatibilityAttenuation"	"1.0"
+	"pitch"			"95,105"
+
+	"wave"			"weapons\elite\Magin.wav"
+	
+}
+"Weapon_Elite.Sliderel"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"1.0"
+	"CompatibilityAttenuation"	"1.0"
+	"pitch"			"95,105"
+
+	"wave"			"weapons\elite\sliderelease.wav"
+	
+}
+"Weapon_Elite.spindraw"
+{
+	"channel"		"CHAN_ITEM"
+	"volume"		"1.0"
+	"CompatibilityAttenuation"	"1.0"
+	"pitch"			"95,105"
+
+	"wave"			"weapons\elite\vun_spindraw.wav"
+	
+}
+
+"Weapon_elite.SingleLeft"
+{
+   "channel"      "CHAN_WEAPON"
+   "volume"      "1.0"
+   "CompatibilityAttenuation"   "0.6"
+   "pitch"      "PITCH_NORM"
+
+   "wave"      "weapons/usp/usp_unsil-2.wav"
+}
+
+"Weapon_elite.SingleRight"
+{
+   "channel"      "CHAN_WEAPON"
+   "volume"      "1.0"
+   "CompatibilityAttenuation"   "0.6"
+   "pitch"      "PITCH_NORM"
+
+   "wave"      "weapons/glock/glock18-1.wav"
+}
