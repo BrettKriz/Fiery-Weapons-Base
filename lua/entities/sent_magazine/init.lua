@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* Fiery Magazine Sent */
 AddCSLuaFile("shared.lua")
 include("shared.lua")
@@ -69,7 +68,6 @@ function ENT:SpawnFunction( ply, tr, pos) -- pos, ang, mag, n, ammot
  	 
  end 
 
-<<<<<<< HEAD
 function ENT:PhysicsCollide( data, phys )
 	
 	local ent = data.HitEntity

@@ -11,15 +11,16 @@ if ( CLIENT ) then
 
 	SWEP.PrintName			= "MP7 4.6"			
 	SWEP.Author				= "Nova Prospekt"
-	
 	SWEP.Slot				= 2
 	SWEP.SlotPos			= 3
-	SWEP.IconLetter			= "x"
-	SWEP.WepSelectLetter	= "x"
-	SWEP.WepSelectFont		= "hl2mp"
-	SWEP.WepFolderPath		= "weapon_firey_mp7"
 	
-	killicon.AddFont( SWEP.WepFolderPath, SWEP.WepSelectFont, SWEP.IconLetter, SWEP.IconColor )
+	SWEP.IconLetter			= "/"
+	SWEP.IconFont			= "HLKillIcons"
+	SWEP.SelectIconLetter	= "a"
+	SWEP.SelectIconFont		= "HLSelectIcons"
+	SWEP.SelectIconFont2	= "HLSelectIcons"
+	
+	killicon.AddFont( "weapon_mp7", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 

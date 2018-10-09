@@ -1,4 +1,4 @@
-SWEP.Name = "weapon_k98" -- Clean up this
+SWEP.Name = "weapon_fiery_k98_buck" -- Clean up this
 SWEP.WepFolderPath = SWEP.Name
 
 if ( SERVER ) then
@@ -11,12 +11,16 @@ if ( CLIENT ) then
 
 	SWEP.PrintName			= "HOT BUCK"			
 	SWEP.Author				= "Nova Prospekt"
+	SWEP.ViewModelFOV		= 80
 	SWEP.Slot				= 3
 	SWEP.SlotPos			= 5
-	SWEP.IconLetter			= "n"
-	SWEP.ViewModelFOV		= 80
+	SWEP.IconLetter			= "3"
+	SWEP.IconFont			= "DODKillIcons"
+	
+	SWEP.SelectIconLetter	= "2"
+	SWEP.SelectIconFont		= "DODSelectIcons"
 
-	killicon.AddFont( SWEP.Name, SWEP.KillFont, SWEP.IconLetter, SWEP.Color)
+	killicon.AddFont( SWEP.Name, SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ))
 end
 
 SWEP.HoldType				= "ar2"

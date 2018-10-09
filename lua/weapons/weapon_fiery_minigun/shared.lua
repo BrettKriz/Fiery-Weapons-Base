@@ -9,37 +9,25 @@ end
 
 if ( CLIENT ) then
 	SWEP.PrintName			= "MINIGUN (SMOD)"					// -- Desplay name
-	--SWEP.Category 			= "HL2 Realistic Weapons"	// -- SWEP Category
-	SWEP.Contact 			= ""						// -- Author E-Mail
 	SWEP.Purpose 			= "Shear Rampage."			// -- Author's Informations
 	
 	SWEP.ViewModelFOV		= 62
 	SWEP.ViewModelFlip		= false
-	
 	SWEP.Slot				= 4		// -- Weapon Selection Column 		( How far over )
 	SWEP.SlotPos			= 3		// -- Weapon Selection Column's Row ( How far down )
 	
-	SWEP.FileName 			= "weapon_fiery_minigun" 	// -- What is the name of the FOLDER this is in?
-	SWEP.IconFont 			= "Cstrike" 					// -- "CSKillIcons" for CSS, "HL2MPTypeDeath" for HL2
+	SWEP.IconFont 			= "CSKillIcons" 					// -- "CSKillIcons" for CSS, "HL2MPTypeDeath" for HL2
 	SWEP.IconLetter			= "z" 							// -- Refer to a Killicon sheet
-	SWEP.WeaponSelectIconLetter		= "z"
+	SWEP.SelectIconLetter		= "z"
 	
 	
-	killicon.AddFont( SWEP.FileName, SWEP.IconFont, SWEP.IconLetter, Color(255,80,0,255))
+	killicon.AddFont( "weapon_fiery_minigun" , SWEP.IconFont, SWEP.IconLetter, Color(255,80,0,255))
 end
 
-/*---------------------------------------------------------
-Muzzle Effect + Shell Effect
----------------------------------------------------------*/
 
-SWEP.MuzzleAttachment		= "muzzle" -- Should be "1" for CSS models or "muzzle" for hl2 models
-SWEP.ShellEjectAttachment	= "1" -- Should be "2" for CSS models or "1" for hl2 models
+--SWEP.Instructions 			= "Damage: 22% \nRecoil: 26% \nPrecision: 42% \nType: Automatic \nRate of Fire: 1000 rounds per minute"
 
-/*-------------------------------------------------------*/
-
-SWEP.Instructions 			= "Damage: 22% \nRecoil: 26% \nPrecision: 42% \nType: Automatic \nRate of Fire: 1000 rounds per minute"
-
-SWEP.Base					= "weapon_fiery_base_smg"
+SWEP.Base					= "weapon_fiery_base_mg"
 SWEP.Category 				= "Fiery"	// -- SWEP Category
 SWEP.HoldType				= "hipfire2"
 SWEP.HoldType2				= "hipfire1"

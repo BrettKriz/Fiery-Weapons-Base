@@ -8,7 +8,7 @@ end
 
 if ( CLIENT ) then
 
-	SWEP.PrintName			= "FIREY TESTER 3 - IDLE TEST"
+	SWEP.PrintName			= "FIREY TESTER 3 - VEHICLE SHOOTING"
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 1
 	SWEP.SlotPos			= 3
@@ -35,7 +35,7 @@ SWEP.Weight				= 5
 SWEP.AutoSwitchTo		= false
 SWEP.AutoSwitchFrom		= false
 
-SWEP.Primary.Sound			= Sound( "Weapon_USP.Single" )
+SWEP.Primary.Sound			= Sound( "Weapon_pistol.Single" )
 SWEP.Primary.Recoil			= 2
 SWEP.Primary.Damage			= 18
 SWEP.Primary.NumShots		= 1
@@ -54,3 +54,15 @@ SWEP.IronSightsAng = Vector(-0.101, -0.796, 0)
 
 SWEP.DoesIdle				= true
 
+/*---------------------------------------------------------
+	PrimaryAttack
+---------------------------------------------------------*/
+function SWEP:PrimaryAttack()
+	ErrorNoHalt("ENABLING WEAPONS IN VEHICLE")
+	self.Owner:SetAllowWeaponsInVehicle(true)
+end
+
+function SWEP:SecondaryAttack()
+	ErrorNoHalt("DISABLING WEAPONS IN VEHICLE")
+	self.Owner:SetAllowWeaponsInVehicle(false)
+end

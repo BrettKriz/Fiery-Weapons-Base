@@ -6,21 +6,15 @@ end
 
 if ( CLIENT ) then
 	SWEP.PrintName			= "TACTICAL M3"
-	--SWEP.Category 			= "HL2 Realistic Weapons"
-	
-	SWEP.ViewModelFOV		= 62
-	SWEP.ViewModelFlip		= false
-	
 	SWEP.Slot				= 3
 	SWEP.SlotPos			= 1
-	
-	SWEP.FileName 			= "weapon_fiery_m3_tact"
-	SWEP.WepFolderPath		= SWEP.FileName
-	SWEP.IconFont 			= "HalfLife2"
+
 	SWEP.IconLetter			= "k"
-	SWEP.WeaponSelectIconLetter		= "K"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "K"
+	SWEP.SelectIconFont		= "CSSelectIcons"
 	
-	killicon.AddFont( SWEP.FileName, "hl2mp", SWEP.IconLetter, Color(255,80,0,255))
+	killicon.AddFont( "weapon_fiery_m3_tact", SWEP.IconFont, SWEP.IconLetter, Color(255,80,0,255))
 end
 
 /*---------------------------------------------------------

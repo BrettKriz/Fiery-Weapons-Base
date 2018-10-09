@@ -13,7 +13,7 @@
 	IncludeCS( "physics.lua" )
 	IncludeCS( "aim_assist.lua" )
 	--
-	
+
  
 if ( SERVER ) then
 
@@ -50,7 +50,10 @@ if ( CLIENT ) then
 	/*
 	SWEP.IconLetter			= "[]"
 	SWEP.WepSelectLetter	= SWEP.IconLetter
+	
 	*/
+	SWEP.SelectIconFont		= nil--"CSKillIcons"
+
 	-- KILL ICON FONTS --
 	surface.CreateFont("CSKillIcons", {
 		font = "csd", 
@@ -58,8 +61,14 @@ if ( CLIENT ) then
 		weight = 500
 	})
 	
+	surface.CreateFont("CSKillIcons2", {
+		font = "Counter-Strike", 
+		size = ScreenScale(30), 
+		weight = 500
+	})
+	
 	surface.CreateFont("DODKillIcons", {
-		font = "dodlogo", 
+		font = "Day of Defeat Logo", 
 		size = ScreenScale(30), 
 		weight = 500
 	})
@@ -69,21 +78,66 @@ if ( CLIENT ) then
 		size = ScreenScale(30), 
 		weight = 500
 	})
-	-- SELECT ICON FONTS --
+	
+	surface.CreateFont("HLKillIcons2", { -- OCIW support
+		font = "halflife2", 
+		size = ScreenScale(30), 
+		weight = 500
+	})
+	
+	
+	
+		-- SELECT ICON NUMBER FONTS --
+	surface.CreateFont("SelectNumbers", { 
+		font = "Counter-Strike", 
+		size = ScreenScale(18), 
+		weight = 500
+	})
+	
+	surface.CreateFont("SelectNumbers2", { 
+		font = "csd", 
+		size = ScreenScale(30), 
+		weight = 500
+	})
+	
+	surface.CreateFont("SelectNumbers3", {
+		font = "halflife2", 
+		size = ScreenScale(18), 
+		weight = 500
+	})
+	
+	
+	
+		-- SELECT ICON FONTS --
 	surface.CreateFont("DODSelectIcons", {
-		font = "dodlogo", 
+		font = "Day of Defeat Logo", 
 		size = ScreenScale(60), 
 		weight = 500
 	})
 	
 	surface.CreateFont("CSSelectIcons", {
-		font = "cstrike", 
+		--font = "cstrike", 
+		font = "Counter-Strike", 
+		size = ScreenScale(60), 
+		weight = 500
+	})
+	
+	surface.CreateFont("CSSelectIcons2", {
+		--font = "cstrike", 
+		font = "csd", 
+		size = ScreenScale(60), 
+		weight = 500
+	})
+	
+	surface.CreateFont("CSSelectIcons3", {
+		--font = "cstrike", 
+		font = "cs", 
 		size = ScreenScale(60), 
 		weight = 500
 	})
 	
 	surface.CreateFont("HLSelectIcons", {
-		font = "hl2mp", 
+		font = "halflife2", 
 		size = ScreenScale(60), 
 		weight = 500
 	})
@@ -92,12 +146,14 @@ if ( CLIENT ) then
 	-- We can render killicons and draw icons
 	-- From the information provided
 	
+	-- Test
+	SWEP.WorksUnderWater = false
 end
 
 SWEP.IconColor				= Color( 255, 120, 45, 120 )
-SWEP.WepSelectFont 			= "csd" -- Needs to be shared ;D
+--EP.SelectIconFont			=
 
---SWEP.Category 				= "Fiery-CS Hybrid"
+--SWEP.Category 				= "Fiery-CS Hybrid" 
 SWEP.Base					= "weapon_cs_base" -- MUST STABALIZE!!!!
 SWEP.Category 				= "Fiery"
 SWEP.DEBUG					= CreateConVar("swep_DEBUGing", "0", {FCVAR_CHEAT, FCVAR_NOTIFY}, "Toggle self.DEBUGing for Fiery SWEPs: 1=Y, 0=N")  
@@ -250,6 +306,8 @@ SWEP.BoneScalers = Vector(0.009,0.009,0.009)
 SWEP.ToggleBoneMod = false
 SWEP.InSpeed = false
 SWEP.NextSecondaryAttack = 0 -- Keep 0
+SWEP.ReloadingTime = 0.0
+
 
 --SWEP.ArmOffset = Vector (0.85, -6.6, 3.5) -- This is so there is a decent default run angle
 --SWEP.ArmAngle = Vector (-13, 28, 2) 		-- Im not sure how people will like these run angles
@@ -312,6 +370,7 @@ SWEP.NextSecondaryAttack = 0 -- Keep 0
  local s_swep_penetration			= "Toggles whether SWEPs (that use this variable and do not use physical bullets) can penetrate materials in the world"
  local s_swep_IgnoreCrouchRunning	= "Toggles whether SWEPs (that use this variable) will ignore crouching players as running, which prevents them from attacking"
  local s_swep_DropMags				= "Toggles whether SWEPs (that use Magazines) will drop magazines containing some ammo"
+ local s_swep_VehicleUsage			= "Toggles wheather SWEPs can be used and fired in vehicles"
  
  local swep_AutoReload 			= CreateConVar("swep_AutoReload", 				0, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_AutoReload)
  local swep_AutoAim				= CreateConVar("swep_AutoAim", 					0, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_AutoAim)
@@ -319,6 +378,9 @@ SWEP.NextSecondaryAttack = 0 -- Keep 0
  local swep_IgnoreCrouchRunning = CreateConVar("swep_IgnoreCrouchRunning", 		0, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_IgnoreCrouchRunning)
  local swep_FireVarience		= CreateConVar("swep_FireVarience", 		0.042, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_FireVarience)
  local swep_DropMags			= CreateConVar("swep_DropMags", 				1, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_DropMags)
+ local swep_VehicleUsage		= CreateConVar("swep_VehicleUsage", 			0, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_VehicleUsage)
+
+SWEP.VehicleApproved = false
 
 SWEP.isInitialized = false and false and false -- FALSE ONLY!
 /*---------------------------------------------------------
@@ -389,8 +451,23 @@ function SWEP:InitCorrectLogic()
 	-- Handle Killicons and select icons
 	self.IconColor				= self.IconColor or Color( 255, 120, 45, 120 )
 	self.WepSelectFont 			= self.WepSelectFont or "csd" -- Needs to be shared ;D 
-
+	self.VehicleStatus			= self:InVehicle() or false
+	local va		= tobool(GetConVar("swep_VehicleUsage"):GetBool()) or false
+	if va then
+		self.VehicleApproved = true
+	else
+		self.VehicleApproved = false
+	end
+	self.DebugTalk("\n> swep_VehicleUsage = "..tostring(GetConVar("swep_VehicleUsage"):GetBool()).."\n")
+	
 	--AddKIFont( self.WepFolderPath or self.FileName, self.IconFont, self.IconLetter, self.IconColor) 
+	
+	self.Weapon:SetNetworkedBool("reloading", false)
+	
+	if not self.Primary.AmmoLetter then
+		self.Primary.AmmoLetter = self:GuessCallibur()
+	end
+	-- Weapon path alias'
 	local n = self.WepFolderPath
 	local n0 = self.WepFolderPath == nil
 	local n1 = self.NameOfSWEP == nil
@@ -529,6 +606,38 @@ function SWEP:InitCorrectLogic()
 	self.DebugTalk("@@@ LEAVING InitCorrectLogic\n")
 end
 
+function SWEP:GuessCallibur()
+	if self.Primary.AmmoLetter then return self.Primary.AmmoLetter end
+	local ans = "J"
+	local pa = self.Primary.Ammo 
+	local pia = self.Primary.Automatic
+	if pa == "pistol" then
+			ans = "R"
+	elseif pa == "357" then
+		if self.Primary.Damage < 42 then
+				ans = "M"
+		else
+			ans = "U"
+		end
+	elseif pa == "smg1" then
+		if not pia then
+			ans = "S"
+		else
+			ans = "M"
+		end
+	elseif pa == "ar2" then
+		ans = "N"
+	elseif pa == "SniperRound" then
+		if self.Primary.Damage < 82 then
+			ans = "V"
+		else
+			ans = "W"
+		end
+	end
+
+	return ans
+end
+
 function SWEP:LoadUserProfile( filepath ) -- IMPLEMENT ME!
 	self:DebugTalk("<> Loading User Profile <>")
 	if not filepath then
@@ -616,21 +725,37 @@ function SWEP:Deploy()
 	self:SetIronsights(false)
 	--self:SetHoldType( "357" ) -- GetConVarNumber("cl_swep_FOV")
 	--self:Talk("Activity Translate: "..tostring(self.ActivityTranslate))
-	
+	self:DebugTalk("\n> VehicleApproved = "..tostring(self.VehicleApproved).."\n")
+	if self.VehicleApproved == true  then
+		-- Let them be
+		self:DebugTalk("Inside of VehicleApproved\n")
+		self.Owner:SetAllowWeaponsInVehicle(true)
+	end
+
 	-- Need to use in swep function
 	self:SetFOV(GetConVarNumber("cl_swep_FOV") , 0.33 )
 	self.FireVariance = GetConVar("swep_FireVarience"):GetFloat()
-	-- UPDATE SCRIPT! @@@
-	-- Play animations
-	--	anim_name, pbr, snd, volume, idle_after, iron_off
-	--self:VMact("DRAW", 1.25, self.DrawSound, nil, true )
-	self:VMact("DRAW", self:GetDrawRate() or 1.25, self.DrawSound) --
-	self:SetNextIdle("SOON")
 	
-	t = self:GetSeqDur()
-	-- Trim next event times
-	self:SetNextPrimAndSecon(t*0.95, t*0.80)
-	self.ReloadingTime = CurTime() + t*0.2
+	if self:InVehicle() then
+		-- Catch them getting in and out of vehicles
+		-- Prevent doing anything in this call!!!
+		-- Could screw up reloads 
+		self:DebugTalk("\n\n[i] Suppressed fake draw anim and delay ("..tostring( self:GetSeqDur() )..")\n\n")
+	else
+		-- UPDATE SCRIPT! @@@
+		-- Play animations
+		--	anim_name, pbr, snd, volume, idle_after, iron_off
+		--self:VMact("DRAW", 1.25, self.DrawSound, nil, true )
+		self:VMact("DRAW", self:GetDrawRate() or 1.25, self.DrawSound) --
+		self:SetNextIdle("SOON")
+		
+		t = self:GetSeqDur()
+		-- Trim next event times
+		self:SetNextPrimAndSecon(t*0.95, t*0.80)
+		self.ReloadingTime = CurTime() + t*0.2
+		self.Weapon:SetNetworkedBool("reloading", false) -- This could be an issue with vehicles..
+
+	end
 	
 	-- Check ironsights
 	local b1 = tobool(self.IronSightsPos == nil)
@@ -644,25 +769,32 @@ function SWEP:Deploy()
 
 	--self:UpdateBones()
 	--self:Talk("Properties: " .. tostring(self.DryFires))
-	self.Weapon:SetNetworkedBool("reloading", false)
 
 	self:AdjustForAimAssist() -- Recoil still applies!!
 	
-	self:DebugTalk("<> Deploy Done<>\n")
+	self:DebugTalk("<> Deploy Done <>\n")
 	
 	return true
 end
 --]]
 function SWEP:Holster()
+--		if not IsFirstTimePredicted() then return end
+		self:DebugTalk("\n\t<> Holster <>\n")
         local b1 = CLIENT
 		local b2 = IsValid(self.Owner)
 		
         if b1 and b2 then
                 local vm = self.Owner:GetViewModel()
-				
+
                 if IsValid(vm) then
                        -- self:ResetBonePositions(vm)
                 end
+				local b3 = self:InVehicle()
+				self:DebugTalk("VEHICLE CHECKS: "..tostring(b3).." Approved?: "..tostring(self.VehicleApproved).."\n")
+				if self.VehicleApproved == true and not b3 and SERVER then
+					-- Let them be
+					self.Owner:SetAllowWeaponsInVehicle(false)
+				end
         end
 		
 		if b2 then
@@ -670,31 +802,33 @@ function SWEP:Holster()
 		end
         
 		self.Weapon:SetNetworkedBool("reloading", false)
+
 		
+		self:DebugTalk("<> Holster Done <>\n")
         return true
 end
 
-function SWEP:SetNextIdle( time, anim )
+function SWEP:SetNextIdle( t, anim )
 	--self:DebugTalk("Next idle: "..tostring(time))
 	if not self.DoesIdle then return end
-	
+	self:DebugTalk("SetNextIdle called for: "..tostring(t).."\n")
 	local NOW = CurTime() -- Just incase its too precise lol
 	--BeconOut("SetNextIdle")
-	if time and type(time) == "string" then
-		if string.upper(time) == "SOON" then
-			time = NOW + (self:GetSeqDur() * 0.95)
-		elseif string.upper(time) == "NOW" or tostring(time) == "0" then
+	if t and type(t) == "string" then
+		if string.upper(t) == "SOON" then
+			t = NOW + (self:GetSeqDur() * 0.95)
+		elseif string.upper(t) == "NOW" or tostring(t) == "0" then
 			-- There was a schema change...
 			-- This needs to be worked with...
 			self:Idle(anim)
 		end
 	end
 	--self:DebugTalk("01 NextIdle: "..tostring(NextIdle).. " VS "..tostring(CurTime()).."\n")
-	if not time then 
+	if not t then 
 		NextIdle = CurTime()
-	elseif not(time + self:GetSeqDur() < NOW) then
+	elseif not(t + self:GetSeqDur() < NOW) then
 		-- Make sure the time isnt in the PAST
-		NextIdle = time + self:GetSeqDur()
+		NextIdle = t + self:GetSeqDur()
 		--self:DebugTalk("O2 NextIdle: "..tostring(NextIdle).. " VS "..tostring(CurTime()).."\n")
 	else
 		ErrorNoHalt("\n[!] Idle timers are getting behind!\n")
@@ -704,15 +838,24 @@ end
 function SWEP:Idle( anim ) -- Yuz
 	if SERVER then return end
 	
-	local b1 = (self.ReloadingTime or 0) > CurTime()
+	local b1 = (self.Weapon:GetNetworkedBool( "reloading", true))
+	--(self.ReloadingTime or 0) > CurTime() -- Cant get this clientside :/
 	local b2 = false --self:GetSeqDur() > 0 -- < issue
 	
-	self:DebugTalk("@IDLE-B1: "..tostring(b1).." \n\t\tIDLE-B2: "..tostring(b2).." ("..tostring(self:GetSeqDur())..") \n\t\t<> Reloading Time: "..tostring(self.ReloadingTime).." vs CURTIME: "..CurTime().."\n")
+	self:DebugTalk("@IDLE-B1: "..tostring(b1).." \n\t\tIDLE-B2: "..tostring(b2).."\n\tSEQDUR:("..tostring(self:GetSeqDur()).."\n")
 	if b1 or b2 then return end -- not self.DoesIdle or 
+	
+	--self:InVehicle() -- Just a good casual update point
+	self:DebugTalk("\n> (IDLE) VehicleApproved = "..tostring(self.VehicleApproved).."\n")
+	if self.VehicleApproved == true  then
+		-- Let them be
+		self:DebugTalk("Inside of VehicleApproved @ IDLE\n")
+		self.Owner:SetAllowWeaponsInVehicle(true)
+	end
 	
 	self:VMact(anim or "IDLE")
 	self:SetNextIdle( CurTime() + self:GetSeqDur()*0.95)
-	self:DebugTalk("\n\tW00T\tAn Idle has occured\n\n\n\n")
+	self:DebugTalk("\n\n\tW00T\tAn Idle has occured\n\n\n\n")
 end
 
 function SWEP:DropMagPrimary(t)
@@ -948,8 +1091,8 @@ end
 /*---------------------------------------------------------
 	Reload
 ---------------------------------------------------------*/
---
-function SWEP:Reload() -- @@@ DECLUTER!
+-- DECLUTER ASAP!!!! @@@@
+function SWEP:Reload() -- @@@ DECLUTER!!!!
 	--self:DebugTalk("RELOAD START") 
 	if (self.ReloadingTime and CurTime() <= self.ReloadingTime) or (self.Weapon:GetNetworkedBool("reloading", true))  then return end
 	
@@ -984,12 +1127,7 @@ function SWEP:Reload() -- @@@ DECLUTER!
 		end
 	end
 
-	-- ENTER RELOADING PHASE
-	local arg1 = (self.Weapon:Clip1() < self.Primary.ClipSize  
-					and self.Owner:GetAmmoCount(self.Primary.Ammo) > 0) 
-					and (((self.Owner:KeyPressed( IN_RELOAD ) and
-					not self.Owner:KeyDownLast( IN_RELOAD )) or GetConVar("swep_AutoReload"):GetBool()))
-	
+
 	-- Chambering Check
 	if tobool(self.Chambers) then
 		-- This area is specificly designed to require 2 Chambering motions to be done
@@ -1004,9 +1142,14 @@ function SWEP:Reload() -- @@@ DECLUTER!
 		end
 	end
 	
-	self:DebugTalk("<> Attempting to call shotgun reload <> "..tostring(arg1).. " & "..tostring(self.ShotgunFunctions).."\n")
+	-- ENTER RELOADING PHASE
+	local arg1 = (self.Weapon:Clip1() < self.Primary.ClipSize  
+					and self.Owner:GetAmmoCount(self.Primary.Ammo) > 0) 
+					and (((self.Owner:KeyPressed( IN_RELOAD ) and
+					not self.Owner:KeyDownLast( IN_RELOAD )) or GetConVar("swep_AutoReload"):GetBool()))
 	
 	if self.ShotgunFunctions then
+		self:DebugTalk("<> Attempting to call shotgun reload <> "..tostring(arg1).. " & "..tostring(self.ShotgunFunctions).."\n")
 		if arg1 then
 			-- So We can use the Think Function
 			
@@ -1019,20 +1162,32 @@ function SWEP:Reload() -- @@@ DECLUTER!
 	end
 	self.Weapon:SetNetworkedBool("reloading", true)
 	--self:Talk("End-ish of reload")
-	local flag = nil
-	-- Regular Reload Params
-	if not arg1 then self.Weapon:SetNetworkedBool("reloading", false) return end --@@@ Owner dead
-	flag = self.Weapon:DefaultReload( ACT_VM_RELOAD ) -- It'll do what i needs to
 	
-	if not flag then self.Weapon:SetNetworkedBool("reloading", false) return end
+	-- Regular Reload Params
+	if not arg1 then 
+		self.Weapon:SetNetworkedBool("reloading", false) 
+		return 
+	end --@@@ Owner dead
+
+	------------------------------------------------------------------------------------
+	local flag = nil
+	flag = self.Weapon:DefaultReload( ACT_VM_RELOAD ) -- It'll do what i needs to
+	------------------------------------------------------------------------------------
+	
+	if not flag then 
+		self:DebugTalk("False Reload Flag returning\n")
+		self.Weapon:SetNetworkedBool("reloading", false) 
+		return 
+	end
+	local RT = 0.0
 	--self:PrintStats(true, false)
 	
-	self:SetHoldType( self.ReloadHoldType or self.HoldType )
-	self:StandardReload() -- This really should get called btw.. important.
-	
+	RT = self:StandardReload() -- This really should get called btw.. important.
+	self.ReloadingTime = RT -- Find a way to send to clientside!! @@@
+
 	-- @@@TEST: Test this often!
 	self.Weapon:SetVar("PrimaryMagOut", false)
-	self.Weapon:SetVar("SecondaryMagOut", false)	
+	self.Weapon:SetVar("SecondaryMagOut", false)
 
 	return true
 end
@@ -1040,17 +1195,20 @@ end
 function SWEP:StandardReload() -- @@@RELOAD
 	local da_pbr = 1
 	local at
+	local fat
 	local m1 = not self.Weapon:GetVar("PrimaryMagOut")
 	local m2 = not self.Weapon:GetVar("SecondaryMagOut")
 	
+	self:SetHoldType( self.ReloadHoldType or self.HoldType )
 		  --	anim_name, pbr, snd, volume, idle_after, iron_off
 	self:VMact("RELOAD", da_pbr, nil) -- self.ReloadSound
-	self:SetNextIdle("SOON")
-	at = self:GetSeqDur()
-	
-	self.ReloadingTime = CurTime() + (at * da_pbr)
+	at = self:GetSeqDur()	
+	fat = CurTime() + ( (at * da_pbr) )
+	self:SetNextIdle("SOON") -- This may be a double call location (used in idlethink)! @@@ 
+
+	self.ReloadingTime = fat or -2
 	self:SetNextPrimAndSecon(0.98) 
-	
+
 	-- SafeTimers
 
 	if m1 then
@@ -1059,7 +1217,7 @@ function SWEP:StandardReload() -- @@@RELOAD
 	if self.Akimbo and m2 then
 		self:DropMagSecondary(at/3)
 	end
-	
+
 	self:SafeTimer( at, function()
 						-- Fall back included
 						self.Weapon:SetNetworkedBool( "reloading", false)
@@ -1074,6 +1232,7 @@ function SWEP:StandardReload() -- @@@RELOAD
 								self:SetHoldType( self.HoldType2 or self.HoldType ) -- 
 							end
 						end
+						
 					end )
 	-- Continue with checks
 	
@@ -1081,6 +1240,8 @@ function SWEP:StandardReload() -- @@@RELOAD
 		-- Check a minimum clipsize for shotguns and revolvers..
 		self:SetIronsights( false )
 	end
+
+	return fat
 end
 
 function SWEP:ChamberPrimary()
@@ -1236,8 +1397,12 @@ function SWEP:PrimaryAttack()
 
 	self.Weapon:SetVar("AkimboSide", false) -- @@@ Implement
 	local z1 = target ~= nil
-	local z2 = target:IsNPC() 
-	local z3a = target:GetPos():Distance( self.Owner:GetPos() ) 
+	local z2, z3a = false, 0
+	if z1 then
+		-- Yeah
+		z2 = target:IsNPC() 
+		z3a = target:GetPos():Distance( self.Owner:GetPos() ) 
+	end
 	local z3 = z3a < 38 -- Can be like 72
 	local b2 = z1 and z2 and z3 -- @@@ Make sv_var!
 	self:DebugTalk("Point Blank Args: "..tostring(z1).." "..tostring(z2).." "..tostring(z3).." DIST: "..tostring(z3a))
@@ -1579,7 +1744,13 @@ function SWEP:FireSpare() -- NEDDS WORK !!!!
 function SWEP:Recoil( recoil )
 	-- Recoil
 	-- @@@
-	if ( self.Owner:IsNPC() ) then return end
+	
+	-- Dont let people in vehicles or npcs experience recoil
+	if self.Owner:IsNPC() then return end
+	if (self:InVehicle() and self.Owner:GetAllowWeaponsInVehicle() ) then
+		self:DebugTalk("Prevented Recoil for WeaponsInVehicle enabled player! This bug may be fixed by now!")
+		return
+	end
 	
 	local ironOn = self.Weapon:GetNetworkedBool( "Ironsights", false ) == false
 	local b1 = ( (game.SinglePlayer() and SERVER) or ( !game.SinglePlayer() and CLIENT ) )
@@ -1684,7 +1855,7 @@ function SWEP:ShootEffects( side, recoil, anim, snd, numshot )
 	-- Primary, Secondary, or (eventually) Trinary weapons
 	-- @@@ Expand me!
 	--local eval = tobool(self.Weapon:GetVar("AkimboSide"))
-
+	
 	self:DebugTalk("\nShootEffects\n\tSIDE=" ..tostring(side)..", RECOIL"..tostring(recoil).."; ANIM: "..tostring(anim)..","..tostring(snd).."\n" )
 	if (side == 1) then -- Determine side, include trinary, OCIW
 		self:PrimaryShootEffects( recoil, anim, snd, numshot )
@@ -1852,6 +2023,7 @@ end
 function SWEP:ShootBullet( side, dmg, recoil, numbul, cone, ammo, forcedAnim, forceAmmoUsage)
 	--if (self.Weapon:Clip1() <= 0 and self.Primary.ClipSize > 0) then self:Reload() return false end
 	-- Add side consideration for effects
+
 	if (side == nil) then
 		side = 1
 	end
@@ -1904,6 +2076,8 @@ function SWEP:ShootBullet( side, dmg, recoil, numbul, cone, ammo, forcedAnim, fo
 	bullet.Damage		= dmg
 	bullet.AmmoType		= Ammo
 	
+	bullet.IgnoreEntity	= self.Owner:GetVehicle() or nil
+	
 	//PenetrateBullet	
 	bullet.Callback		= DoCallback -- Yee
 	--bullet.Callback		= OnHeadshot -- Yee
@@ -1945,7 +2119,7 @@ end
 function DoCallback( ply, tr, dmginfo )
 	-- A hub for bullet callback functions
 	--ErrorNoHalt("Im at callback")
-	OnHeadshot(ply, tr, dmginfo)
+	OnHeadshot(ply, tr, true)
 	
 	if GetConVar("swep_penetration"):GetBool() then
 		PenetrateBullet(ply, tr, dmginfo)
@@ -2093,6 +2267,7 @@ local lastval = nil;
 /*---------------------------------------------------------
 	@@@THINK
    Think about, idk, stuff I guess..
+   (CLIENT-SIDE EXCLUSIVE)
 ---------------------------------------------------------*/
 function SWEP:Think()
 
@@ -2130,11 +2305,15 @@ end
    (Exists so custom thinks dont wreck code)
 ---------------------------------------------------------*/
 function SWEP:StandardThink()
+	
 	self:ShotgunThink()
 	self:IdleThink()
-	self:RecoilThink()
+	
 	--self:HeatThink()
 
+	--self:VehicleThink()
+	-- Perhaps block some thinks based on above
+	self:RecoilThink()
 	self:ArmsThink()
 	--self:AimAssistThink() 
 	-- ^ This is now controlled under SecondaryAttack
@@ -2144,6 +2323,18 @@ end
 /*---------------------------------------------------------
    Think Moduals
 ---------------------------------------------------------*/
+function SWEP:VehicleThink()
+	-- Do some checks because were in a vehicle
+	-- and because we cant leave players with
+	-- AllowWeaponsInVehicle true to use other
+	-- sweps that may not work right with this on
+	if not self.VehicleApproved then return end
+	if not self:InVehicle() then return end
+	
+	
+	
+end
+
 function SWEP:BoneThink() -- smh
 	if not self.SupressBones then return end
 	if not self.UseHands then print("Suppressing bones YET, not using hands?\n"); return end
@@ -2161,12 +2352,12 @@ function SWEP:IdleThink()
 	-- self:DebugTalk("\tN1 NextIdle: "..tostring(NextIdle).. " VS "..tostring(CurTime()).."\n")
 	if (self.Weapon:GetNetworkedBool( "reloading", true)) then
 		NextIdle = CurTime() + self:GetSeqDur()
-		--self:DebugTalk("\tN2 NextIdle: "..tostring(NextIdle).. " VS "..tostring(CurTime()).."\n")
+		--self:DebugTalk("\nTHINK-N2 Post-Reload Idle\n\tNextIdle: "..tostring(NextIdle).. " VS "..tostring(CurTime()).."\n")
 		return
 	end
 	
 	if (NextIdle == CurTime()) then
-		--self:DebugTalk("\tN3 NextIdle: "..tostring(NextIdle).. " VS "..tostring(CurTime()).."\n")
+		self:DebugTalk("\nTHINK-N3 IDLE-TIME \n\tNextIdle: "..tostring(NextIdle).. " VS "..tostring(CurTime()).."\n")
 		self:Idle()
 	end
 	-- ###IdleTHINK
@@ -2446,20 +2637,26 @@ function SWEP:DrawStockHUD() -- @@@Relocate and integrate?
 	--ErrorNoHalt("\n DrawHud")
 
 end
-
+--[[
 /*---------------------------------------------------------
 	Checks the objects before any action is taken
 	This is to make sure that the entities haven't been removed
 ---------------------------------------------------------*/
 function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha ) -- needs work @WORK
 	-- @@@ Needs work!
-	draw.SimpleText( self.IconLetter, "CSSelectIcons", x + wide/2, y + tall*0.2, Color( 255, 210, 0, 255 ), TEXT_ALIGN_CENTER )
+	local useFont = self.SelectIconFont or "CSSelectIcons2"
+	local useFont2 = self.IconFont or "CSKillIcons2"
+	local useLetter = self.SelectIconLetter or self.IconLetter or "f"
+	
+	--MsgAll("DRAWWEPSELECT: FONT: "..tostring(useFont).." LETTER: "..tostring(useLetter).."\n")
+	draw.SimpleText( useLetter, useFont, x + wide/2, y + tall*0.2, Color( 255, 210, 0, 255 ), TEXT_ALIGN_CENTER )
 	
 	-- try to fool them into thinking they're playing a Tony Hawks game
-	draw.SimpleText( self.IconLetter, "CSSelectIcons", x + wide/2 + math.Rand(-4, 4), y + tall*0.2+ math.Rand(-14, 14), Color( 255, 210, 0, math.Rand(10, 120) ), TEXT_ALIGN_CENTER )
-	draw.SimpleText( self.IconLetter, "CSSelectIcons", x + wide/2 + math.Rand(-4, 4), y + tall*0.2+ math.Rand(-9, 9), Color( 255, 210, 0, math.Rand(10, 120) ), TEXT_ALIGN_CENTER )
+	draw.SimpleText( useLetter, useFont, x + wide/2 + math.Rand(-4, 4), y + tall*0.2+ math.Rand(-14, 14), Color( 255, 210, 0, math.Rand(10, 120) ), TEXT_ALIGN_CENTER )
+	draw.SimpleText( useLetter, useFont, x + wide/2 + math.Rand(-4, 4), y + tall*0.2+ math.Rand(-9, 9), Color( 255, 210, 0, math.Rand(10, 120) ), TEXT_ALIGN_CENTER )
 	
 end
+]]--
 
 ------------ IRON SIGHTS  -----===============================================+++++++++++++++++++++++++++++++++
 
@@ -2566,7 +2763,7 @@ function SWEP:GetArmPosition( pos, ang )
 			self.InSpeed = true
 			self.SwayScale 	= self.RunSway
 			self.BobScale 	= self.RunBob
-			self:Idle()
+			self:Idle() -- Auto Idle while running
 		end
 		
 		if (!self.DashStartTime) then
@@ -2601,8 +2798,8 @@ function SWEP:GetArmPosition( pos, ang )
 			local Offset = self.ArmOffset --or Vector(0,0,0)
 			
 			if Offset == nil then
-				-- Correct this BS
-				-- @@@BS
+				-- Correct this
+				Offset = Vector(0,0,0)
 			end
 			
 			if ( self.ArmAngle ) then
@@ -2764,7 +2961,7 @@ function SWEP:SetIronsights( b ) -- @@@
 			self:SafeTimer(IRONSIGHT_TIME/2, function()
 				self:SetHoldType( self.HoldType2 )
 				if c then
-					self:Talk("IRON IS DOWN: Attempting to idle! OH and SEQDUR = "..tostring(self:GetSeqDur()).."\n\n")
+					--self:Talk("IRON IS DOWN: Attempting to idle! OH and SEQDUR = "..tostring(self:GetSeqDur()).."\n\n")
 					self:Idle()
 				end
 			end)
@@ -3260,8 +3457,14 @@ function isTbl(arg)
 end
 
 function SWEP:IsFlooded() -- Is the weapon flooded?
-	if (self.WorksUnderWater or false) then return false end
-	return (self.Owner:WaterLevel() == 3)
+	if (self.WorksUnderWater == true) or false then 
+		-- Almost no SWEP has WorksUnderWater, default FALSE always
+		--self:DebugTalk("WATER LEVELS: DONT MATTER\n")
+		return false 
+	end
+	ans = (self.Owner:WaterLevel() == 3)
+	--self:DebugTalk("WATER LELVELS: "..tostring(self.Owner:WaterLevel()).." - > "..tostring(ans).." \n" )
+	return ans
 end
 
 function SWEP:IsMelee()
@@ -3286,8 +3489,30 @@ function SWEP:IsOwnerMoving()
 	return b
 end
 
+function SWEP:InVehicle()
+	-- Is our owner in a vehicle?
+	-- Update every call just to be thuro
+	if not CheckForNoOwner( self ) then return false end
+	self.VehicleStatus2 = self.VehicleStatus
+	self.VehicleStatus = self.Owner:InVehicle()
+	return self.VehicleStatus
+end
+
+function SWEP:InVehicleChanged()
+	-- Check vars to confirm if we have just
+	-- Entered or Exited a vehicle
+	self:InVehicle()
+	local ans = (self.VehicleStatus != self.VehicleStatus2) or false
+	self:DebugTalk(">> InVehicleChanged = ".. tostring(ans) .." | 1:".. tostring(self.VehicleStatus) .." 2:".. tostring(self.VehicleStatus2) .."\n")
+	return ans
+end
+
 function SWEP:IsAgainstWall() -- INTEGRATE ME
 	--ErrorNoHalt("<><> IS AGIANST WALL <><>\n")
+	if (self:InVehicle() or false) then 
+		return false, nil 
+	end -- Something about this doesnt feel right @@@
+	
 	local Trace = self.Owner:GetEyeTrace()
 	local ent = Trace.Entity
 	local Distance = Trace.HitPos:Distance( self.Owner:GetShootPos() )
@@ -3306,6 +3531,7 @@ function SWEP:IsRunning()  -- INTEGRATE ME
 	--return ( self.Owner:KeyDown( IN_SPEED ) and self.Owner:GetVelocity():Length() > self.Owner:GetWalkSpeed() )
 	-- Note: In most cases, you can't run while crouching
 	-- So ill make this a convar
+	if (self:InVehicle() or false) then return false end
 	local b1 = ( self.Owner:KeyDown( IN_SPEED ) and self:IsOwnerMoving() )
 	local b2 = not self.Owner:Crouching() and GetConVar("swep_IgnoreCrouchRunning"):GetBool() == false
 	return b1 and b2
@@ -3315,9 +3541,9 @@ function SWEP:AreArmsDown()
 	local b1 = self:IsRunning() 
 	local b2, ent = self:IsAgainstWall()
 	local b3 = self.Owner:OnGround() -- Might make it look weird
-	local b4 = self:IsFlooded()
-	local b5 = ent:IsValid() and (ent:IsNPC() )--or ent:ClassName() == "func_breakable" or ent:ClassName() == "func_breakable_surf")
-
+	local b4 = self:IsFlooded() -- (self.Owner:WaterLevel()==3) or self.WorksUnderWater ~= true
+	local b5 = ent ~= nil and ent:IsValid() and (ent:IsNPC() )--or ent:ClassName() == "func_breakable" or ent:ClassName() == "func_breakable_surf")
+	--self:DebugTalk("Water Level:\t"..tostring(self.WorksUnderWater).."\n")
 	--local mp = self.Weapon:GetVar("PrimaryMagOut", false) == true
 	--local ms = self.Weapon:GetVar("SecondaryMagOut", false) == true
 	--local b4 = ( mp or ms )
@@ -3475,16 +3701,61 @@ function SWEP:GetAimVector()
 end
 
 function SWEP:CurrentCone( c ) -- @@@
-
 	--Msg(tostring(c).." "..tostring(self:CanSecondaryAttack()))
 	if (c == nil or type(c)=="string")  then 
 		c = tonumber(self.Primary.Cone or self.Secondary.Cone or 0.05)
 	end
 	--Msg(tostring(c))
-
 	return tonumber(c or 0.07)*(2 - math.Clamp(CurTime() - self.Weapon:GetNetworkedFloat( "LastShootTime", 0 ), 0, 1 )) 
 end
 
+--[[--
+function SWEP:CurrentCone( c ) -- @@@
+
+	--Msg(tostring(c).." "..tostring(self:CanSecondaryAttack())) 
+	if (c == nil)  then 
+		c = tonumber(self.Primary.Cone or self.Secondary.Cone or 0.05)
+	end
+	self:DebugTalk("IN-CONE: "..tostring(c).."\n")
+	--self:Talk(">>> PRED: "..tostring(self.Weapon:GetPredictable()).." !!!!\n" )
+	if IsValid(self.Owner) and self.Owner:InVehicle() then
+		local cap 	= 10  -- this * C
+		local v 	= self.Owner:GetVehicle()
+		local mph 	= math.max( v:GetSpeed()/10, 1 )
+		local acc 	= 1 + math.abs( v:GetThrottle() )*0.2
+		local b1	= (v:IsBoosting())
+		local b = 0
+			if b1 then
+				b = 1
+			end
+		local r		= ((mph * acc)+(b)+1) 
+		c = math.Clamp( c * r, c, c * cap ) -- Capped at 6, hopefully wont need a convar
+		self:DebugTalk("Cur Cone Rate = "..tostring(r).." -> C:"..tostring(c).."\t MPH:"..tostring(mph).."\t ACC:"..tostring(acc).."\t b:"..tostring(b).."\n\n")
+	end
+	--Msg(tostring(c))
+	local mod1 = (2 - math.Clamp(CurTime() - self.Weapon:GetNetworkedFloat( "LastShootTime", 0 ), 0, 1 ))
+	local mod2
+	local arg1 = (self:IsFlooded() == true) --and (self.WorksUnderWater)
+	self:DebugTalk("Flooded?: "..tostring(self:IsFlooded()).."\tARG1: "..tostring(arg1).."\n")
+	self:DebugTalk("VARS: "..tostring(self.Owner:WaterLevel()).."\n")
+	
+	if arg1 then
+		self:DebugTalk("Underwater Cone!\n")
+		mod2 = 1.24
+	else
+		self:DebugTalk("DEFAULTIN YO\n") 
+		mod2 = 1.01
+	end
+	
+	local ans = ( tonumber(c or 0.07) * mod1) * mod2 
+	self:DebugTalk("OUT-CONE: "..tostring(ans).."  mod1: "..tostring(mod1).."  mod2: "..tostring(mod2).."\n\n")
+	self:DebugTalk("self.WorksUnderWater: "..tostring(self.WorksUnderWater).."\n")
+	return ans
+end
+--]]--
+
+
+-- Returns T if you have OWNER
 function CheckForNoOwner( SelfArg ) -- Heh, not in SWEP
 	-- Check to see if we (this swep) have an owner
 	local ans = ( SelfArg:IsValid() and
@@ -3640,13 +3911,13 @@ function SWEP:screencap()
 end
 --]]
 
-function OnHeadshot ( attacker, btr, dmginfo ) --boom headshot
-
+function OnHeadshot ( attacker, btr, eggs ) --boom headshot
+	--ErrorNoHalt("\n\n CALL PROOF \n\n")
 	local self
 	if attacker:IsWeapon() then
 		self = attacker -- That was easy!
 	else
-		self = attacker:GetActiveWeapon() or attacker
+		self = attacker:GetActiveWeapon() or attacker -- Check relevance
 	end
 
 	local b1 = btr.HitGroup == HITGROUP_HEAD
@@ -3658,17 +3929,20 @@ function OnHeadshot ( attacker, btr, dmginfo ) --boom headshot
 	--self:DebugTalk("DIST: "..tostring(d1).." > "..tostring(d2).." & "..tostring(b1).." @ "..tostring(btr.Entity:GetPos()))
 	
 	if b1 then
-		self:DebugTalk("\n\n\nENTERED HEADSHOT BLOCK: "..tostring(b2).." RANGE: "..d1.."  "..d2.." ~ "..tostring(self.Range).."\n\n\n")
+		self:DebugTalk("\n\n\nENTERED HEADSHOT BLOCK: "..tostring(b2).."\n\tRANGE: "..d1.." > "..d2.." ~ "..tostring(self.Range).."\n\n\n")
 		if CLIENT then 
-			killicon.AddFont( self.WepFolderPath, self.WepSelectFont, self.IconLetter.."D", self.IconColor ) 
+			killicon.AddFont( self.ClassName, self.IconFont, self.IconLetter.."D", Color( 255, 80, 0, 255 ) ) 
 		end
-		if b2 then
+		if b2 and eggs then
 			
 			self:Talk("Nice Shot!")
 			attacker:EmitSound("vo/the one and only.wav")
 		end
 	else
-		if CLIENT then killicon.AddFont( self.WepFolderPath, self.WepSelectFont, self.IconLetter, self.IconColor ) end
+		if CLIENT then 
+			killicon.AddFont( self.ClassName, self.IconFont, self.IconLetter, Color( 255, 80, 0, 255 ) ) 
+		end
+		-- Still need this
 	end
 	--ErrorNoHalt("CALLED")
 end 
@@ -3735,10 +4009,17 @@ function GetNewDamage(basedmg, material, penetration_distance)
 	return dmg
 end
 
+function PenetrateCallBackGroup( ply, tr, dmginfo )
+	
+	PenetrateBullet( ply, tr, dmginfo )
+	OnHeadshot(ply, tr, false) -- Just to stay consistant
+end
 
 function PenetrateBullet( ply, tr, dmginfo )
 	--local ply = self.Owner
 	--local HalfDamageDistance = 
+	
+	
 	
 	if DEBUG_GMODCSS_WEAPON_PENETRATION then
 		debugoverlay.Line(tr.StartPos, tr.HitPos, DEBUG_GMODCSS_WEAPON_PENETRATION_OVERLAY_LIFE, Color(255,0,0), true)
@@ -3816,17 +4097,23 @@ function PenetrateBullet( ply, tr, dmginfo )
 	
 	if DEBUG_GMODCSS_WEAPON_PENETRATION_PRINT then print("...DMG:",remaining_damage) end
 	
+	local dmgf = 2
+	local car = dmginfo.Entity
+	if IsValid(car) and car:IsVehicle() and( ply == car:GetDriver() ) then
+		dmgf = 1
+	end
+	
 	if remaining_damage > 0 and exit_point != nil then
 		local bullet 		= {}
 		bullet.Num    		= 1
 		bullet.Src    		= exit_point
 		bullet.Dir    		= tr.Normal
-		bullet.Spread 		= Vector(0,0,0)
+		bullet.Spread 		= Vector(0,0,0) -- Randomize by N?
 		bullet.Tracer 		= 0 -- Hmmm...
 		bullet.TracerName 	= nil -- Tracers[GetConVarNumber("swep_tracer")]
 		bullet.Force  		= remaining_damage/2
 		bullet.Damage 		= remaining_damage
-		bullet.Callback 	= PenetrateBullet
+		bullet.Callback 	= PenetrateCallBackGroup
 		
 		ply:FireBullets(bullet)
 		

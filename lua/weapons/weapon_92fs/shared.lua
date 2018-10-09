@@ -17,10 +17,13 @@ if ( CLIENT ) then
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 1
 	SWEP.SlotPos			= 5
-	SWEP.IconLetter			= "a"
-	SWEP.WepSelectLetter	= "a"
+
+	SWEP.IconLetter			= "y"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "Y"
+	SWEP.SelectIconFont		= "CSSelectIcons"
 	
-	killicon.AddFont( "weapon_92fs", SWEP.WepSelectFont, SWEP.IconLetter, SWEP.IconColor )
+	killicon.AddFont( "weapon_92fs", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 
@@ -49,7 +52,7 @@ SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "pistol"
 
 SWEP.DryFires				= true
-SWEP.EmpytyIdleAnim			= ACT_VM_DRAW
+SWEP.EmpytyIdleAnim			= ACT_VM_DRAW -- This may be a fun use case
 
 SWEP.IronSightsPos = Vector(-3.961, -2, 0.519)
 SWEP.IronSightsAng = Vector(0.1, 0.064, 0)

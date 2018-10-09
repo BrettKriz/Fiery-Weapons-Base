@@ -12,11 +12,13 @@ if ( CLIENT ) then
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 2
 	SWEP.SlotPos			= 4
-	SWEP.IconLetter			= "l"
-	SWEP.WepSelectLetter	= "l"
-	SWEP.WepFolderPath		= "weapon_mac10"
 	
-	killicon.AddFont( SWEP.WepFolderPath, "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
+	SWEP.IconLetter			= "l"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "L"
+	SWEP.SelectIconFont		= "CSSelectIcons"
+	
+	killicon.AddFont( "weapon_mac10", "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 
@@ -41,7 +43,7 @@ SWEP.Primary.Damage			= 24
 SWEP.Primary.NumShots		= 1
 SWEP.Primary.Cone			= 0.038
 SWEP.Primary.ClipSize		= 35
-SWEP.Primary.Delay			= 0.085
+SWEP.Primary.Delay			= 0.062
 SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "357"
 

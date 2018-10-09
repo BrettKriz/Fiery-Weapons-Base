@@ -12,12 +12,14 @@ if ( CLIENT ) then
 	SWEP.Lore				= "A legendary handgun!\nFeel the history flow though your fingers!.."
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 1
-	SWEP.SlotPos			= 5
-	SWEP.IconLetter			= "a"
-	SWEP.WepSelectLetter	= "a"
-	SWEP.WepFolderPath		= "weapon_colt45"
+	SWEP.SlotPos			= 2
+
+	SWEP.IconLetter			= "y"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "Y"
+	SWEP.SelectIconFont		= "CSSelectIcons"
 	
-	killicon.AddFont( SWEP.WepFolderPath, "CSKillIcons", SWEP.IconLetter, SWEP.IconColor )
+	killicon.AddFont( "weapon_colt45", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 
@@ -32,7 +34,7 @@ SWEP.HoldType2				= "onehand"
 SWEP.ReloadHoldType			= "onehand"
 
 SWEP.ViewModel				= "models/weapons/v_colt.mdl"
-SWEP.WorldModel				= "models/weapons/w_pistol.mdl"
+SWEP.WorldModel				= "models/weapons/w_pistol.mdl" -- Afix w_colt?
 SWEP.Mag					= "models/weapons/w_pist_elite_mag.mdl"
 --SWEP.WorldModel				= "models/weapons/w_colt.mdl"
 SWEP.ViewModelFlip			= false
@@ -47,6 +49,8 @@ SWEP.Primary.ClipSize		= 7
 SWEP.Primary.Delay			= 0.05
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "357"
+
+SWEP.Range						= 55 *(12*3) -- Yards
 
 SWEP.WorldModelHoldFix		= !true -- Fix the DoD:S Model
 
@@ -78,4 +82,5 @@ SWEP.EmptyDrawAnim			= ACT_VM_DRAW_EMPTY
 
 SWEP.EmpytyIdleAnim			= ACT_VM_IDLE_EMPTY
 SWEP.IdleAnim 				= ACT_VM_IDLE
+
 /*---------------------------------------------------------*/

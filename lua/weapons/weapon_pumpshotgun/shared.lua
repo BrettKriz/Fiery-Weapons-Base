@@ -13,10 +13,13 @@ if ( CLIENT ) then
 	SWEP.Slot				= 2
 	SWEP.SlotPos			= 3
 	SWEP.Note				= "It looks beat up and modified.."
-	SWEP.IconLetter			= "k"
-	SWEP.WepSelectLetter		= "k"
 	
-	killicon.AddFont( "weapon_pumpshotgun", "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
+	SWEP.IconLetter			= "k"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "K"
+	SWEP.SelectIconFont		= "CSSelectIcons"
+	
+	killicon.AddFont( "weapon_pumpshotgun", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 

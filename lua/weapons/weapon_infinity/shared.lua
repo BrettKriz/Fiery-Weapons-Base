@@ -10,13 +10,15 @@ if ( CLIENT ) then
 
 	SWEP.PrintName			= "SVI Ininity .50AE"			
 	SWEP.Author				= "Nova Prospekt"
-
 	SWEP.Slot				= 1
 	SWEP.SlotPos			= 1
+
 	SWEP.IconLetter			= "f"
-	SWEP.WepSelectLetter	= "f"
-	
-	killicon.AddFont( "weapon_infinity", "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "f"
+	SWEP.SelectIconFont		= "CSSelectIcons3"
+	--
+	killicon.AddFont( "weapon_infinity", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 
 end
 
@@ -39,7 +41,7 @@ SWEP.DrawSound				= Sound( "weapons/infinity/sliderelease.wav" )
 SWEP.ReloadSound			= Sound( "weapons/infinity/rel.wav" )
 SWEP.Primary.Sound			= Sound( "weapons/infinity/svi.wav" )
 SWEP.Primary.Recoil			= 1.8
-SWEP.Primary.Damage			= 64
+SWEP.Primary.Damage			= 66
 SWEP.Primary.NumShots		= 1
 SWEP.Primary.Cone			= 0.042
 SWEP.Primary.ClipSize		= 10

@@ -12,12 +12,13 @@ if ( CLIENT ) then
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 1
 	SWEP.SlotPos			= 3
-	SWEP.IconLetter			= "!"
-	SWEP.WepSelectLetter	= "!!"
-	SWEP.WepSelectFont		= "hl2mp"
-	SWEP.WepFolderPath		= "weapon_fiery_base_pistol"
-	
-	killicon.AddFont( SWEP.WepFolderPath, "CSKillIcons", SWEP.IconLetter, SWEP.IconColor )
+
+	SWEP.IconLetter			= "c"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "a"
+	SWEP.SelectIconFont		= "CSSelectIcons3"
+	--
+	killicon.AddFont( "weapon_fiery_base_pistol", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 
@@ -26,8 +27,9 @@ SWEP.Base					= "weapon_fiery_base"
 
 SWEP.Spawnable				= false
 SWEP.AdminSpawnable			= false
-SWEP.HoldType				= "pistol"
-SWEP.HoldType2				= "onehand"
+
+SWEP.HoldType				= "csspistol"
+SWEP.HoldType2				= "357"
 SWEP.ReloadHoldType			= "pistol"
 
 SWEP.ViewModel				= "models/weapons/v_pistol.mdl"

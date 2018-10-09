@@ -17,10 +17,13 @@ if ( CLIENT ) then
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 1
 	SWEP.SlotPos			= 5
-	SWEP.IconLetter			= "a"
-	SWEP.WepSelectLetter	= "a"
 	
-	killicon.AddFont( "weapon_m9", "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
+	SWEP.IconLetter			= "y"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "Y"
+	SWEP.SelectIconFont		= "CSSelectIcons"
+	
+	killicon.AddFont( "weapon_m9", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 
@@ -35,7 +38,7 @@ SWEP.HoldType				= "csspistol"
 SWEP.HoldType2				= "onehand"
 SWEP.ViewModel				= "models/weapons/v_pist_beretta.mdl"
 SWEP.WorldModel				= "models/weapons/w_pist_elite_single.mdl"
-SWEP.ViewModelFlip			= !false -- Defaults true
+SWEP.ViewModelFlip			= true -- Defaults true
 
 SWEP.Weight					= 4
 

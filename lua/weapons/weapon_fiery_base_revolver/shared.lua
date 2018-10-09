@@ -11,13 +11,14 @@ if ( CLIENT ) then
 	SWEP.PrintName			= "Fiery REVOLVER Base"			
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 1
-	SWEP.SlotPos			= 3
-	SWEP.IconLetter			= "!"
-	SWEP.WepSelectLetter	= "!!"
-	SWEP.WepSelectFont		= "hl2mp"
-	SWEP.WepFolderPath		= "weapon_fiery_base_pistol"
-	
-	killicon.AddFont( SWEP.WepFolderPath, "CSKillIcons", SWEP.IconLetter, SWEP.IconColor )
+	SWEP.SlotPos			= 1
+
+	SWEP.IconLetter			= "."
+	SWEP.IconFont			= "HLKillIcons"
+	SWEP.SelectIconLetter	= "F"
+	SWEP.SelectIconFont		= "HLSelectIcons"
+	--
+	killicon.AddFont( "weapon_fiery_base_revolver", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 

@@ -15,17 +15,21 @@ if ( CLIENT ) then
 	SWEP.Lore				= "The suppressor seems to be welded on..."
 	SWEP.Slot				= 1
 	SWEP.SlotPos			= 5
-	SWEP.IconLetter			= "a"
-	SWEP.WepFolderPath		= "weapon_fiery_usp_s"
 	
-	killicon.AddFont( SWEP.WepFolderPath, "csd", SWEP.IconLetter, SWEP.IconColor )
+	SWEP.IconLetter			= "a"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "A"
+	SWEP.SelectIconFont		= "CSSelectIcons"
+	
+	killicon.AddFont( "weapon_fiery_usp_s", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 SWEP.Category				= "Fiery"
 SWEP.Base					= "weapon_fiery_base_pistol"
 
-SWEP.Spawnable				= true
-SWEP.AdminSpawnable			= true
+SWEP.HoldType				= "csspistol"
+SWEP.HoldType2				= "onehand"
+SWEP.ReloadHoldType			= "csspistol"
 
 SWEP.ViewModel				= "models/weapons/cstrike/c_pist_usp.mdl"
 SWEP.ViewModelFlip			= false
@@ -38,7 +42,7 @@ SWEP.Primary.Damage			= 18
 SWEP.Primary.NumShots		= 1
 SWEP.Primary.Cone			= 0.035
 SWEP.Primary.ClipSize		= 12
-SWEP.Primary.Delay			= 0.05
+SWEP.Primary.Delay			= 0.052
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "357"
 

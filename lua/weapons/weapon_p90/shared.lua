@@ -11,12 +11,15 @@ if ( CLIENT ) then
 	SWEP.PrintName			= "P90 5.7" -- 5.7			
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 2
-	SWEP.SlotPos			= 3
-	SWEP.IconLetter			= "m"
-	SWEP.WepSelectLetter	= "m"
-	SWEP.WepFolderPath		= "weapon_p90"
+	SWEP.SlotPos			= 2
+	SWEP.WepFolderPath		= 
 	
-	killicon.AddFont( SWEP.WepFolderPath, "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
+	SWEP.IconLetter			= "m"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "M"
+	SWEP.SelectIconFont		= "CSSelectIcons"
+	
+	killicon.AddFont( "weapon_p90", "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 

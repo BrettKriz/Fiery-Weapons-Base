@@ -13,12 +13,13 @@ if ( CLIENT ) then
 	--SWEP.Lore				= "The only option is 3 shot burst.."
 	SWEP.Slot				= 3
 	SWEP.SlotPos			= 1
-	SWEP.IconLetter			= "w"
-	SWEP.WepSelectLetter	= "w"
-	SWEP.IconColor			= Color( 255, 120, 0, 255 )
-	SWEP.WepFolderPath		= "weapon_m16a2"
 	
-	killicon.AddFont( SWEP.WepFolderPath, "CSKillIcons", SWEP.IconLetter, SWEP.IconColor )
+	SWEP.IconLetter			= "w"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "W"
+	SWEP.SelectIconFont		= "CSSelectIcons"
+	
+	killicon.AddFont( "weapon_m16a2", "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 

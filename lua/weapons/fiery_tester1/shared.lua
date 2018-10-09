@@ -14,7 +14,7 @@ if ( CLIENT ) then
 	SWEP.SlotPos			= 3
 	SWEP.IconLetter			= "X"
 	SWEP.ViewModelFOV		= 90
-	SWEP.AutomaticFrameAdvance =  true -- animations
+	--SWEP.AutomaticFrameAdvance =  true -- animations
 
 
 	

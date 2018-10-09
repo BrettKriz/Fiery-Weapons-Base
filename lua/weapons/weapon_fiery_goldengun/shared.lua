@@ -17,11 +17,13 @@ if ( CLIENT ) then
 	SWEP.Lore				= "Its made out of solid gold, wow!"
 	SWEP.Slot				= 1
 	SWEP.SlotPos			= 0
-	SWEP.IconLetter			= "a"
-	SWEP.WepSelectLetter	= "a"
-	SWEP.WepSelectFont		= "CSKillIcons"
+
+	SWEP.IconLetter			= "f"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "F"
+	SWEP.SelectIconFont		= "CSSelectIcons"
 	
-	killicon.AddFont( "weapon_fiery_goldengun", SWEP.WepSelectFont, SWEP.IconLetter, Color(222,111,11) )
+	killicon.AddFont( "weapon_fiery_goldengun", SWEP.IconFont, SWEP.IconLetter, Color(222,111,11) )
 	
 end
 

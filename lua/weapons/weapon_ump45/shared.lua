@@ -10,11 +10,15 @@ if ( CLIENT ) then
 
 	SWEP.PrintName			= "UMP .45"			
 	SWEP.Author				= "Nova Prospekt"
+	SWEP.Note				= "Extended magazine"
 	SWEP.Slot				= 2
 	SWEP.SlotPos			= 3
-	SWEP.Note				= "Extended magazine"
+	
+	
 	SWEP.IconLetter			= "q"
-	SWEP.WepSelectLetter	= "q"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "Q"
+	SWEP.SelectIconFont		= "CSSelectIcons"
 	
 	killicon.AddFont( "weapon_ump45", "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	

@@ -13,10 +13,13 @@ if ( CLIENT ) then
 	SWEP.Note				= "\"Tactical Machine-Pistol\"\n..The suppressor seems to be welded on..."
 	SWEP.Slot				= 2
 	SWEP.SlotPos			= 3
-	SWEP.IconLetter			= "d"
-	SWEP.WepSelectLetter	= "+"
 	
-	killicon.AddFont( "weapon_tmp", "CSKillIcons", SWEP.IconLetter, SWEP.IconColor )
+	SWEP.IconLetter			= "d"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "D"
+	SWEP.SelectIconFont		= "CSSelectIcons"
+	
+	killicon.AddFont( "weapon_tmp", "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 
@@ -50,6 +53,8 @@ SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "pistol"
 
 SWEP.DoesIdle				= true
+
+-- Always silenced var here
 
 SWEP.IronSightsPos = Vector(-7, 0, 2.5) -- Needs revisit
 SWEP.IronSightsAng = Vector(0, 0, 0)

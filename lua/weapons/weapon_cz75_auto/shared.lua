@@ -16,7 +16,7 @@ if ( CLIENT ) then
 	SWEP.WepSelectLetter	= "u"
 	SWEP.WepFolderPath		= "weapon_cz75_auto"
 	
-	killicon.AddFont( SWEP.WepFolderPath, SWEP.WepSelectFont, SWEP.IconLetter, SWEP.IconColor )
+	killicon.AddFont( SWEP.WepFolderPath, "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 

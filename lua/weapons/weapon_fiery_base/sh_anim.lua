@@ -130,7 +130,7 @@ function SWEP:SetHoldType( t )
 	self.ActivityTranslate [ ACT_RANGE_ATTACK1 ] 				= index+8
 	self.ActivityTranslate [ ACT_MP_SWIM ] 						= index+9
 	
-	
+	self:Talk("\nself.ActivityTranslate [ ACT_MP_ATTACK_STAND_PRIMARYFIRE ] = "..tostring(self.ActivityTranslate [ ACT_MP_ATTACK_STAND_PRIMARYFIRE ]).."\n")
 	-- Add convar for using paassive or normal while taking cover. for rp 
 	
 	-- create schemes --

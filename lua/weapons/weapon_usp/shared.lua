@@ -1,4 +1,4 @@
-w/*=====================================*\
+/*=====================================*\
 		NOVA PROSPEKT ~ 3/20/2014
 \*=====================================*/
 
@@ -12,10 +12,13 @@ if ( CLIENT ) then
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 1
 	SWEP.SlotPos			= 5
-	SWEP.IconLetter			= "a"
-	SWEP.WepSelectLetter	= "d"
 	
-	killicon.AddFont( "weapon_usp", "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
+	SWEP.IconLetter			= "a"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "A"
+	SWEP.SelectIconFont		= "CSSelectIcons"
+	
+	killicon.AddFont( "weapon_usp", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 
@@ -34,16 +37,16 @@ SWEP.WorldModel				= "models/weapons/w_pist_usp.mdl"
 SWEP.Weight					= 4
 
 SWEP.Primary.Sound			= Sound( "Weapon_usp.Single" )
-SWEP.Primary.Recoil			= 1.1
-SWEP.Primary.Damage			= 30
+SWEP.Primary.Recoil			= 1.3
+SWEP.Primary.Damage			= 32
 SWEP.Primary.NumShots		= 1
 SWEP.Primary.Cone			= 0.035
 SWEP.Primary.ClipSize		= 12
-SWEP.Primary.Delay			= 0.055
+SWEP.Primary.Delay			= 0.06
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "357"
 
-SWEP.DryFires				= true -- Unlock Dry Fire
+SWEP.DryFires				= true -- Unlock Dry Fire 
 SWEP.Silencer				= {false}
 SWEP.WorksUnderWater		= true
 

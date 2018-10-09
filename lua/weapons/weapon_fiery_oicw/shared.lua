@@ -10,18 +10,21 @@ if ( SERVER ) then
 end
 
 if ( CLIENT ) then
-	SWEP.PrintName			= "O.I.C.W. (CTF)"
+	SWEP.PrintName			= "O.I.C.W."
+	SWEP.Note				= "(CTF)"
 	--SWEP.Category 			= "HL2 Realistic Weapons"
 	
-	SWEP.ViewModelFOV		= 62
+	SWEP.ViewModelFOV		= GetConVarNumber("cl_swep_FOV")
 	SWEP.ViewModelFlip		= false
 	
 	SWEP.Slot				= 2
 	SWEP.SlotPos			= 5
 	
 	SWEP.FileName 			= "weapon_fiery_OICW"
-	SWEP.IconFont 			= "HalfLife2"
+	SWEP.IconFont 			= "HLKillIcons2"
 	SWEP.IconLetter			= "f"
+	SWEP.SelectIconLetter	= "f"
+	SWEP.SelectIconFont		= "HLSelectIcons"
 
 	
 --	surface.CreateFont("halflife2", ScreenScale(30), 500, true, true, "CSKillIcons")
@@ -47,7 +50,7 @@ SWEP.EjectDelay				= 0.02
 SWEP.Instructions 			= "Damage: 20% \nRecoil: 36% \nPrecision: 75% \nType: Automatic and Burst \nRate of Fire: 630 rounds per minute"
 
 SWEP.Base					= "weapon_fiery_base_auto_rifle"
-SWEP.Category 				= "Fiery Weapons"	// -- SWEP Category
+SWEP.Category 				= "Fiery"	// -- SWEP Category
 SWEP.HoldType				= "rifle"
 SWEP.HoldType2				= "hipfire2"
 SWEP.UseHands				= false
@@ -60,10 +63,11 @@ SWEP.WorldModel				= "models/ctf_weapons/w_oicw.mdl"
 
 SWEP.ReloadSound			= Sound("weapons/oicw/ar2_reload.wav")
 
-SWEP.Primary.Sound			= Sound( "weapons/oicw/ar2_fire1.wav" )
-SWEP.Primary.Recoil			= .36
-SWEP.Primary.Damage			= 20
+SWEP.Primary.Sound			= Sound( "weapons/oicw/ar2_fire1.wav" ) --Sound( "weapons/oicw/ar2_fire3.wav" )
+SWEP.Primary.Recoil			= 0.46
+SWEP.Primary.Damage			= 28
 SWEP.Primary.NumShots		= 1
+SWEP.Primary.BurstFire		= 2
 SWEP.Primary.Cone			= 0.025
 SWEP.Primary.ClipSize		= 30
 SWEP.Primary.Delay			= 0.07
@@ -73,99 +77,19 @@ SWEP.Primary.Ammo			= "ar2"
 
 SWEP.Secondary.Ammo			= "SMG1_Grenade"
 SWEP.Launcher				= true
-SWEP.IronSightsPos = Vector (0, 0, 0)
-SWEP.IronSightsAng = Vector (0, 0, 0)
 
+SWEP.IronSightsPos = Vector(-7.261, -7.22, 4.599)
+SWEP.IronSightsAng = Vector(5, 0, -5)
 
-SWEP.data 					= {}
-SWEP.mode 					= "auto"
+SWEP.FireMode				= 1 -- INDEX
+SWEP.data 					= {} -- VERY IMPORTANT
+SWEP.data.modes				= {} -- DIDO 
+SWEP.data.modes[1]			= 3 -- AUTO
+SWEP.data.modes[2]			= 2 -- BURST
+SWEP.data.modes[3]			= 1 -- SEMI
 
-SWEP.data.zoomfov 			= 45
-SWEP.data.snipefov 			= 0
-
-SWEP.data.semi 			= {}
-SWEP.data.semi.Cone 		= 0.015
-
-SWEP.data.burst 			= {}
-SWEP.data.burst.Delay 		= 0.15
-SWEP.data.burst.Cone 		= 0.04
-SWEP.data.burst.BurstDelay 	= 0.01
-SWEP.data.burst.Shots 		= 2
-SWEP.data.burst.Counter 	= 0
-SWEP.data.burst.Timer 		= 0
-
-SWEP.data.auto 				= {}
-
-/*---------------------------------------------------------
-	PrimaryAttack
----------------------------------------------------------*/
-function SWEP:PrimaryAttack()
-
-	if not self:CanPrimaryAttack() or self.Owner:WaterLevel() > 2 then return end
-	-- If your gun have a problem or if you are under water, you'll not be able to fire
-
-	self.Reloadaftershoot = CurTime() + self.Primary.Delay
-	-- Set the reload after shoot to be not able to reload when firering
-	
-	if self.mode == "burst" then
-		self.data.burst.Timer = CurTime()
-		self.Weapon:SetNextPrimaryFire(CurTime() + 0.5)
-		self.data.burst.Counter = self.data.burst.Shots - 1
-	end
-
-	self.Weapon:SetNextSecondaryFire(CurTime() + self.Primary.Delay)
-	-- Set next secondary fire after your fire delay
-
-	self.Weapon:SetNextPrimaryFire(CurTime() + self.Primary.Delay)
-	-- Set next primary fire after your fire delay
-
-	if self.mode == "burst" then
-		self.Weapon:EmitSound( Sound( "weapons/oicw/ar2_fire3.wav" ) )
-	else
-		self.Weapon:EmitSound(self.Primary.Sound)
-	end
-
-	self:RecoilPower()
-	
-
-	self:TakePrimaryAmmo(1)
-	-- Take 1 ammo in you clip
-
-	if ((SinglePlayer() and SERVER) or CLIENT) then
-		self.Weapon:SetNetworkedFloat("LastShootTime", CurTime())
-	end
-end
-
-/*---------------------------------------------------------
-SecondaryAttack
----------------------------------------------------------*/
-function SWEP:SecondaryAttack()
-
-	if self.NextSecondaryAttack > CurTime() or self.OwnerIsNPC then return end
-	self.NextSecondaryAttack = CurTime() + 0.3
-	
-	if self.Weapon:GetNetworkedBool("Scope") then
-		if self.mode == "auto" then
-			self.mode = "burst"
-		else
-			self.mode = "burst"
-		end
-	end
-	
-	if self.Owner:KeyDown(IN_USE) then
-		if self.mode == "auto" then
-			self.mode = "burst"
-			self.Weapon:SetNextSecondaryFire(CurTime() + 0.5)
-		elseif self.mode == "burst" then
-			self.mode = "semi"
-			self.Weapon:SetNextSecondaryFire(CurTime() + 0.5)
-		else
-			self.mode = "auto"
-			self.Weapon:SetNextSecondaryFire(CurTime() + 0.5)
-		end
-		self.data[self.mode].Init(self)
-	end
-end
+--SWEP.data.zoomfov 			= 45
+--SWEP.data.snipefov 			= 0
 
 ---------------------------
 -- Scope --
@@ -223,6 +147,7 @@ end
 /*---------------------------------------------------------
 RecoilPower
 ---------------------------------------------------------*/
+--[[
 function SWEP:RecoilPower()
 
 	if not self.Owner:IsOnGround() then
@@ -286,3 +211,4 @@ function SWEP:RecoilPower()
 	end
 	self.Weapon:SendWeaponAnim(ACT_VM_PRIMARYATTACK)
 end
+--]]

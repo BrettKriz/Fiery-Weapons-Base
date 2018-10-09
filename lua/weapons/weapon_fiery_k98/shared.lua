@@ -1,6 +1,3 @@
-SWEP.Name = "weapon_fiery_k98"
-SWEP.WepFolderPath = SWEP.Name
-
 if ( SERVER ) then
 
 	AddCSLuaFile( "shared.lua" )
@@ -9,20 +6,23 @@ end
 
 if ( CLIENT ) then
 
-	SWEP.PrintName			= "KAR 98K"			
+	SWEP.PrintName			= "KAR 98K"	
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 3
 	SWEP.SlotPos			= 5
+	
 	SWEP.IconLetter			= "n"
-	--SWEP.ViewModelFOV		= 50.
-	SWEP.KillFont			= "csd"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "N"
+	SWEP.SelectIconFont		= "CSSelectIcons"
 
-	killicon.AddFont( SWEP.Name, SWEP.KillFont, SWEP.IconLetter, SWEP.Color)
+	killicon.AddFont( "weapon_fiery_k98", SWEP.KillFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ))
 end
 
 SWEP.HoldType				= "rifle"
 SWEP.HoldType2				= "hipfire1"
 SWEP.ReloadHoldType			= "smg"
+
 SWEP.Base					= "weapon_fiery_base_auto_rifle"
 SWEP.Category 				= "Fiery"
 

@@ -8,16 +8,17 @@ end
 
 if ( CLIENT ) then
 
-	SWEP.PrintName			= "Desert-Eagle"			
+	SWEP.PrintName			= "Desert-Eagle .50AE"			
 	SWEP.Author				= "Nova Prospekt"
-
 	SWEP.Slot				= 1
 	SWEP.SlotPos			= 1
+
 	SWEP.IconLetter			= "f"
-	SWEP.WepSelectLetter	= "f"
-	SWEP.WepFolderPath  	= "weapon_deagle"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "F"
+	SWEP.SelectIconFont		= "CSSelectIcons"
 	
-	killicon.AddFont( SWEP.WepFolderPath, SWEP.WepSelectFont, SWEP.IconLetter, SWEP.IconColor )
+	killicon.AddFont( "weapon_deagle", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 
 end
 

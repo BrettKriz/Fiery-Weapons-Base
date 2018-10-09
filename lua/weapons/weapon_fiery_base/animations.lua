@@ -15,6 +15,7 @@ function SWEP:TestAnims()
 	
 	self:Talk("Is it cold outside? " .. tostring(self:WoldIsCold()))
 	
+	-- Check usage & Update Rate outside of DEV
 	local arod = {self.Primary.EmptyAnim,
 					self.Primary.ShootAnim,
 					self.Secondary.EmptyAnim,
@@ -463,6 +464,7 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 
 -- PRIMARY	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		if an == "PRIMARY" or an == "DRYFIRE" then -- SHOOT
+			--self:Talk("Prim "..tostring(true).."\n")
 			self.Owner:SetAnimation( PLAYER_ATTACK1 )
 			
 			if addin == "_SILENCED" then

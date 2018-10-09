@@ -16,7 +16,7 @@ ErrorNoHalt("<> cl_init ")
 SWEP.crosshair_color = {}
 
 CreateClientConVar("cl_crosshair_scale", -1,true, true)
-CreateClientConVar("cl_crosshair_color", tostring(SWEP.IconColor), true, true) -- "255 120 45 120"
+CreateClientConVar("cl_crosshair_color", tostring(Color( 255, 80, 0, 255 )), true, true) -- "255 120 45 120"
 
 cl_crosshair_r 		= CreateClientConVar("cl_crosshair_r", 255, true, false)		-- Red
 cl_crosshair_g 		= CreateClientConVar("cl_crosshair_g", 120, true, false)		-- Green
@@ -45,7 +45,7 @@ function SWEP:PrintWeaponInfo( x, y, alpha )
 		end
 		
 		str = "<font=HudSelectionText>"
-		str = str .. tostring(self.WepFolderPath) .. " (" .. tostring(self.ClassName) .. ")\n"
+		str = str .. tostring(self.ClassName) .. "\n(" .. tostring(self.Base) .. ")\n"
 		local addAuthor = ""
 		if (self.Author != "Nova Prospekt") then addAuthor = "\nNova Prospekt" end -- self.isTemplate and 
 		if ( self.Author != "" ) 			then str = str .. title_color .. "Author:</color>\t"		..text_color..self.Author..addAuthor.."</color>\n" 		end
@@ -91,50 +91,96 @@ end
 ---------------------------------------------------------*/
 function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
 	-- self.WepSelectFont = "CSSelectIcons"
+	if SERVER then return end
 	local hl2 = (self.HL2WeaponDraw == true)
 	local dods = (self.DoDWeaponDraw == true)
 	local css = (self.HL2WeaponDraw ~= true)and(self.DoDWeaponDraw ~= true)
-
-	if not self.WepSelectLetter then 
-		self.WepSelectLetter 	= self.IconLetter
-		if css then
-			self.WepSelectFont		= "CSSelectIcons"
-		elseif hl2 then
-			self.WepSelectFont		= "HL2SelectIcons"
-		elseif dods then
-			self.WepSelectFont		= "DoDSelectIcons"
-		else
-			self.WepSelectFont		= "CSSelectIcons"
-		end
-		--
+	
+	local useFont 	= self.SelectIconFont or "CSSelectIcons3"
+	local useFont2 	= self.IconFont or "CSKillIcons2"
+	local useFont3 	= self.SelectIconFont2 or "CSSelectIcons3"
+	if useFont == "HL2SelectIcons" then
+		useFont3 = "HL2SelectIcons"
 	end
-
+	local useLetter	= self.SelectIconLetter or self.IconLetter or nil
+	local useLetter2 = self.SelectIconLetter2 or string.lower(useLetter)
+	local useNFont	= self.SelectIconNumberFont or "SelectNumbers"
+	local ammoLetter = self.Primary.AmmoLetter or self:GuessCallibur()
+	-- guess calibur
+	local cal = self:GuessCallibur()
+	local bg_spread	= 2
+	local bg_n = math.Rand(0*bg_spread, bg_spread)
+	local clip1 = self.Weapon:Clip1()
+	local clip1s = tostring(tonumber(clip1))
+	local clip2 = self.Weapon:Clip2()
+	local clip2s = tostring(tonumber(clip2))
+	
+	local c0 = Color( 255, 120, 45, 255 )
 	local c1 = Color( 255, 125, 55, math.Rand(10, 120) )
 	local c2 = Color( 255, 135, 70, math.Rand(10, 120) )
-		
-	if css then
-		
-		-- HLKillIcons -- hl2mp
-		draw.SimpleText( self.WepSelectLetter, "CSSelectIcons", x + wide/2, y + tall*0.2, self.IconColor	, TEXT_ALIGN_CENTER )
+	local c3n = 20
+	local c3 = Color( c3n, c3n, c3n, 255 )
+	local c4n = 200
+	local c4 = Color( c4n, c4n, c4n, 255 )
+	local ar1 = clip1 / self.Primary.ClipSize 
+	local ar2 = clip2 / self.Secondary.ClipSize
 	
-		-- Nobody thinks this is Tony Hawks game Garry...
-		draw.SimpleText( self.WepSelectLetter, "CSSelectIcons", x + wide/2 + math.Rand(-10, 10)	, y + tall*0.2+ math.Rand(-8, 8), 				c1,	 TEXT_ALIGN_CENTER )
-		draw.SimpleText( self.WepSelectLetter, "CSSelectIcons", x + wide/2 + math.Rand(-6, 6)	, y + tall*0.2+ math.Rand(-12, 12),				c2,	TEXT_ALIGN_CENTER )
-	elseif ( hl2 ) then
-		-- Draw Half Life 2
-		self.WepSelectFont = "HLSelectIcons"
-		draw.SimpleText( self.WepSelectLetter, self.WepSelectFont, x + wide/2, y + tall*0.2, Color( 255, 120, 45, 255 ), TEXT_ALIGN_CENTER )
+	local lerpR1 = ((1-ar1) * 250)
+	local lerpG1 = ((ar1)* 250)
+	local c51 = Color( lerpR1, lerpG1, lerpG1/4, 255 )
+	
+	
+	local lerpR2 = ((1-ar2) * 250)
+	local lerpG2 = ((ar2)* 250)
+	local c52 = Color( lerpR2, lerpG2, lerpG2/4, 255 )
+	
+	local c6 = Color( 250, 5, 5, 255 )
+	local c7 = Color( 5, 250, 5, 255 )
 
-		draw.SimpleText( self.WepSelectLetter, self.WepSelectFont, x + wide/2 + math.Rand(-10, 10), y + tall*0.2+ math.Rand(-8, 8), c1, TEXT_ALIGN_CENTER )
-		draw.SimpleText( self.WepSelectLetter, self.WepSelectFont, x + wide/2 + math.Rand(-6, 6), y + tall*0.2+ math.Rand(-12, 12), c2, TEXT_ALIGN_CENTER )
-	elseif ( dods ) then
-		-- Draw Day of Defeat
-		self.WepSelectFont = "DoDSelectIcons"
-		draw.SimpleText( self.WepSelectLetter, self.WepSelectFont, x + wide/2, y + tall*0.2, Color( 255, 120, 45, 255 ), TEXT_ALIGN_CENTER )
-
-		draw.SimpleText( self.WepSelectLetter, self.WepSelectFont, x + wide/2 + math.Rand(-10, 10), y + tall*0.2+ math.Rand(-8, 8), c1, TEXT_ALIGN_CENTER )
-		draw.SimpleText( self.WepSelectLetter, self.WepSelectFont, x + wide/2 + math.Rand(-6, 6), y + tall*0.2+ math.Rand(-12, 12), c2, TEXT_ALIGN_CENTER )
+	if not useLetter then 
+		useLetter 	= self.IconLetter
+		if css then
+			useFont		= "CSSelectIcons"
+		elseif hl2 then
+			useFont		= "HL2SelectIcons"
+		elseif dods then
+			useFont		= "DoDSelectIcons"
+		end
+		-- 
 	end
+	
+	-- Display ammo in the background
+	--draw.SimpleText( cal, "CSKillIcons", x + wide/2, y + tall*0.2, c51, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP )
+	--						"SelectNumbers2"
+	
+	
+	if !true then
+		draw.SimpleText( useLetter, useFont, bg_n + x + wide/2, bg_n + y + tall*0.2, c3, TEXT_ALIGN_CENTER )
+		draw.SimpleText( useLetter, useFont, (-1*bg_n) + x + wide/2, (-1*bg_n) + y + tall*0.2, c4, TEXT_ALIGN_CENTER )
+		draw.SimpleText( useLetter, useFont, x + wide/2, y + tall*0.2, c0, TEXT_ALIGN_CENTER )
+	else
+		draw.SimpleText( useLetter, useFont, x + wide/2, y + tall*0.2, c0, TEXT_ALIGN_CENTER )
+		draw.SimpleText( useLetter2, useFont3, (-1*bg_n) + x + wide/2, (-1*bg_n) + y + tall*0.2, c4, TEXT_ALIGN_CENTER )
+		draw.SimpleText( useLetter2, useFont3, x + wide/2, y + tall*0.2, c0, TEXT_ALIGN_CENTER )
+	end
+	if clip1 > -1 and self.Primary.ClipSize > 0 then
+		local uc = c51
+		draw.SimpleText( clip1s, useNFont, x + wide/2, y + tall/2, uc, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
+	end
+	if clip2 > -1 and self.Secondary.ClipSize > 0 then
+		local uc = c52
+		draw.SimpleText( clip2s, useNFont, x + wide/2, y + tall/2, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+	end
+	
+	if true then
+		-- try to fool them into thinking they're playing a Tony Hawks game
+		draw.SimpleText( useLetter, useFont, x + wide/2 + math.Rand(-4, 4), y + tall*0.2+ math.Rand(-14, 14), c1, TEXT_ALIGN_CENTER )
+		draw.SimpleText( useLetter, useFont, x + wide/2 + math.Rand(-4, 4), y + tall*0.2+ math.Rand(-9, 9), c2, TEXT_ALIGN_CENTER )
+	else
+		draw.SimpleText( useLetter, useFont, x + wide/2 + math.Rand(-10, 10), y + tall*0.2+ math.Rand(-8, 8), c1, TEXT_ALIGN_CENTER )
+		draw.SimpleText( useLetter, useFont, x + wide/2 + math.Rand(-6, 6), y + tall*0.2+ math.Rand(-12, 12), c2, TEXT_ALIGN_CENTER )
+	end
+	
 	--[[
 	if CLIENT then
 		// Set us up the texture
@@ -150,6 +196,18 @@ function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
 	end
 	--]]
 		-- Draw weapon info box
+	
+	if clip1 > -1 and self.Primary.ClipSize > 0 then
+		local uc = c51
+		draw.SimpleText( clip1s, useNFont, x + wide/2, y + tall/2, uc, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( cal, "CSKillIcons", x + wide/2, y + tall/2, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+	end
+	if clip2 > -1 and self.Secondary.ClipSize > 0 then
+		local uc = c52
+		draw.SimpleText( clip2s, useNFont, x + wide/2, y + tall/2, uc, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM  )
+		draw.SimpleText( cal, "CSKillIcons", x + wide/2, y + tall/2, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM  )
+	end
+	
 	self:PrintWeaponInfo( x + wide + 20, y + tall * 0.95, alpha )
 	
 end

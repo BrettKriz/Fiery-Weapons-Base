@@ -21,12 +21,12 @@ if ( CLIENT ) then
 	SWEP.PrintName			= "Tec-9 Auto"
 	SWEP.Slot				= 2
 	SWEP.SlotPos			= 4
-	SWEP.IconLetter			= "l"
-	SWEP.WepSelectLetter	= "l"
-	SWEP.WepFolderPath		= "weapon_tec9"
-	SWEP.WepSelectFont		= "CSKillIcons"
+	SWEP.IconLetter			= "d"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter		= "X"
+	SWEP.SelectIconFont			= "CSSelectIcons"
 	
-	killicon.AddFont( SWEP.WepFolderPath, SWEP.WepSelectFont, SWEP.IconLetter, SWEP.IconColor )
+	killicon.AddFont( "weapon_tec9", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 

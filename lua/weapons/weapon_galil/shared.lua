@@ -12,10 +12,13 @@ if ( CLIENT ) then
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 3
 	SWEP.SlotPos			= 1
+
 	SWEP.IconLetter			= "v"
-	SWEP.WepSelectLetter	= "v"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "V"
+	SWEP.SelectIconFont		= "CSSelectIcons"
 	
-	killicon.AddFont( "weapon_galil", "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
+	killicon.AddFont( "weapon_galil", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 

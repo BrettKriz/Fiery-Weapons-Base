@@ -1,4 +1,4 @@
-/* Shared.lua */
+-- Shared.lua 
 
 ErrorNoHalt("\n\t\tMAGS SHARED\n\n")
 

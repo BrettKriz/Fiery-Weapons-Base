@@ -11,12 +11,14 @@ if ( CLIENT ) then
 	SWEP.PrintName			= "Five-Seven" -- 5.7	
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 1
-	SWEP.SlotPos			= 5
+	SWEP.SlotPos			= 2
+
 	SWEP.IconLetter			= "u"
-	SWEP.WepSelectLetter	= "u"
-	SWEP.WepFolderPath		= "weapon_five-seven"
-	ErrorNoHalt("CHECKS: WepFolder: "..tostring(SWEP.WepFolderPath).."WepFont: "..tostring(SWEP.WepSelectFont).."Letter: "..tostring(SWEP.IconLetter).."Color: "..tostring(SWEP.IconColor).."\n")
-	killicon.AddFont( SWEP.WepFolderPath, SWEP.WepSelectFont, SWEP.IconLetter, SWEP.IconColor )
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "U"
+	SWEP.SelectIconFont		= "CSSelectIcons"
+	
+	killicon.AddFont( "weapon_five-seven", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 

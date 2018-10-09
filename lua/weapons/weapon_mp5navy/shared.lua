@@ -1,3 +1,4 @@
+
 /*=====================================*\
 		NOVA PROSPEKT ~ 3/20/2014
 \*=====================================*/
@@ -10,11 +11,14 @@ if ( CLIENT ) then
 
 	SWEP.PrintName			= "MP5 Navy"			
 	SWEP.Author				= "Nova Prospekt"
-	SWEP.Note				= "100% Submersible"
+	--SWEP.Note				= "100% Submersible"-- Check for auto genertation
 	SWEP.Slot				= 2
 	SWEP.SlotPos			= 3
+	
 	SWEP.IconLetter			= "x"
-	SWEP.WepSelectLetter	= "x"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "X"
+	SWEP.SelectIconFont		= "CSSelectIcons"
 	
 	killicon.AddFont( "weapon_mp5navy", "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	

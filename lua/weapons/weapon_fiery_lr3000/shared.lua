@@ -20,7 +20,7 @@ if ( CLIENT ) then
 	SWEP.SlotPos			= 3		// -- Weapon Selection Column's Row ( How far down )
 	
 	SWEP.FileName 			= "weapon_fiery_lr3000" // -- What is the name of the FOLDER this is in?
-	SWEP.IconFont 			= "Cstrike" // -- "CSKillIcons" for CSS, "HL2MPTypeDeath" for HL2
+	SWEP.IconFont 			= "CSKillIcons" // -- "CSKillIcons" for CSS, "HL2MPTypeDeath" for HL2
 	SWEP.IconLetter			= "w" // -- Refer to a Killicon sheet
 	SWEP.WeaponSelectIconLetter		= "W"
 	

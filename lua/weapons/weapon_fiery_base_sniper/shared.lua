@@ -12,24 +12,26 @@ if ( CLIENT ) then
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 6
 	SWEP.SlotPos			= 3
-	SWEP.IconLetter			= "!"
-	SWEP.WepSelectLetter	= "!!"
-	SWEP.WepSelectFont		= "hl2mp"
-	SWEP.WepFolderPath		= "weapon_fiery_base_sniper"
-	
-	killicon.AddFont( SWEP.WepFolderPath, SWEP.WepSelectFont, SWEP.IconLetter, SWEP.IconColor )
+
+	SWEP.IconLetter			= "n"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "f"
+	SWEP.SelectIconFont		= "CSSelectIcons3"
+	--
+	killicon.AddFont( "weapon_fiery_base_sniper", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 
-SWEP.Category			= "Fiery"
-SWEP.Base				= "weapon_fiery_base"
+SWEP.Category				= "Fiery"
+SWEP.Base					= "weapon_fiery_base"
 
-SWEP.Spawnable			= false
-SWEP.AdminSpawnable		= false
-SWEP.HoldType			= "sniper"
-SWEP.HoldType2			= "hipfire1"
-SWEP.ViewModel			= "models/weapons/v_snip_awp.mdl"
-SWEP.WorldModel			= "models/weapons/w_snip_awp.mdl"
+SWEP.Spawnable				= false
+SWEP.AdminSpawnable			= false
+
+SWEP.HoldType				= "sniper"
+SWEP.HoldType2				= "hipfire1"
+SWEP.ViewModel				= "models/weapons/v_snip_awp.mdl"
+SWEP.WorldModel				= "models/weapons/w_snip_awp.mdl"
 
 SWEP.Weight					= 5
 SWEP.AutoSwitchTo			= false

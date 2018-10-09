@@ -12,14 +12,17 @@ if ( CLIENT ) then
 	SWEP.Author				= "Counter-Strike \nNova Prospekt"
 	SWEP.Slot				= 3
 	SWEP.SlotPos			= 1
-	SWEP.IconLetter			= "z"
-	SWEP.WepSelectLetter	= "z"
 	
-	killicon.AddFont( SWEP.WepSelectLetter, "CSKillIcons", SWEP.IconLetter, SWEP.IconColor )
+	SWEP.IconLetter			= "z"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "Z"
+	SWEP.SelectIconFont		= "CSSelectIcons"
+	
+	killicon.AddFont( "weapon_para", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 
-SWEP.Base					= "weapon_fiery_base_rifle"
+SWEP.Base					= "weapon_fiery_base_mg"
 SWEP.Category				= "Fiery"
 
 SWEP.Spawnable				= true
@@ -42,7 +45,7 @@ SWEP.Primary.Delay			= 0.09
 SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "ar2"
 
-SWEP.Primary.Ignite			= true
+SWEP.Primary.Ignite			= not true
 SWEP.BeltFed				= true
 
 --SWEP.IronSightsPos 		= Vector( -4.4, -3, 2 )

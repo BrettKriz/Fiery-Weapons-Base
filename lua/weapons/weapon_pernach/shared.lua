@@ -16,7 +16,7 @@ if ( CLIENT ) then
 	SWEP.WepSelectLetter	= "y"
 	SWEP.WepFolderPath		= "weapon_pernach"
 	
-	killicon.AddFont( SWEP.WepFolderPath, "CSKillIcons", SWEP.IconLetter, SWEP.IconColor )
+	killicon.AddFont( SWEP.WepFolderPath, "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 
@@ -36,13 +36,13 @@ SWEP.WorldModel				= "models/weapons/w_pist_ot33pemac.mdl"
 SWEP.Weight					= 4
 
 SWEP.Primary.Sound			= Sound( "weapons/ot33/fiveseven-1.wav" )
-SWEP.Primary.Recoil			= 0.91
-SWEP.Primary.Damage			= 19
+SWEP.Primary.Recoil			= 1.05
+SWEP.Primary.Damage			= 18
 SWEP.Primary.NumShots		= 1
 SWEP.Primary.Cone			= 0.039
 SWEP.Primary.ClipSize		= 18
 SWEP.Primary.Delay			= 0.05
-SWEP.Primary.Automatic		= false
+SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "357" -- above a .357 is a .357
 
 --							LEFT/RIGHT IN/OUT UP/DOWN			

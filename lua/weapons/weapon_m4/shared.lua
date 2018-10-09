@@ -15,11 +15,13 @@ if ( CLIENT ) then
 	SWEP.Slot				= 3
 	SWEP.SlotPos			= 1
 	SWEP.Note				= "(Semi-Auto only)"
-
-	SWEP.IconLetter			= "w"
-	SWEP.WepFolderPath		= "weapon_m4"
 	
-	killicon.AddFont( SWEP.WepFolderPath, "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
+	SWEP.IconLetter			= "w"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "W"
+	SWEP.SelectIconFont		= "CSSelectIcons"
+	
+	killicon.AddFont( "weapon_m4", "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 

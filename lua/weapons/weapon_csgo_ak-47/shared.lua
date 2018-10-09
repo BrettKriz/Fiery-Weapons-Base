@@ -8,13 +8,17 @@ end
 
 if ( CLIENT ) then
 
-	SWEP.PrintName			= "AK-47 7.62"			
+	SWEP.PrintName			= "AKM 7.62"			
 	SWEP.Author				= "Counter-Strike: Global Offensive \nNova Prospekt"
 	SWEP.Slot				= 3
 	SWEP.SlotPos			= 1
+
 	SWEP.IconLetter			= "b"
+	SWEP.IconFont			= "CSKillIcons"
+	SWEP.SelectIconLetter	= "b"
+	SWEP.SelectIconFont		= "CSSelectIcons3"
 	
-	killicon.AddFont( "weapon_csgo_ak-47", "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
+	killicon.AddFont( "weapon_csgo_ak-47", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 
