@@ -52,7 +52,7 @@ SWEP.Primary.Cone			= 0.08
 SWEP.Primary.ClipSize		= 10
 SWEP.Primary.Delay			= 0.25
 SWEP.Primary.Automatic		= false
-SWEP.Primary.Ammo			= "buckshot"
+SWEP.Primary.Ammo			= "Buckshot"
 
 SWEP.Primary.DryMagEject	= true -- PING!!
 

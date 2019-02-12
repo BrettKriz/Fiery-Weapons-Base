@@ -5,7 +5,7 @@ end
 
 if ( CLIENT ) then
 
-	SWEP.PrintName			= "TESTER 4\nCOLLISION"			
+	SWEP.PrintName			= "TESTER 4\nString Compare"			
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 3
 	SWEP.SlotPos			= 1
@@ -51,47 +51,55 @@ SWEP.IronSightsAng = Vector(0.2, -0.201, -2.5)
 
 -------------------------------------
 function SWEP:SecondaryAttack()
-
-	self:DoSpawnMagazine( self.Mag, amt, self.Primary.Ammo )
+	-- TESTS!
+	local finish
+	local start = RealTime()
+	-- Loop
+	local s1 = "cat"
+	local s2 = "tac"
+	local flag = self:CompareSTR(s1,s2)
+	self:Talk("CompareSTR =  "..tostring(flag))
 	
+	finish = RealTime()
+	self:Talk("Elapsed time: "..tostring(finish-start))
 end
 
+function SWEP:CompareSTR(s1,s2)
+	self:Talk("Comparing strings: "..tostring(s1).." & "..tostring(s2).."\n")
+	if #s1 == #s2 then
+		-- Check em out 
+		local r1 = table.ToString(self:CountSort(s1))
+		local r2 = table.ToString(self:CountSort(s2))
+		self:Talk("R1: "..tostring(r1))
+		self:Talk("R2: "..tostring(r2))
+		
+		if r1 ~= r2 then
+			return false
+		end
+	else
+		return false
+	end
+	
+	return true
+end
 
-function SWEP:DoSpawnMagazine(mag2, n, ammot)
-			--if CLIENT then return end
-			local mag		= Model( mag2 )			
-			local aim 		= self.Owner:GetAimVector()
-			local side 		= aim:Cross(Vector(0,0,1))
-			local up 		= side:Cross(aim)
-			local pos 		= self.Owner:GetShootPos() +  (aim * 24 + side * 8 + up * -10)
-			local speed		= 300
+function SWEP:CountSort(str)
+	local ans = {}
+	
+	for i = 1, #str, 1 do -- Start at one, because of addressing?
+		local cur = str[i]
+		self:Talk("#"..tostring(i).." -> " ..cur)
+		ans[cur] = (ans[cur] or 0) + 1
+	end
+	self:Talk("\n")
+	return ans
+end
 
-			item = ents.Create("sent_magazine") -- "sent_magazine"
-			
-			if !item:IsValid() then return false end
-			
-			--item:SetModel(mag)
-			--item.SetModel(mag)
-			item.MODEL = mag
-			item.AMOUNT = n
-			item.AMMOTYPE = ammot
-			
-			item:SetAngles(aim:Angle())
-			item:SetPos(pos)
-			--item:SetOwner(self.Owner)
-			item:SetPhysicsAttacker(self.Owner)
-			//alt = item:SpawnFunction(self.Owner, nil, pos)
-			
-			item:Spawn()
-			item:Activate()
-
-			--item:PhysicsInit( SOLID_VPHYSICS )
-			local phys = item:GetPhysicsObject()  	
-			if not phys:IsValid() then  		
-				item:Remove()
-				return false
-			end
-
-			item:SetVelocity(item:GetForward() * speed)
-			return item
+function SWEP:Talk(msg) -- @@@TALK
+	-- Hello world! Im a fiery SWEP!
+	-- (SERVER) and
+	if not (msg == nil) and self.Owner:IsValid() then
+		self.Owner:PrintMessage(HUD_PRINTTALK, tostring(msg))
+		
+	end
 end

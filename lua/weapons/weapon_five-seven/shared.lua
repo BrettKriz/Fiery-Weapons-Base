@@ -44,7 +44,8 @@ SWEP.Primary.Cone			= 0.035
 SWEP.Primary.ClipSize		= 20
 SWEP.Primary.Delay			= 0.05
 SWEP.Primary.Automatic		= false
-SWEP.Primary.Ammo			= "smg1" -- 5.7 ammo...
+SWEP.Primary.Ammo			= "AlyxGun" 
+SWEP.Primary.AmmoLetter		= "S"-- 5.7 ammo...
 
 SWEP.Secondary.ClipSize		= -1
 SWEP.Secondary.DefaultClip	= -1

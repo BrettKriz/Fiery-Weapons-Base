@@ -46,6 +46,7 @@ SWEP.Primary.ClipSize		= 8
 SWEP.Primary.Delay			= 0.3
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "357"
+SWEP.Primary.AmmoLetter		= "U"
 
 SWEP.IronSightsPos = Vector(-6.33, 0, 2.079)
 SWEP.IronSightsAng = Vector(0.15, 0.054, 0)

@@ -1,11 +1,12 @@
-/* Fiery Weapons Base
+--[[--
+	Fiery Weapons Base
 	Made by: Nova Prospekt
 	
 	File: ai_translations
 	Side: SV
 	
 	A Modifided weapon_cs_base
- */
+ --]]--
  
 /*---------------------------------------------------------
    Name: SetupWeaponHoldTypeForAI

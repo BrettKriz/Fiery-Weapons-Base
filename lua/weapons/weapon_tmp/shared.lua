@@ -51,6 +51,7 @@ SWEP.Primary.ClipSize		= 32
 SWEP.Primary.Delay			= 0.062
 SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "pistol"
+SWEP.Primary.AmmoLetter		= "R"
 
 SWEP.DoesIdle				= true
 

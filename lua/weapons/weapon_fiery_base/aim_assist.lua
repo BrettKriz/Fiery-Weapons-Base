@@ -1,11 +1,12 @@
-/* Fiery Weapons Base
+--[[--
+	Fiery Weapons Base
 	Made by: Nova Prospekt, CloudScript
 	
 	File: aim_assist
 	Side: Shared? CL
 	
 	A Modifided weapon_cs_base
- */
+ --]]--
 
 ----------------------------------------------------------------------------------------------------
 -- The rest of the code is sensitive aimbot code -- #DontCheat
@@ -18,6 +19,8 @@ SWEP.Aimbot.DeathSequences = {
     ["models/antlion_guard.mdl"]    = {44},
     ["models/hunter.mdl"]            = {124,125,126,127,128},
 } -- Need Adjustments
+
+-- HEADCRABS - FIX THEM
 
 function GiveMe3dDist(x1, y1, z1, x2, y2, z2)
 	-- Get 3d Distance

@@ -12,7 +12,6 @@ if ( CLIENT ) then
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 2
 	SWEP.SlotPos			= 2
-	SWEP.WepFolderPath		= 
 	
 	SWEP.IconLetter			= "m"
 	SWEP.IconFont			= "CSKillIcons"
@@ -47,7 +46,8 @@ SWEP.Primary.Cone			= 0.044
 SWEP.Primary.ClipSize		= 50
 SWEP.Primary.Delay			= 0.088
 SWEP.Primary.Automatic		= true
-SWEP.Primary.Ammo			= "smg1"
+SWEP.Primary.Ammo			= "AlyxGun"
+SWEP.Primary.AmmoLetter		= "S"
 
 SWEP.FireMode				= 1 -- INDEX
 SWEP.data 					= {} -- VERY IMPORTANT

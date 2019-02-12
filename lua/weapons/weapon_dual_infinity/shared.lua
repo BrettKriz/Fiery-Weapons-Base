@@ -35,21 +35,23 @@ SWEP.AutoSwitchFrom			= false
 SWEP.Primary.Sound			= Sound( "weapons/dual_infinity/elite-1.wav" )
 SWEP.Primary.Reload			= Sound( "" )
 SWEP.Primary.Recoil			= 0.75
-SWEP.Primary.Damage			= 30
+SWEP.Primary.Damage			= 42
 SWEP.Primary.NumShots		= 1
 SWEP.Primary.Cone			= 0.04
 SWEP.Primary.ClipSize		= 14
 SWEP.Primary.Delay			= 0.07
 SWEP.Primary.Automatic		= false
-SWEP.Primary.Ammo			= "pistol"
+SWEP.Primary.Ammo			= "357"
+SWEP.Primary.AmmoLetter		= "U"
 
 SWEP.Secondary.Sound		= Sound( "weapons/dual_infinity/elite-1.wav" )
 SWEP.Secondary.Recoil		= 0.75
-SWEP.Secondary.Damage		= 30
+SWEP.Secondary.Damage		= 42
 SWEP.Secondary.NumShots		= 1
 SWEP.Secondary.Cone			= 0.04
 SWEP.Secondary.ClipSize		= 14
 SWEP.Secondary.Delay		= 0.07
 SWEP.Secondary.Automatic	= false
-SWEP.Secondary.Ammo			= "pistol"
+SWEP.Secondary.Ammo			= "357"
+SWEP.Secondary.AmmoLetter	= "U"
 

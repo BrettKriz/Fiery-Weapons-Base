@@ -46,6 +46,7 @@ SWEP.Primary.ClipSize		= 5
 SWEP.Primary.Delay			= 0.45
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "ar2"
+SWEP.Primary.AmmoLetter		= "V"
 
 SWEP.Chambers				= true
 SWEP.WorldModelHoldFix		= true -- Fix the DoD:S Model

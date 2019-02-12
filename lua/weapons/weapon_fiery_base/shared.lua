@@ -25,6 +25,8 @@ if ( SERVER ) then
 	SWEP.AutoSwitchTo		= false
 	SWEP.AutoSwitchFrom		= false
 	
+	--resource.AddSingleFile("
+	
 	--CreateConVar("cl_holdtype", "357", {CLIENTCMD_CAN_EXECUTE, NOTIFY}) or "357"
 
 end
@@ -39,10 +41,11 @@ if ( CLIENT ) then
 	
 	SWEP.DrawAmmo				= true
 	SWEP.DrawCrosshair			= false
+	SWEP.BounceWeaponIcon 		= !false -- Toggles the "Tony Hawk" effect in all reguards
 	SWEP.ViewModelFOV			= GetConVarNumber("cl_swep_FOV")
 	-- Out of 100% visable; 
 	-- 55 Is very close, 
-	-- 80 shows arms on a majority of models
+	-- 80 shows arms on a majority of models   
 	
 	SWEP.CSMuzzleFlashes		= true
 	SWEP.CSMuzzleX				= false
@@ -80,7 +83,7 @@ if ( CLIENT ) then
 	})
 	
 	surface.CreateFont("HLKillIcons2", { -- OCIW support
-		font = "halflife2", 
+		font = "HalfLife2", 
 		size = ScreenScale(30), 
 		weight = 500
 	})
@@ -101,13 +104,26 @@ if ( CLIENT ) then
 	})
 	
 	surface.CreateFont("SelectNumbers3", {
-		font = "halflife2", 
+		font = "HalfLife2", 
 		size = ScreenScale(18), 
 		weight = 500
 	})
 	
 	
+		-- SELECT ICON FIREMODE FONTS --
+	surface.CreateFont("SelectFiremode", { 
+		font = "HalfLife2", 
+		size = ScreenScale(10), 
+		weight = 500
+	})
 	
+	surface.CreateFont("SelectFiremode2", {
+		font = "Day of Defeat Logo", 
+		size = ScreenScale(10), 
+		weight = 500
+	})
+		
+		
 		-- SELECT ICON FONTS --
 	surface.CreateFont("DODSelectIcons", {
 		font = "Day of Defeat Logo", 
@@ -137,7 +153,7 @@ if ( CLIENT ) then
 	})
 	
 	surface.CreateFont("HLSelectIcons", {
-		font = "halflife2", 
+		font = "HalfLife2", 
 		size = ScreenScale(60), 
 		weight = 500
 	})
@@ -146,8 +162,7 @@ if ( CLIENT ) then
 	-- We can render killicons and draw icons
 	-- From the information provided
 	
-	-- Test
-	SWEP.WorksUnderWater = false
+	
 end
 
 SWEP.IconColor				= Color( 255, 120, 45, 120 )
@@ -193,6 +208,9 @@ SWEP.Primary.Clips			= 1
 SWEP.Primary.DefaultClip 	= math.max( SWEP.Primary.ClipSize * SWEP.Primary.Clips, 0 ) -- Okay I lied, its not totally Obsoleet!
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "pistol"
+SWEP.Primary.AmmoFont		= nil
+SWEP.Primary.FiremodeFont	= nil
+SWEP.Primary.FiremodeLetter	= nil
 
 SWEP.Primary.PBR			= 1		-- PLay Back Rate of Primary Anim
 SWEP.Primary.BurstFire		= 0		-- A number of shots
@@ -209,7 +227,7 @@ SWEP.Secondary.IsSecondary	= true
 SWEP.Secondary.Side			= "Secondary"
 
 SWEP.Secondary.Sound		= "weapons/grenade_launcher1.wav" -- Because grenade launching uses this ;D
-SWEP.Secondary.Reload		= nil -- @@Invesitigate secondaries with independant reload
+SWEP.Secondary.Reload		= nil -- @@Invesitigate secondaries with independant reload 
 SWEP.Secondary.Recoil		= 1.5
 SWEP.Secondary.Damage		= 5
 SWEP.Secondary.NumShots		= 0
@@ -221,6 +239,9 @@ SWEP.Secondary.Clips		= 1
 SWEP.Secondary.DefaultClip	= math.max(SWEP.Secondary.ClipSize*math.max(SWEP.Secondary.Clips,1), -1)
 SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "none"
+SWEP.Secondary.AmmoLetter	= nil
+SWEP.Secondary.FiremodeFont	= nil
+SWEP.Secondary.FiremodeLetter = nil
 
 SWEP.Secondary.PBR			= 1
 SWEP.Secondary.DryFireSound	= nil -- See Dual base for this
@@ -280,8 +301,8 @@ SWEP.Primary.ShootAnim		= nil
 SWEP.Primary.EmptyAnim		= nil
 -- If the weapon should be held like a shotgun when not in iron sight
 -- If the held animation is crossbow, then it will be held like an AR2
-SWEP.Secondary.EmptyAnim	= nil			 // No dryfire anims for secondary attacks(normally)
-SWEP.Secondary.ShootAnim	= nil // Melee, Special action, Secondary fire
+SWEP.Secondary.EmptyAnim	= nil			 -- No dryfire anims for secondary attacks(normally)
+SWEP.Secondary.ShootAnim	= nil -- Melee, Special action, Secondary fire
 -- Abnormal reload, as in HL2 and DODS style pistol reloads
 SWEP.ReloadAnim				= nil
 SWEP.EmptyReloadAnim		= nil
@@ -318,20 +339,20 @@ SWEP.ReloadingTime = 0.0
 --CreateClientConVar( "swep_z", 0.009, true, true )
 --Vector(GetConVarNumber("swep_x"),GetConVarNumber("swep_y"),GetConVarNumber("swep_z"))
  	/* 
-	// Normal animations found in MOST pistols and some rifles
+	-- Normal animations found in MOST pistols and some rifles
 	SWEP.Primary.EmptyAnim		= ACT_VM_DRYFIRE
 	SWEP.Primary.ShootAnim		= ACT_VM_PRIMARYATTACK
-	// If the weapon should be held like a shotgun when not in iron sight
-	// If the held animation is crossbow, then it will be held like an AR2
-	SWEP.Secondary.EmptyAnim	= ACT_VM_FIDGET			 // No dryfire anims for secondary attacks(normally)
-	SWEP.Secondary.ShootAnim	= ACT_VM_SECONDARYATTACK // Melee, Special action, Secondary fire
-	// Abnormal reload, as in HL2 and DODS style pistol reloads
+	-- If the weapon should be held like a shotgun when not in iron sight
+	-- If the held animation is crossbow, then it will be held like an AR2
+	SWEP.Secondary.EmptyAnim	= ACT_VM_FIDGET			 -- No dryfire anims for secondary attacks(normally)
+	SWEP.Secondary.ShootAnim	= ACT_VM_SECONDARYATTACK -- Melee, Special action, Secondary fire
+	-- Abnormal reload, as in HL2 and DODS style pistol reloads
 	SWEP.ReloadAnim				= ACT_VM_RELOAD
 	SWEP.EmptyReloadAnim		= ACT_VM_RELOAD_EMPTY
-	// Once agian, Abnormal as defined above
+	-- Once agian, Abnormal as defined above
 	SWEP.DrawAnim				= ACT_VM_DRAW
 	SWEP.EmptyDrawAnim			= ACT_VM_DRAW
-	// Most Pistol, rifle, and shotgun models have these animations... Because VALVe modelers are smart!lol
+	-- Most Pistol, rifle, and shotgun models have these animations... Because VALVe modelers are smart!lol
 	SWEP.EmpytyIdleAnim			= ACT_VM_IDLE
 	SWEP.IdleAnim 				= ACT_VM_IDLE
 	*/
@@ -343,16 +364,35 @@ SWEP.ReloadingTime = 0.0
 		Tracers[5] = "StriderTracer"
 		Tracers[6] = "HelicopterTracer"
 		Tracers[7] = "GunshipTracer"
-		Tracers[8] = "LaserTracer" -- Hard to see headon
+		Tracers[8] = "LaserTracer" -- Hard to see headon 
 	AmmoTypes = {}
-		AmmoTypes["pistol"] 		= 3
-		AmmoTypes["alyxgun"] 		= 3
-		AmmoTypes["357"]			= 5
-		AmmoTypes["ar2"]			= 1
-		AmmoTypes["smg1"]			= 4
-		AmmoTypes["shotgun"]		= 7
-		AmmoTypes["buckshot"]		= 7
-		AmmoTypes["combinesniper"]	= 5	
+		AmmoTypes["AR2"]					= 1
+		AmmoTypes["AR2AltFire"]				= 2
+		AmmoTypes["SMG1"]					= 4
+		AmmoTypes["357"]					= 5
+		AmmoTypes["XBowBolt"]				= 6
+		AmmoTypes["Buckshot"]				= 7
+		AmmoTypes["RPG_Round"]				= 8
+		AmmoTypes["SMG1_Grenade"]			= 9
+		AmmoTypes["Grenade"]				= 10
+		AmmoTypes["slam"]					= 11
+		AmmoTypes["AlyxGun"]				= 12
+		AmmoTypes["SniperRound"]			= 13
+		AmmoTypes["SniperPenetratedRound"]	= 14
+		AmmoTypes["Thumper"]				= 15
+		AmmoTypes["Gravity"]				= 16
+		AmmoTypes["Battery"]				= 17
+		AmmoTypes["GaussEnergy"]			= 18
+		AmmoTypes["CombineCannon"]			= 19
+		AmmoTypes["AirboatGun"]				= 20
+		AmmoTypes["StriderMinigun"]			= 21
+		AmmoTypes["HelicopterGun"]			= 22
+		AmmoTypes["9mmRound"]				= 23
+		AmmoTypes["MP5_Grenade"]			= 24
+		AmmoTypes["Hornet"]					= 25
+		AmmoTypes["StriderMinigunDirect"]	= 26
+		AmmoTypes["CombineHeavyCannon"]		= 27
+		
 		-- FILL WITH ALL AMMO TYPES!!!!
 
 -- LOCAL VARS
@@ -381,7 +421,6 @@ SWEP.ReloadingTime = 0.0
  local swep_VehicleUsage		= CreateConVar("swep_VehicleUsage", 			0, {FCVAR_NOTIFY,FCVAR_NEVER_AS_STRING, FCVAR_SERVER_CAN_EXECUTE}, s_swep_VehicleUsage)
 
 SWEP.VehicleApproved = false
-
 SWEP.isInitialized = false and false and false -- FALSE ONLY!
 /*---------------------------------------------------------
 	Initialize
@@ -412,20 +451,20 @@ function SWEP:Initialize()
 	end
 
 	--[[
-	// init view model bone build function
+	-- init view model bone build function
 	if IsValid(self.Owner) then 
 			local vm = self.Owner:GetViewModel()
 			if IsValid(vm) then
 					--self:ResetBonePositions(vm)
 					
-					// Init viewmodel visibility
+					-- Init viewmodel visibility
 					if (self.ShowViewModel == nil or self.ShowViewModel) then
 							vm:SetColor(Color(255,255,255,255))
 					else
-							// we set the alpha to 1 instead of 0 because else ViewModelDrawn stops being called
+							-- we set the alpha to 1 instead of 0 because else ViewModelDrawn stops being called
 							vm:SetColor(Color(255,255,255,1))
-							// ^ stopped working in GMod 13 because you have to do Entity:SetRenderMode(1) for translucency to kick in
-							// however for some reason the view model resets to render mode 0 every frame so we just apply a self.DEBUG material to prevent it from drawing
+							-- ^ stopped working in GMod 13 because you have to do Entity:SetRenderMode(1) for translucency to kick in
+							-- however for some reason the view model resets to render mode 0 every frame so we just apply a self.DEBUG material to prevent it from drawing
 							vm:SetMaterial("DEBUG/hsv")                        
 					end
 			end
@@ -454,18 +493,23 @@ function SWEP:InitCorrectLogic()
 	self.VehicleStatus			= self:InVehicle() or false
 	local va		= tobool(GetConVar("swep_VehicleUsage"):GetBool()) or false
 	if va then
+		self:DebugTalk("self.VehicleApproved = true\n")
 		self.VehicleApproved = true
 	else
+		self:DebugTalk("self.VehicleApproved = false\n")
 		self.VehicleApproved = false
 	end
-	self.DebugTalk("\n> swep_VehicleUsage = "..tostring(GetConVar("swep_VehicleUsage"):GetBool()).."\n")
+	self.DebugTalk("\n> swep_VehicleUsage CV= "..tostring(GetConVar("swep_VehicleUsage"):GetBool()).." VS self = "..tostring(self.VehicleApproved).."\n")
 	
 	--AddKIFont( self.WepFolderPath or self.FileName, self.IconFont, self.IconLetter, self.IconColor) 
 	
 	self.Weapon:SetNetworkedBool("reloading", false)
 	
 	if not self.Primary.AmmoLetter then
-		self.Primary.AmmoLetter = self:GuessCallibur()
+		self.Primary.AmmoLetter = self:GuessCallibur(1)
+	end
+	if not self.Secondary.AmmoLetter then
+		self.Secondary.AmmoLetter = self:GuessCallibur(2)
 	end
 	-- Weapon path alias'
 	local n = self.WepFolderPath
@@ -519,7 +563,7 @@ function SWEP:InitCorrectLogic()
 	
 	self:AdjustForAimAssist() -- Cant remember relivance, but needed
 	
-	// -----------------------------------------------------------------------------------------//   
+	-- -------------------------------------------------------------------------------------------   
 	if self.Suppressor == true then
 		self.CSMuzzleFlashes	= true
 		self.CSMuzzleX			= true -- Pew pew! X
@@ -541,7 +585,7 @@ function SWEP:InitCorrectLogic()
 		self.Note = self.Note.."\nCaution: Flamable"
 	end
 	
-	// -----------------------------------------------------------------------------------------//
+	-- -------------------------------------------------------------------------------------------
 	
 	--[[
 	if (self.HoldType2 ~= nil and self.HoldType2 ~= "" and string.find(tostring(self.Holdtype2), "hipfire") ~= -1
@@ -606,24 +650,31 @@ function SWEP:InitCorrectLogic()
 	self.DebugTalk("@@@ LEAVING InitCorrectLogic\n")
 end
 
-function SWEP:GuessCallibur()
-	if self.Primary.AmmoLetter then return self.Primary.AmmoLetter end
+function SWEP:GuessCallibur(side)
+
+	if side == 1 and self.Primary.AmmoLetter then return self.Primary.AmmoLetter end
+	if side == 2 and self.Secondary.AmmoLetter then return self.Secondary.AmmoLetter end
+
 	local ans = "J"
 	local pa = self.Primary.Ammo 
 	local pia = self.Primary.Automatic
+	if side == 2 then
+		pa = self.Secondary.Ammo 
+		pia = self.Secondary.Automatic
+	end
 	if pa == "pistol" then
 			ans = "R"
 	elseif pa == "357" then
 		if self.Primary.Damage < 42 then
-				ans = "M"
+				ans = "M" -- 45
 		else
 			ans = "U"
 		end
 	elseif pa == "smg1" then
 		if not pia then
-			ans = "S"
+			ans = "S" -- 5.7
 		else
-			ans = "M"
+			ans = "M" -- 45
 		end
 	elseif pa == "ar2" then
 		ans = "N"
@@ -725,11 +776,15 @@ function SWEP:Deploy()
 	self:SetIronsights(false)
 	--self:SetHoldType( "357" ) -- GetConVarNumber("cl_swep_FOV")
 	--self:Talk("Activity Translate: "..tostring(self.ActivityTranslate))
+	local va		= tobool(GetConVar("swep_VehicleUsage"):GetBool()) or false
+	self.VehicleApproved = va
 	self:DebugTalk("\n> VehicleApproved = "..tostring(self.VehicleApproved).."\n")
-	if self.VehicleApproved == true  then
+	if va == true  then
 		-- Let them be
 		self:DebugTalk("Inside of VehicleApproved\n")
-		self.Owner:SetAllowWeaponsInVehicle(true)
+		if SERVER then
+			self.Owner:SetAllowWeaponsInVehicle(true)
+		end
 	end
 
 	-- Need to use in swep function
@@ -780,22 +835,29 @@ end
 function SWEP:Holster()
 --		if not IsFirstTimePredicted() then return end
 		self:DebugTalk("\n\t<> Holster <>\n")
-        local b1 = CLIENT
 		local b2 = IsValid(self.Owner)
 		
-        if b1 and b2 then
-                local vm = self.Owner:GetViewModel()
-
-                if IsValid(vm) then
-                       -- self:ResetBonePositions(vm)
-                end
-				local b3 = self:InVehicle()
-				self:DebugTalk("VEHICLE CHECKS: "..tostring(b3).." Approved?: "..tostring(self.VehicleApproved).."\n")
-				if self.VehicleApproved == true and not b3 and SERVER then
-					-- Let them be
+        if b2 then
+			if CLIENT then
+				local vm = self.Owner:GetViewModel()
+				
+				--if IsValid(vm) then
+					   -- self:ResetBonePositions(vm)
+				--end
+			end
+			local b3 = self:InVehicle()
+			local va		= tobool(GetConVar("swep_VehicleUsage"):GetBool()) or false
+			self.VehicleApproved = va
+			self:DebugTalk("VEHICLE CHECKS: !"..tostring(b3).." \n\tApproved?: "..tostring(self.VehicleApproved).." VS "..tostring(tobool(va)).."\n")
+			if va == true and not b3 then
+				-- Let them be
+				
+				if SERVER then
+					self:DebugTalk("SetAllowWeaponsInVehicle(false)\n")
 					self.Owner:SetAllowWeaponsInVehicle(false)
 				end
-        end
+			end
+		end
 		
 		if b2 then
 			self:SetHoldType( "normal" )
@@ -842,15 +904,17 @@ function SWEP:Idle( anim ) -- Yuz
 	--(self.ReloadingTime or 0) > CurTime() -- Cant get this clientside :/
 	local b2 = false --self:GetSeqDur() > 0 -- < issue
 	
-	self:DebugTalk("@IDLE-B1: "..tostring(b1).." \n\t\tIDLE-B2: "..tostring(b2).."\n\tSEQDUR:("..tostring(self:GetSeqDur()).."\n")
+	self:DebugTalk(" IDLE-B1: "..tostring(b1).." \n\t\tIDLE-B2: "..tostring(b2).."\n\tSEQDUR:("..tostring(self:GetSeqDur()).."\n")
 	if b1 or b2 then return end -- not self.DoesIdle or 
 	
 	--self:InVehicle() -- Just a good casual update point
-	self:DebugTalk("\n> (IDLE) VehicleApproved = "..tostring(self.VehicleApproved).."\n")
+	self:DebugTalk("\n> (IDLE) Vehicle Approved = "..tostring(self.VehicleApproved).."\n")
 	if self.VehicleApproved == true  then
 		-- Let them be
-		self:DebugTalk("Inside of VehicleApproved @ IDLE\n")
-		self.Owner:SetAllowWeaponsInVehicle(true)
+		self:DebugTalk("Inside of Vehicle Approved at IDLE\n")
+		if SERVER then
+			self.Owner:SetAllowWeaponsInVehicle(true)
+		end
 	end
 	
 	self:VMact(anim or "IDLE")
@@ -970,7 +1034,7 @@ function SWEP:RemoveClip()
 		self:DebugTalk(anim)
 		
 		self:SetHoldType("normal")
-		self.Owner:SetAnimation( PLAYER_IDLE )
+		self.Owner:SetAnimation( PLAYER_IDLE ) -- Relevance?
 		self:DebugTalk("[5] Completed RemoveClip\n")
 		
 	end)
@@ -1011,7 +1075,7 @@ function SWEP:SpawnMag(t, n, ammot)
 						return 
 					end
 					
-					local targ = item:EntIndex().."mag"--item:GetClass() //Give it a unique name
+					local targ = item:EntIndex().."mag"--item:GetClass() --Give it a unique name
 					ent:SetKeyValue("targetname",targ)
 					
 					local dissolver = ents.Create("env_entity_dissolver")
@@ -1251,13 +1315,13 @@ function SWEP:ChamberPrimary()
 	
 	
 	if (self.ShotgunFunction) then
-		//if (anim) then
+		--if (anim) then
 			speed = 1.25
 			self:VMact( self.Primary.Chamber , speed)			
 			self.Owner:EmitSound(self.Primary.ChamberSound or "")
-		//else
-			//self:VMact( ACT_SHOTGUN_RELOAD_FINISH , 1.25)
-		//end	
+		--else
+			--self:VMact( ACT_SHOTGUN_RELOAD_FINISH , 1.25)
+		--end	
 	else
 		speed = 2
 		self:VMact( self.Primary.Chamber , speed) -- CHANGE?
@@ -1372,13 +1436,13 @@ function SWEP:CanPrimaryAttack()
 		return false --]]
 	--elseif ar then
 		--self:Reload()
-		//GetConVar("swep_AutoReload"):GetBool() 
+		--GetConVar("swep_AutoReload"):GetBool() 
 	elseif (self.Primary.Chambered == false) then
 		if (true) then
-			// Chamber for them
+			-- Chamber for them
 			self:ChamberPrimary()
 		else
-			// Not sure?
+			-- Not sure?
 		end
 		return false, ent
 	end
@@ -1498,7 +1562,7 @@ function SWEP:PrimaryAttack()
 end
 
 function SWEP:PrimaryDelayShot()
-	// Make sure we can shoot first
+	-- Make sure we can shoot first
 	if ( !self:CanPrimaryAttack() ) then return end
 	
 	-- self.Weapon:SetNextPrimaryFire( CurTime() + 0.13+0.1 )
@@ -1525,10 +1589,10 @@ function SWEP:FireGun() -- Cant use self:Fire() ...
 	self:ShootBullet( 1, self.Primary.Damage, self.Primary.Recoil, 1, c, self.Primary.Ammo, 0)
 	self:DebugTalk("POP! FireGun() called\n")
 
-	// Remove 1 bullet from our clip
+	-- Remove 1 bullet from our clip
 	--self:TakePrimaryAmmo( 1 )
 	
-	// Punch the player's view
+	-- Punch the player's view
 	--self.Owner:ViewPunch( Angle( -1, 0, 0 ) )
 	
 	return true
@@ -2078,7 +2142,7 @@ function SWEP:ShootBullet( side, dmg, recoil, numbul, cone, ammo, forcedAnim, fo
 	
 	bullet.IgnoreEntity	= self.Owner:GetVehicle() or nil
 	
-	//PenetrateBullet	
+	--PenetrateBullet	
 	bullet.Callback		= DoCallback -- Yee
 	--bullet.Callback		= OnHeadshot -- Yee
 	
@@ -2439,7 +2503,8 @@ function SWEP:ArmsThink()
 	local b3 = not(self.Weapon:GetVar("PrimaryMagOut") and self.Weapon:GetVar("SecondaryMagOut"))
 	self.InSpeed2 = self.InSpeed -- We need to track changes
 	--if b1 == true and b2 == false then return end
-
+	--local va		= tobool(GetConVar("swep_VehicleUsage"):GetBool()) or false
+	
 	--if not self.ArmAngle and not self.ArmOffset then return end
 	if b2 and b0 then
 		self:GetArmPosition( Vector(0,0,0), Angle(0,0,0) )
@@ -2589,14 +2654,14 @@ end
 function SWEP:CustomAmmoDisplay()
 	self.AmmoDisplay = self.AmmoDisplay or {} 
  
-	self.AmmoDisplay.Draw = true //draw the display?
+	self.AmmoDisplay.Draw = true --draw the display?
  
 	if ( self.Primary.ClipSize > 0 ) then
-		self.AmmoDisplay.PrimaryClip = self:Clip1() //amount in clip
+		self.AmmoDisplay.PrimaryClip = self:Clip1() --amount in clip
 		--if not(self.Akimbo) then
-			self.AmmoDisplay.PrimaryAmmo = self:Ammo1() //amount in reserve
+			self.AmmoDisplay.PrimaryAmmo = self:Ammo1() --amount in reserve
 		--else
-		--	self.AmmoDisplay.PrimaryAmmo = self:Clip2() //amount in reserve
+		--	self.AmmoDisplay.PrimaryAmmo = self:Clip2() --amount in reserve
 		--end
 	end
 	
@@ -2608,25 +2673,25 @@ function SWEP:CustomAmmoDisplay()
 		end
 	end
  
-	return self.AmmoDisplay //return the table
+	return self.AmmoDisplay --return the table
 end
 
 function SWEP:DrawStockHUD() -- @@@Relocate and integrate?
 
-	// No crosshair when ironsights is on
+	-- No crosshair when ironsights is on
 	if ( self.Weapon:GetNetworkedBool( "Ironsights" ) == true ) then return end
 
 	local x = ScrW() / 2.0
 	local y = ScrH() / 2.0
 	local scale = 10 * self.Primary.Cone
 	
-	// Scale the size of the crosshair according to how long ago we fired our weapon
+	-- Scale the size of the crosshair according to how long ago we fired our weapon
 	local LastShootTime = self.Weapon:GetNetworkedFloat( "LastShootTime", 0 )
 	scale = scale * (2 - math.Clamp( (CurTime() - LastShootTime) * 5, 0.0, 1.0 ))
 	
 	surface.SetDrawColor( 0, 255, 0, 255 )
 	
-	// Draw an awesome crosshair
+	-- Draw an awesome crosshair
 	local gap = 40 * scale
 	local length = gap + 20 * scale
 	surface.DrawLine( x - length, y, x - gap, y )
@@ -2637,7 +2702,7 @@ function SWEP:DrawStockHUD() -- @@@Relocate and integrate?
 	--ErrorNoHalt("\n DrawHud")
 
 end
---[[
+--[[ 
 /*---------------------------------------------------------
 	Checks the objects before any action is taken
 	This is to make sure that the entities haven't been removed
@@ -2706,7 +2771,7 @@ function SWEP:GetViewModelPosition( pos, ang )
 			self.BobScale 	= 0.1
 		elseif self.Owner:KeyDown( IN_SPEED ) and not self:IsOwnerMoving() then
 			self.SwayScale 	= 2.0
-			self.BobScale 	= 2.0 -- Consider alt
+			self.BobScale 	= 2.0 -- Consider using SWEP var
 		else
 			self.SwayScale 	= 1.0
 			self.BobScale 	= 1.0
@@ -3160,7 +3225,7 @@ function SWEP:Silence() -- NEEDS ALTERATION@@@
 				self:Idle(self:GetSeqDur())
 			end
 
-			// Add or remove damage, recoil and cone when adding the silencer. I know it's complicated for nothing
+			-- Add or remove damage, recoil and cone when adding the silencer. I know it's complicated for nothing
 			self.Primary.OldRecoil = self.Primary.Recoil
 			self.Primary.Recoil = self.Primary.Recoil * self.SuppressorMulRecoil
 			
@@ -3178,7 +3243,7 @@ function SWEP:Silence() -- NEEDS ALTERATION@@@
 				self:IdleAnimation(self:GetSeqDur())
 			end
 
-			// Give the normal damage, recoil and cone when removing the silencer...
+			-- Give the normal damage, recoil and cone when removing the silencer...
 			self.Primary.Recoil = self.Primary.OldRecoil
 			self.Primary.Damage = self.Primary.OldDamage
 			
@@ -3232,7 +3297,7 @@ function SWEP:DoFireModes() -- @@@ In development
 			-- Or have the weapon recognize the number being input better.
 		end
 	elseif (m == 2) then
-		// Burst
+		-- Burst
 		self.Primary.Automatic = false
 		if (self.Owner) then
 			--self.Weapon:EmitSound("weapons/smg1/switch_burst.wav")
@@ -3509,15 +3574,22 @@ end
 
 function SWEP:IsAgainstWall() -- INTEGRATE ME
 	--ErrorNoHalt("<><> IS AGIANST WALL <><>\n")
-	if (self:InVehicle() or false) then 
+	local b1 = self:InVehicle()
+	--self:DebugTalk("B1 = "..tostring(b1).."\n")
+	if (b1) then 
+		--self:DebugTalk("Im not against a wall im in a car\n")
 		return false, nil 
 	end -- Something about this doesnt feel right @@@
 	
 	local Trace = self.Owner:GetEyeTrace()
 	local ent = Trace.Entity
 	local Distance = Trace.HitPos:Distance( self.Owner:GetShootPos() )
-	
-	if ( Trace.Hit and Distance < 30 ) then
+	--self:DebugTalk("DIST = "..tostring(Distance).."\n")
+	if ( Trace.Hit and Distance < 0.00012 and ent and ent:IsVehicle() ) then
+		-- In a car
+		--self:DebugTalk("Im not against a wall im in a car\n")
+		return false, ent
+	elseif ( Trace.Hit and Distance < 30 ) then
 	
 		return true, ent
 	else
@@ -3542,7 +3614,7 @@ function SWEP:AreArmsDown()
 	local b2, ent = self:IsAgainstWall()
 	local b3 = self.Owner:OnGround() -- Might make it look weird
 	local b4 = self:IsFlooded() -- (self.Owner:WaterLevel()==3) or self.WorksUnderWater ~= true
-	local b5 = ent ~= nil and ent:IsValid() and (ent:IsNPC() )--or ent:ClassName() == "func_breakable" or ent:ClassName() == "func_breakable_surf")
+	local b5 = ent ~= nil and ent:IsValid() and ( ent:IsNPC() or ent:IsVehicle() )--or ent:ClassName() == "func_breakable" or ent:ClassName() == "func_breakable_surf")
 	--self:DebugTalk("Water Level:\t"..tostring(self.WorksUnderWater).."\n")
 	--local mp = self.Weapon:GetVar("PrimaryMagOut", false) == true
 	--local ms = self.Weapon:GetVar("SecondaryMagOut", false) == true
@@ -3552,7 +3624,7 @@ function SWEP:AreArmsDown()
 	return (b1 and b3)
 		or (b2 and not b5) -- POINT BLANK an NPC or just a wall?
 		or b4, ent
-		
+
 end
 
 function SWEP:AdjustForAimAssist()
@@ -3897,7 +3969,7 @@ function SWEP:screencap()
 	RCD.format = "jpeg"
 	RCD.h = ScrH()
 	RCD.w = ScrW()
-	RCD.quality = 70 //100 is max quality, but 70 is good enough.
+	RCD.quality = 70 --100 is max quality, but 70 is good enough.
 	RCD.x = 0
 	RCD.y = 0
 
@@ -3920,18 +3992,19 @@ function OnHeadshot ( attacker, btr, eggs ) --boom headshot
 		self = attacker:GetActiveWeapon() or attacker -- Check relevance
 	end
 
-	local b1 = btr.HitGroup == HITGROUP_HEAD
+	local b1 = (btr.HitGroup == HITGROUP_HEAD)
 	local targ = btr.Entity:GetPos() or Vector(0,0)
 	local at = attacker:GetPos() or Vector(0, 0)
 	local d1 = math.abs( math.Distance( targ.x, targ.y, at.x, at.y ) )
 	local d2 = (self.Range or 1980)*1.125
 	local b2 =  d1 > d2  -- self.Range or 
 	--self:DebugTalk("DIST: "..tostring(d1).." > "..tostring(d2).." & "..tostring(b1).." @ "..tostring(btr.Entity:GetPos()))
-	
+	self:DebugTalk("Where did I hit? "..tostring(btr.HitGroup).."\n")
 	if b1 then
 		self:DebugTalk("\n\n\nENTERED HEADSHOT BLOCK: "..tostring(b2).."\n\tRANGE: "..d1.." > "..d2.." ~ "..tostring(self.Range).."\n\n\n")
 		if CLIENT then 
-			killicon.AddFont( self.ClassName, self.IconFont, self.IconLetter.."D", Color( 255, 80, 0, 255 ) ) 
+			self:DebugTalk("So whats my class name? "..tostring(self.ClassName).."\n")
+			killicon.AddFont( self.ClassName, self.IconFont, self.IconLetter..'D', Color( 255, 80, 0, 255 ) ) 
 		end
 		if b2 and eggs then
 			
@@ -3956,7 +4029,7 @@ end
 DEBUG_GMODCSS_WEAPON_PENETRATION = false
 DEBUG_GMODCSS_WEAPON_PENETRATION_PRINT = false
 DEBUG_GMODCSS_WEAPON_PENETRATION_OVERLAY_LIFE = 5
-GMODCSS_MAX_BULLET_PENETRATION = 35 //units
+GMODCSS_MAX_BULLET_PENETRATION = 35 --units
 GMODCSS_MAX_BULLET_PENETRATION_SEGMENTS = 10
 
 GMODCSS_BULLET_PENETRATION_MATRATES = {}
@@ -3991,7 +4064,7 @@ GMODCSS_BULLET_PENETRATION_MATRATES[MAT_TILE] = 0.5
 GMODCSS_BULLET_PENETRATION_MATRATES[MAT_VENT] = 0.04
 GMODCSS_BULLET_PENETRATION_MATRATES[MAT_WOOD] = nil
 
-// RAUBANA
+	-- RAUBANA --
 function GetNewDamage(basedmg, material, penetration_distance)
 	local rate_of_loss = 1
 	if GMODCSS_BULLET_PENETRATION_MATRATES[material] != nil then 
@@ -4004,13 +4077,12 @@ function GetNewDamage(basedmg, material, penetration_distance)
 		dist = math.min(dist,GMODCSS_BULLET_PENETRATION_MATTHICKNESS[material])
 	end
 	
-	local dmg = basedmg - (rate_of_loss * dist) - 5//1
+	local dmg = basedmg - (rate_of_loss * dist) - 5 -- 1
 	if dmg < 0 then return 0 end
 	return dmg
 end
 
 function PenetrateCallBackGroup( ply, tr, dmginfo )
-	
 	PenetrateBullet( ply, tr, dmginfo )
 	OnHeadshot(ply, tr, false) -- Just to stay consistant
 end
@@ -4028,7 +4100,7 @@ function PenetrateBullet( ply, tr, dmginfo )
 		end
 	end
 	
-	//We do a trace to determine how far the bullet would need to penetrate before exiting the object it hit.
+	--We do a trace to determine how far the bullet would need to penetrate before exiting the object it hit.
 	local penet_start = tr.HitPos + (tr.Normal*0.2)
 	local penet_end = tr.HitPos + (tr.Normal*GMODCSS_MAX_BULLET_PENETRATION)
 	
@@ -4066,7 +4138,7 @@ function PenetrateBullet( ply, tr, dmginfo )
 	
 	
 	if penet_tr.StartSolid and penet_tr.FractionLeftSolid == 0 then
-		//We need to do several segmented traces until we find our exit point.
+		--We need to do several segmented traces until we find our exit point.
 		
 		if DEBUG_GMODCSS_WEAPON_PENETRATION_PRINT then print("...segmenting trace...") end
 		
@@ -4091,9 +4163,9 @@ function PenetrateBullet( ply, tr, dmginfo )
 		exit_point = LerpVector(penet_tr.FractionLeftSolid,penet_tr.StartPos,penet_tr.HitPos)
 	end
 	
-	// Assuming the trace did, in fact, start in a solid environment,
-	// and assuming it did leave that environment,
-	// we use the FractionLeftSolid variable to begin our next bullet.
+	-- Assuming the trace did, in fact, start in a solid environment,
+	-- and assuming it did leave that environment,
+	-- we use the FractionLeftSolid variable to begin our next bullet.
 	
 	if DEBUG_GMODCSS_WEAPON_PENETRATION_PRINT then print("...DMG:",remaining_damage) end
 	
@@ -4108,7 +4180,8 @@ function PenetrateBullet( ply, tr, dmginfo )
 		bullet.Num    		= 1
 		bullet.Src    		= exit_point
 		bullet.Dir    		= tr.Normal
-		bullet.Spread 		= Vector(0,0,0) -- Randomize by N?
+		local shifty 		= 0.012
+		bullet.Spread 		= Vector(0.128, math.Rand(-1*shifty,shifty), 0) -- Randomize by N? X&Y only...
 		bullet.Tracer 		= 0 -- Hmmm...
 		bullet.TracerName 	= nil -- Tracers[GetConVarNumber("swep_tracer")]
 		bullet.Force  		= remaining_damage/2

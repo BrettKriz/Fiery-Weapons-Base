@@ -34,23 +34,25 @@ SWEP.Weight					= 8
 SWEP.Primary.Sound			= Sound( "Weapon_Glock.Single" ) -- "weapons/colt n glock/elite-1.wav"
 SWEP.ReloadSound			= Sound( "weapons/jens/magrel.wav" )
 SWEP.Primary.Recoil			= 0.8
-SWEP.Primary.Damage			= 17.25
+SWEP.Primary.Damage			= 17
 SWEP.Primary.NumShots		= 1
 SWEP.Primary.Cone			= 0.051
 SWEP.Primary.ClipSize		= 20
 SWEP.Primary.Delay			= 0.074
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "pistol"
+SWEP.Primary.AmmoLetter		= "R"
 
 SWEP.Secondary.Sound		= Sound( "weapons/colt n glock/elite-2.wav" )
 SWEP.Secondary.Recoil		= 1.2
-SWEP.Secondary.Damage		= 33
+SWEP.Secondary.Damage		= 32
 SWEP.Secondary.NumShots		= 1
 SWEP.Secondary.Cone			= 0.045
 SWEP.Secondary.ClipSize		= 8
 SWEP.Secondary.Delay		= 0.09
 SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "357"
+SWEP.Secondary.AmmoLetter	= "M"
 
 SWEP.DoesIdle				= true
 SWEP.WorldModelHoldFix		= true -- Fix the DoD:S Model

@@ -8,7 +8,7 @@ end
 
 if ( CLIENT ) then
 
-	SWEP.PrintName			= "L96 AWP"			
+	SWEP.PrintName			= "AWP L96 .338"			
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 3
 	SWEP.SlotPos			= 1
@@ -23,20 +23,20 @@ if ( CLIENT ) then
 end
 
 
-SWEP.Base				= "weapon_fiery_base_sniper"
-SWEP.Category			= "Fiery"
+SWEP.Base					= "weapon_fiery_base_sniper"
+SWEP.Category				= "Fiery"
 
-SWEP.Spawnable			= true
-SWEP.AdminSpawnable		= true
+SWEP.Spawnable				= true
+SWEP.AdminSpawnable			= true
 
-SWEP.HoldType			= "sniper"
-SWEP.HoldType2			= "hipfire2"
-SWEP.ViewModel			= "models/weapons/cstrike/c_snip_AWP.mdl"
-SWEP.WorldModel			= "models/weapons/w_snip_AWP.mdl"
+SWEP.HoldType				= "sniper"
+SWEP.HoldType2				= "hipfire2"
+SWEP.ViewModel				= "models/weapons/cstrike/c_snip_AWP.mdl"
+SWEP.WorldModel				= "models/weapons/w_snip_AWP.mdl"
 
-SWEP.Weight				= 5
-SWEP.AutoSwitchTo		= false
-SWEP.AutoSwitchFrom		= false
+SWEP.Weight					= 5
+SWEP.AutoSwitchTo			= false
+SWEP.AutoSwitchFrom			= false
 
 SWEP.Primary.Sound			= Sound( "Weapon_AWP.Single" )
 SWEP.Primary.Recoil			= 2.2
@@ -47,8 +47,8 @@ SWEP.Primary.ClipSize		= 10
 SWEP.Primary.Delay			= 1.0
 -- SWEP.Primary. DefaultClip -- OBSOLEET!	= 20
 SWEP.Primary.Automatic		= false
-SWEP.Primary.Ammo			= "ar2"
 --SWEP.Primary.ShellType      = SHELL_338MAG
+SWEP.Primary.AmmoLetter		= "W"
 
 SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "none"

@@ -48,6 +48,7 @@ SWEP.Primary.ClipSize		= 20
 SWEP.Primary.Delay			= 0.55
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "357"
+SWEP.Primary.AmmoLetter		= "T"
 
 SWEP.Secondary.ClipSize		= -1
 SWEP.Secondary.DefaultClip	= -1

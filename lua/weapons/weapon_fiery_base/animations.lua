@@ -1,12 +1,12 @@
-
-/* Fiery Weapons Base
+--[[--
+	Fiery Weapons Base
 	Made by: Nova Prospekt
 	
 	File: animations
 	Side: Shared
 	
 	A Modifided weapon_cs_base
- */
+ --]]--
  
 ErrorNoHalt("<> ANIMATIONS ")
 --AddCSLuaFile( "cl_init.lua" ) 

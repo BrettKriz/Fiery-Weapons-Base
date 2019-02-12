@@ -38,16 +38,18 @@ SWEP.Primary.ClipSize 		= 20
 SWEP.Primary.Delay 			= 0.055
 SWEP.Primary.Automatic 		= false
 SWEP.Primary.Ammo 			= "pistol"
+SWEP.Primary.AmmoLetter		= "R"
 
 SWEP.Secondary.Sound 		= Sound("weapons/mk23 n glock/elite-1.wav")
 SWEP.Secondary.Recoil		= 1.75
-SWEP.Secondary.Damage		= 21
+SWEP.Secondary.Damage		= 23
 SWEP.Secondary.NumShots		= 1
 SWEP.Secondary.Cone			= 0.035
 SWEP.Secondary.ClipSize		= 12
-SWEP.Secondary.Delay		= 0.065
+SWEP.Secondary.Delay		= 0.07
 SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "357"
+SWEP.Secondary.AmmoLetter	= "M"
 
 SWEP.DryFires				= true -- Unlock Dry Fire
 SWEP.UsesHands				= false

@@ -42,6 +42,7 @@ SWEP.Primary.ClipSize		= 7
 SWEP.Primary.Delay			= 0.09
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "357"
+SWEP.Primary.AmmoLetter		= "U"
 
 SWEP.Secondary.Sound		= Sound( "weapons/dual_eagles/elite-2.wav" )
 SWEP.Secondary.Recoil		= 0.5
@@ -53,4 +54,5 @@ SWEP.Secondary.Delay		= 0.09
 SWEP.Secondary.DefaultClip	= 7
 SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "357"
+SWEP.Secondary.AmmoLetter	= "U"
 

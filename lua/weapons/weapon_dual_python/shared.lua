@@ -44,6 +44,7 @@ SWEP.Primary.ClipSize		= 6
 SWEP.Primary.Delay			= 0.5
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "357"
+SWEP.Primary.AmmoLetter		= "T"
 
 SWEP.Secondary.Sound		= Sound( "weapon_357.single" )
 SWEP.Secondary.Recoil		= 1.65
@@ -55,5 +56,6 @@ SWEP.Secondary.Delay		= 0.5
 SWEP.Secondary.DefaultClip	= 6
 SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "357"
+SWEP.Secondary.AmmoLetter	= "T"
 
 SWEP.NoMag					= true

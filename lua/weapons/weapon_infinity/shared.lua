@@ -39,6 +39,7 @@ SWEP.Weight					= 6
 
 SWEP.DrawSound				= Sound( "weapons/infinity/sliderelease.wav" )
 SWEP.ReloadSound			= Sound( "weapons/infinity/rel.wav" )
+
 SWEP.Primary.Sound			= Sound( "weapons/infinity/svi.wav" )
 SWEP.Primary.Recoil			= 1.8
 SWEP.Primary.Damage			= 66
@@ -48,6 +49,7 @@ SWEP.Primary.ClipSize		= 10
 SWEP.Primary.Delay			= 0.28
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "357"
+SWEP.Primary.AmmoLetter		= "U"
 
 SWEP.DryFires				= true
 SWEP.Emptyable				= true -- Unlock Dry Fire

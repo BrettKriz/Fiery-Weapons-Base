@@ -48,6 +48,7 @@ SWEP.Primary.ClipSize		= 30
 SWEP.Primary.Delay			= 0.1
 SWEP.Primary.Automatic		= true
 SWEP.Primary.Ammo			= "ar2"
+SWEP.Primary.AmmoLetter		= "V"
 
 SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "none"

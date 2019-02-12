@@ -9,23 +9,22 @@ if ( SERVER ) then
 end
 
 if ( CLIENT ) then
-
-	SWEP.PrintName			= "K98 BAYONET"
-	--SWEP.Category 			= "HL2 Realistic Weapons"
+		
+	SWEP.PrintName					= "K98 Bayonet"
+	--SWEP.Category 				= "HL2 Realistic Weapons"
 	
-	--SWEP.ViewModelFOV		= 82
-	SWEP.ViewModelFlip		= false
+	--SWEP.ViewModelFOV				= 82
+	SWEP.ViewModelFlip				= false
 	
-	SWEP.Slot				= 3
-	SWEP.SlotPos			= 4
+	SWEP.Slot						= 3
+	SWEP.SlotPos					= 4
 	
-	SWEP.FileName 			= "weapon_fiery_kar98_bayo"
-	SWEP.IconFont 			= "CSKillIcons"
-	SWEP.IconLetter			= ")"
-	SWEP.WeaponSelectIconLetter		= "g"
+	SWEP.IconFont 					= "CSKillIcons"
+	SWEP.IconLetter					= ")"
+	SWEP.WeaponSelectIconLetter		= "n"
 	
 	
-	killicon.AddFont( SWEP.FileName, SWEP.IconFont, SWEP.IconLetter, Color(255,80,0,255))
+	killicon.AddFont( "weapon_fiery_k98_bayo", SWEP.IconFont, SWEP.IconLetter, Color(255,80,0,255))
 end
 /*---------------------------------------------------------
 Muzzle Effect + Shell Effect
@@ -63,14 +62,15 @@ SWEP.Primary.Sound			= Sound( "smod_weapons/k98/kar_shoot_full.wav" )
 SWEP.Primary.DryFireSound	= Sound( "smod_weapons/k98/kar_shoot.wav" )
 SWEP.ReloadSound			= Sound( "smod_weapons/k98/kar_magrel.wav" )
 
-SWEP.Primary.Recoil			= 5.4
-SWEP.Primary.Damage			= 72
+SWEP.Primary.Recoil			= 2
+SWEP.Primary.Damage			= 126
 SWEP.Primary.NumShots		= 1
-SWEP.Primary.Cone			= 0.007
+SWEP.Primary.Cone			= 0.01
 SWEP.Primary.ClipSize		= 5
 SWEP.Primary.Delay			= 2.4
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "ar2"
+SWEP.Primary.AmmoLetter		= "V"
 
 SWEP.DryFires				= true
 

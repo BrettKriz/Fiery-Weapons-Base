@@ -17,12 +17,13 @@ if ( CLIENT ) then
 	SWEP.IconFont			= "HLKillIcons"
 	SWEP.SelectIconLetter	= "e"
 	SWEP.SelectIconFont		= "HLSelectIcons"
+	SWEP.SelectIconFont2	= "HLSelectIcons"
 	
 	killicon.AddFont( "weapon_fiery_357", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 
 end
 
-SWEP.HL2WeaponDraw 			= true
+--SWEP.HL2WeaponDraw 			= true
 SWEP.Base					= "weapon_fiery_base_revolver"
 SWEP.Category				= "Fiery"
 
@@ -43,6 +44,7 @@ SWEP.Primary.ClipSize		= 6
 SWEP.Primary.Delay			= 0.1
 SWEP.Primary.Automatic		= false
 SWEP.Primary.Ammo			= "357"
+SWEP.Primary.AmmoLetter		= "T"
 
 SWEP.IronSightsPos = Vector(-4.68, 0, 0.6)
 SWEP.IronSightsAng = Vector(0, -0.101, 0)

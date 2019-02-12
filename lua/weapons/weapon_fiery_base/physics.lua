@@ -1,4 +1,4 @@
-/* 	Fiery Weapons Base
+--[[-- 	Fiery Weapons Base
 	Made by: Nova Prospekt,
 	* The credits for the top section on this file are below*
 	
@@ -10,7 +10,7 @@
 	~		Face Punch 		~
 	
 	To be used as a shared file
- */
+ --]]--
  
 ErrorNoHalt("<> Physics (Need to implement)")
 

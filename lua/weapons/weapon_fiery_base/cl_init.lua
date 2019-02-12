@@ -38,11 +38,12 @@ function SWEP:PrintWeaponInfo( x, y, alpha )
 		local title_color = "<color=255,120,45,255>"
 		local text_color = "<color=150,151,150,255>"
 		local ammos = ""
-		if self.Primary.Ammo ~= nil and self.Primary.Ammo ~= "none" then
-			ammos = ammos .. " Prime -> " .. self.Primary.Ammo
-		elseif self.Secondary.Ammo ~= nil and self.Secondary.Ammo ~= "none" then
-			ammos = ammos .. "\n Second -> " .. self.Secondary.Ammo
-		end
+		--if self.Primary.Ammo ~= "none" then
+			ammos = (ammos .. " Prime -> " .. tostring(self.Primary.Ammo))
+		--end
+		--if self.Secondary.Ammo ~= "none" then
+			ammos = (ammos .. "\n Second -> " .. tostring(self.Secondary.Ammo))
+		--end
 		
 		str = "<font=HudSelectionText>"
 		str = str .. tostring(self.ClassName) .. "\n(" .. tostring(self.Base) .. ")\n"
@@ -85,6 +86,98 @@ function SWEP:CL_Init_Check(arg)
 	return true -- Yep
 end
 
+function SWEP:BuildFiremodeStr( side, arg )
+
+	local ans = ""
+	local p1 = "p" -- PISTOL
+	local p2 = "q" -- 357
+	local r1 = "r" -- SMG1
+	local r2 = "u" -- AR2
+	local s1 = "s" -- BUCK
+	local rg1 = "t" -- SMG1 RG
+	local rg2 = "z" -- Combine ball
+	local rocket = "x"
+	local xbow = "|"
+	local xbow2 = "w"
+	local gren = "v"	
+	local d = xbow -- Find better default!
+	local isSecond = (side == 2)
+
+	-- DODS
+	if useFont == "SelectFiremode2" then
+		p1 = "4" -- PISTOL
+		p2 = "4" -- 357
+		r1 = "4" -- SMG1
+		r2 = "4" -- AR2
+		s1 = "4" -- BUCK
+		rg1 = "S" -- SMG1 RG
+		rg2 = "S" -- Combine ball
+		rocket = "S"
+		xbow = "4"
+		gren = "S"
+	end
+	
+	local fmi = {
+		[1] = r1, 
+		[2] = rg2, 
+		[3] = p1, 
+		[4] = r1, 
+		[5] = p2, 
+		[6] = xbow, 
+		[7] = s1, 
+		[8] = rocket, 
+		[9] = rg1, 
+		[10] = gren, 
+		[11] = gren, 
+		[12] = p1, -- Make into 5.7? 
+		[13] = r1, 
+		[14] = rg1, -- THUMPER
+		[15] = g, 
+		[16] = g, 
+		[17] = rg2, 
+		[18] = rg2, 
+		[19] = rg2, 
+		[20] = r2, 
+		[21] = r2, 
+		[22] = r1, -- Helicopter Gun 
+		[23] = p1, -- 9mmRound 
+		[24] = rg1, -- MP5_Grenade
+		[25] = rocket, -- Hornet 
+		[26] = r2, 
+		[27] = r2
+	}
+	
+	local useAmmo = self.Weapon:GetPrimaryAmmoType()
+	local useFont = self.Primary.FiremodeFont
+	local burstNum = self.Primary.BurstFire or 3 -- Tie into a var plz!!
+	local isAuto = self.Primary.Automatic
+	if isSecond then
+		useAmmo = self.Weapon:GetSecondaryAmmoType()
+		useFont = self.Secondary.FiremodeFont	
+		burstNum = self.Secondary.BurstFire or 3 -- Tie into a var plz!!
+		isAuto = self.Secondary.Automatic
+	elseif side ~= 1 then
+		ErrorNoHalt("@BuildFiremodeStr called with a bad SIDE arg of: "..tostring(side).." PLEASE FIX!\n")
+	end
+	
+	-- Do stuff
+	local tl = tostring(arg or fmi[useAmmo] or "p") -- Target Letter
+	local cm = self.data.modes[self.FireMode] -- Current Mode
+	if cm == 1 then
+		-- Semi
+		ans = tl
+	elseif cm == 3 or isAuto then
+		-- Auto
+		ans = tostring("" .. tl .. tl .. tl .. tl)
+	elseif burstNum > 0 and cm == 2 then
+		-- BurstFire  
+		ans = tostring("" .. tl .. tl)
+	end
+	
+	
+	return ans
+end
+
 /*---------------------------------------------------------
 	Checks the objects before any action is taken
 	This is to make sure that the entities havent been removed
@@ -99,29 +192,43 @@ function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
 	local useFont 	= self.SelectIconFont or "CSSelectIcons3"
 	local useFont2 	= self.IconFont or "CSKillIcons2"
 	local useFont3 	= self.SelectIconFont2 or "CSSelectIcons3"
+	local useFont4 	= self.Primary.FiremodeFont or "SelectFiremode"
+	local useFont5 	= self.Secondary.FiremodeFont or "SelectFiremode"
 	if useFont == "HL2SelectIcons" then
 		useFont3 = "HL2SelectIcons"
 	end
+
 	local useLetter	= self.SelectIconLetter or self.IconLetter or nil
 	local useLetter2 = self.SelectIconLetter2 or string.lower(useLetter)
+	local useLetter3 = self:BuildFiremodeStr(1) -- useFont4
+	local useLetter4 = self:BuildFiremodeStr(2) -- useFont5
+	
 	local useNFont	= self.SelectIconNumberFont or "SelectNumbers"
 	local ammoLetter = self.Primary.AmmoLetter or self:GuessCallibur()
 	-- guess calibur
-	local cal = self:GuessCallibur()
-	local bg_spread	= 2
-	local bg_n = math.Rand(0*bg_spread, bg_spread)
+	local cal = self.Primary.AmmoLetter or self:GuessCallibur(1)
+	local cal2 = self.Secondary.AmmoLetter or self:GuessCallibur(2)
+	local bg_n = 1
+	if self.BounceWeaponIcon then
+		local bg_spread		= 2
+		local bg_spread2	= bg_spread * -1
+		bg_n = math.Rand(bg_spread, bg_spread2)
+	end
+	local bg_n2 = bg_n*-1
 	local clip1 = self.Weapon:Clip1()
 	local clip1s = tostring(tonumber(clip1))
 	local clip2 = self.Weapon:Clip2()
 	local clip2s = tostring(tonumber(clip2))
 	
-	local c0 = Color( 255, 120, 45, 255 )
-	local c1 = Color( 255, 125, 55, math.Rand(10, 120) )
-	local c2 = Color( 255, 135, 70, math.Rand(10, 120) )
-	local c3n = 20
+	local c0 = Color( 255, 120, 45, 200 )
+	local c1 = Color( 255, 125, 55, math.Rand(10, 100) )
+	local c2 = Color( 255, 135, 70, math.Rand(10, 100) )
+	
+	local c3n = 20 -- Light White
 	local c3 = Color( c3n, c3n, c3n, 255 )
-	local c4n = 200
+	local c4n = 200 -- Light Black
 	local c4 = Color( c4n, c4n, c4n, 255 )
+	
 	local ar1 = clip1 / self.Primary.ClipSize 
 	local ar2 = clip2 / self.Secondary.ClipSize
 	
@@ -153,16 +260,41 @@ function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
 	--draw.SimpleText( cal, "CSKillIcons", x + wide/2, y + tall*0.2, c51, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP )
 	--						"SelectNumbers2"
 	
+	-- Draw spazzy stuff
+	if self.BounceWeaponIcon then
+	--
+		local xr1 =  0
+		local xr2 =  0
+		local yr1 =  0
+		local yr2 = 0
+		if true then
+			xr1 =  math.Rand(-4, 4)
+			xr2 =  math.Rand(-6, 6)
+			yr1 =  math.Rand(-14, 14)
+			yr2 = math.Rand(-9, 9)
+		end
+		-- try to fool them into thinking they're playing a Tony Hawks game
+		draw.SimpleText( useLetter, useFont, x + wide/2 + xr1, y + tall*0.2+ yr1, c1, TEXT_ALIGN_CENTER )
+		draw.SimpleText( useLetter, useFont, x + wide/2 + xr2, y + tall*0.2+ yr2, c2, TEXT_ALIGN_CENTER )
+		--]]
+	else
+		draw.SimpleText( useLetter, useFont, x + wide/2, y + tall*0.2, c1, TEXT_ALIGN_CENTER )
+		draw.SimpleText( useLetter, useFont, x + wide/2, y + tall*0.2, c2, TEXT_ALIGN_CENTER )
+	end
 	
 	if !true then
-		draw.SimpleText( useLetter, useFont, bg_n + x + wide/2, bg_n + y + tall*0.2, c3, TEXT_ALIGN_CENTER )
-		draw.SimpleText( useLetter, useFont, (-1*bg_n) + x + wide/2, (-1*bg_n) + y + tall*0.2, c4, TEXT_ALIGN_CENTER )
+		-- Draw weapon icon
+		draw.SimpleText( useLetter, useFont, bg_n2 + x + wide/2, bg_n2 + y + tall*0.2, c3, TEXT_ALIGN_CENTER )
+		draw.SimpleText( useLetter, useFont, bg_n + x + wide/2, bg_n + y + tall*0.2, c4, TEXT_ALIGN_CENTER )
 		draw.SimpleText( useLetter, useFont, x + wide/2, y + tall*0.2, c0, TEXT_ALIGN_CENTER )
 	else
 		draw.SimpleText( useLetter, useFont, x + wide/2, y + tall*0.2, c0, TEXT_ALIGN_CENTER )
-		draw.SimpleText( useLetter2, useFont3, (-1*bg_n) + x + wide/2, (-1*bg_n) + y + tall*0.2, c4, TEXT_ALIGN_CENTER )
+		draw.SimpleText( useLetter2, useFont3, (bg_n2) + x + wide/2, (bg_n2) + y + tall*0.2, c4, TEXT_ALIGN_CENTER )
 		draw.SimpleText( useLetter2, useFont3, x + wide/2, y + tall*0.2, c0, TEXT_ALIGN_CENTER )
 	end
+	
+	-- Draw Clip Amounts
+	--[[
 	if clip1 > -1 and self.Primary.ClipSize > 0 then
 		local uc = c51
 		draw.SimpleText( clip1s, useNFont, x + wide/2, y + tall/2, uc, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
@@ -171,41 +303,71 @@ function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
 		local uc = c52
 		draw.SimpleText( clip2s, useNFont, x + wide/2, y + tall/2, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
 	end
+	--]]
 	
-	if true then
-		-- try to fool them into thinking they're playing a Tony Hawks game
-		draw.SimpleText( useLetter, useFont, x + wide/2 + math.Rand(-4, 4), y + tall*0.2+ math.Rand(-14, 14), c1, TEXT_ALIGN_CENTER )
-		draw.SimpleText( useLetter, useFont, x + wide/2 + math.Rand(-4, 4), y + tall*0.2+ math.Rand(-9, 9), c2, TEXT_ALIGN_CENTER )
-	else
-		draw.SimpleText( useLetter, useFont, x + wide/2 + math.Rand(-10, 10), y + tall*0.2+ math.Rand(-8, 8), c1, TEXT_ALIGN_CENTER )
-		draw.SimpleText( useLetter, useFont, x + wide/2 + math.Rand(-6, 6), y + tall*0.2+ math.Rand(-12, 12), c2, TEXT_ALIGN_CENTER )
-	end
 	
 	--[[
 	if CLIENT then
-		// Set us up the texture
+		-- Set us up the texture
 		surface.SetDrawColor( color_transparent )
 		surface.SetTextColor( 255, 120, 45, alpha )
 		surface.SetFont( self.WepSelectFont or self.IconLetter )
 		local w, h = surface.GetTextSize( self.WepSelectLetter or self.IconLetter )
 		
-		// Draw that mother
+		-- Draw that mother
 		surface.SetTextPos( x + ( wide / 2 ) - ( w / 2 ),
 						y + ( tall / 2 ) - ( h / 2 ) )
 		surface.DrawText( self.WepSelectLetter or self.IconLetter )
 	end
 	--]]
-		-- Draw weapon info box
+		-- Draw weapon info box 
 	
 	if clip1 > -1 and self.Primary.ClipSize > 0 then
 		local uc = c51
-		draw.SimpleText( clip1s, useNFont, x + wide/2, y + tall/2, uc, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
-		draw.SimpleText( cal, "CSKillIcons", x + wide/2, y + tall/2, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		
+		local clx = x + ( wide*0.40	) -- Clip
+		local cly = y + ( tall*0.5	)
+		
+		local cax = x + ( wide*0.2	) -- Cal
+		local cay = y + ( tall*0.25	)
+		
+		local fmx = x + ( wide*0.2	) -- Cal
+		local fmy = y + ( tall*0.10	)
+		
+		draw.SimpleText( clip1s, useNFont, 1 + clx, 1 + cly, c4, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( cal, "CSKillIcons", 1 + cax, 1 + cay, c4, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( useLetter3, useFont4, 1 + fmx, 1 + fmy, c4, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )	
+		
+		draw.SimpleText( clip1s, useNFont, -1 + clx, -1 + cly, c3, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( cal, "CSKillIcons", -1 + cax, -1 + cay, c3, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( useLetter3, useFont4, -1 + fmx, -1 + fmy, c3, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		
+		draw.SimpleText( clip1s, useNFont,	 clx, cly, uc, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( cal, "CSKillIcons", cax, cay, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( useLetter3, useFont4, fmx, fmy, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
 	end
 	if clip2 > -1 and self.Secondary.ClipSize > 0 then
 		local uc = c52
-		draw.SimpleText( clip2s, useNFont, x + wide/2, y + tall/2, uc, TEXT_ALIGN_RIGHT, TEXT_ALIGN_BOTTOM  )
-		draw.SimpleText( cal, "CSKillIcons", x + wide/2, y + tall/2, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_BOTTOM  )
+		
+		local clx = x + ( wide*0.80	)
+		local cly = y + ( tall*0.5	)
+		
+		local cax = x + ( wide*0.60	)
+		local cay = y + ( tall*0.25	)
+		
+		local fmx = x + ( wide*0.2	) -- Cal
+		local fmy = y + ( tall*0.9	)
+		draw.SimpleText( clip2s, useNFont,		-1 + clx, -1 + cly, c4, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( cal2, "CSKillIcons", 	-1 + cax, -1 + cay, c4, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( useLetter4, useFont5, 	-1 + cax, -1 + cay, c4, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		
+		draw.SimpleText( clip2s, useNFont, 		1 + clx, 1 + cly, c3, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( cal2, "CSKillIcons", 	1 + cax, 1 + cay, c3, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( useLetter4, useFont5, 	1 + cax, 1 + cay, c3, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		
+		draw.SimpleText( clip2s, useNFont, 		clx, cly, uc, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( cal2, "CSKillIcons", 	cax, cay, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( useLetter4, useFont5, 	cax, cay, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
 	end
 	
 	self:PrintWeaponInfo( x + wide + 20, y + tall * 0.95, alpha )
@@ -237,20 +399,20 @@ function SWEP:SetupCrosshairColor()
 											tonumber(self.crosshair_color[4])
 										)
 		else
-		// No con variable value, Default
+		-- No con variable value, Default
 			self.crosshair_colorCL 		= Color(255, 120, 45, 120)
 			self.crosshair_color		= {255, 120, 45, 120}
 			self.crosshair_colorstr 	= "255 120 45 120"
 			
 			
 		end
-		// Oh but if there is, then just set it...
+		-- Oh but if there is, then just set it...
 	elseif self.Owner:GetInfo("cl_crosshair_color") ~= self.crosshair_colorstr then
 		/* Get the info, no problems
-		// How it SHOULD break down
-		// 1. Define the colorstr
-		// 2. Explode the string at spaces to derive an array
-		// 3. Make Crosshair_color into a color var, with the values of its own array (data change happens after arguments are entered)
+		-- How it SHOULD break down
+		-- 1. Define the colorstr
+		-- 2. Explode the string at spaces to derive an array
+		-- 3. Make Crosshair_color into a color var, with the values of its own array (data change happens after arguments are entered)
 		*/
 		/* Preliminary definition, Just Cause lol
 		self.crosshair_color[1] = 255
@@ -308,7 +470,7 @@ function SWEP:DrawSight_CrossHairs()
 	-- This is probably going to change to a setting
 
 	local x, y 			= ScrW() / 2.0, ScrH() / 2.0 -- Never Touch
-	local LastShootTime = self.Weapon:GetNetworkedFloat( "LastShootTime", 0 )// Scale the size of the crosshair according to how long ago we fired our weapon
+	local LastShootTime = self.Weapon:GetNetworkedFloat( "LastShootTime", 0 )-- Scale the size of the crosshair according to how long ago we fired our weapon
 	local cone 			= self.Primary.Cone --self:CurrentCone()
 	local pwr 			= self.Primary.Recoil
 	local addz			= self.Owner:GetViewPunchAngles() -- @@@ Adjust height of XHAIR
@@ -396,48 +558,48 @@ function SWEP:DrawSight_CrossHairs()
 		--   |
 		-- - o -
 		--   |
-		surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	// Left
-		surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	// Right
-		surface.DrawLine( center_x, y_u_f, center_x, y_u_c )	// Top/Up
-		surface.DrawLine( center_x, y_d_f, center_x, y_d_c )	// Bottom/Down
+		surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	-- Left
+		surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	-- Right
+		surface.DrawLine( center_x, y_u_f, center_x, y_u_c )	-- Top/Up
+		surface.DrawLine( center_x, y_d_f, center_x, y_d_c )	-- Bottom/Down
 
 	elseif ty == 2 then
 		--   ||
 		-- = o =
 		--   ||
-		surface.DrawLine( x_l_f, center_y-addy, x_l_c, center_y-addy )	// Left T
-		surface.DrawLine( x_r_f, center_y-addy, x_r_c, center_y-addy )	// Right T
-		surface.DrawLine( center_x-addx, y_u_f, center_x-addx, y_u_c )	// Top/Up  L 
-		surface.DrawLine( center_x-addx, y_d_f, center_x-addx, y_d_c )	// Bottom/Down  L
+		surface.DrawLine( x_l_f, center_y-addy, x_l_c, center_y-addy )	-- Left T
+		surface.DrawLine( x_r_f, center_y-addy, x_r_c, center_y-addy )	-- Right T
+		surface.DrawLine( center_x-addx, y_u_f, center_x-addx, y_u_c )	-- Top/Up  L 
+		surface.DrawLine( center_x-addx, y_d_f, center_x-addx, y_d_c )	-- Bottom/Down  L
 		
-		surface.DrawLine( x_l_f, center_y+addy, x_l_c, center_y+addy )	// Left B
-		surface.DrawLine( x_r_f, center_y+addy, x_r_c, center_y+addy )	// Right B
-		surface.DrawLine( center_x+addx, y_u_f, center_x+addx, y_u_c )	// Top/Up  R 
-		surface.DrawLine( center_x+addx, y_d_f, center_x+addx, y_d_c )	// Bottom/Down  R
+		surface.DrawLine( x_l_f, center_y+addy, x_l_c, center_y+addy )	-- Left B
+		surface.DrawLine( x_r_f, center_y+addy, x_r_c, center_y+addy )	-- Right B
+		surface.DrawLine( center_x+addx, y_u_f, center_x+addx, y_u_c )	-- Top/Up  R 
+		surface.DrawLine( center_x+addx, y_d_f, center_x+addx, y_d_c )	-- Bottom/Down  R
 
 	elseif ty == 3 then
 		-- 
 		-- - o -
 		--   |
 		
-		surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	// Left
-		surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	// Right
-		surface.DrawLine( center_x, y_d_f, center_x, y_d_c )	// Bottom/Down
+		surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	-- Left
+		surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	-- Right
+		surface.DrawLine( center_x, y_d_f, center_x, y_d_c )	-- Bottom/Down
 
 	elseif ty == 4 then
 		--   |
 		-- > o <
 		--   ^
-		surface.DrawLine( x_l_f, y_u_c, x_l_c, center_y )	// Left T
-		surface.DrawLine( x_r_f, y_u_c, x_r_c, center_y )	// Right T
+		surface.DrawLine( x_l_f, y_u_c, x_l_c, center_y )	-- Left T
+		surface.DrawLine( x_r_f, y_u_c, x_r_c, center_y )	-- Right T
 		
-		surface.DrawLine( x_l_f, y_d_c, x_l_c, center_y )	// Left B
-		surface.DrawLine( x_r_f, y_d_c, x_r_c, center_y )	// Right B
+		surface.DrawLine( x_l_f, y_d_c, x_l_c, center_y )	-- Left B
+		surface.DrawLine( x_r_f, y_d_c, x_r_c, center_y )	-- Right B
 	
-		surface.DrawLine( x_l_c, y_d_f, center_x, y_d_c )	// Bottom/Down  L
-		surface.DrawLine( x_r_c, y_d_f, center_x, y_d_c )	// Bottom/Down  R
+		surface.DrawLine( x_l_c, y_d_f, center_x, y_d_c )	-- Bottom/Down  L
+		surface.DrawLine( x_r_c, y_d_f, center_x, y_d_c )	-- Bottom/Down  R
 		
-		surface.DrawLine( center_x, y_u_f, center_x, y_u_c )	// Top/Up
+		surface.DrawLine( center_x, y_u_f, center_x, y_u_c )	-- Top/Up
 		surface.DrawCircle( center_x, y_u_f, 2, user_clr ) -- Top
 	elseif ty == 5 then
 		--   .
@@ -469,9 +631,9 @@ function SWEP:DrawSight_CrossHairs()
 		-- '-o-'
 		--   '
 		--surface.DrawTexturedRect(
-		surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	// Left
-		surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	// Right
-		surface.DrawLine( center_x, y_d_f, center_x, y_d_c )	// Bottom/Down
+		surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	-- Left
+		surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	-- Right
+		surface.DrawLine( center_x, y_d_f, center_x, y_d_c )	-- Bottom/Down
 		
 		surface.DrawCircle( x_l_c, center_y, 2, user_clr ) -- Left
 		surface.DrawCircle( x_r_c, center_y, 2, user_clr ) -- Right
@@ -484,13 +646,13 @@ function SWEP:DrawSight_CrossHairs()
 		surface.DrawCircle( x_r_c, center_y, 2, user_clr ) -- Right
 		surface.DrawCircle( center_x, y_d_c, 2, user_clr ) -- Bottom
 		
-		surface.DrawLine( x_l_f, center_y-addy, x_l_c, center_y-addy )	// Left T
-		surface.DrawLine( x_r_f, center_y-addy, x_r_c, center_y-addy )	// Right T
-		surface.DrawLine( center_x-addx, y_d_f, center_x-addx, y_d_c )	// Bottom/Down  L
+		surface.DrawLine( x_l_f, center_y-addy, x_l_c, center_y-addy )	-- Left T
+		surface.DrawLine( x_r_f, center_y-addy, x_r_c, center_y-addy )	-- Right T
+		surface.DrawLine( center_x-addx, y_d_f, center_x-addx, y_d_c )	-- Bottom/Down  L
 		
-		surface.DrawLine( x_l_f, center_y+addy, x_l_c, center_y+addy )	// Left B
-		surface.DrawLine( x_r_f, center_y+addy, x_r_c, center_y+addy )	// Right B
-		surface.DrawLine( center_x+addx, y_d_f, center_x+addx, y_d_c )	// Bottom/Down  R
+		surface.DrawLine( x_l_f, center_y+addy, x_l_c, center_y+addy )	-- Left B
+		surface.DrawLine( x_r_f, center_y+addy, x_r_c, center_y+addy )	-- Right B
+		surface.DrawLine( center_x+addx, y_d_f, center_x+addx, y_d_c )	-- Bottom/Down  R
 		
 	elseif ty == 9 then
 		--   
@@ -500,13 +662,13 @@ function SWEP:DrawSight_CrossHairs()
 		surface.DrawCircle( x_r_c, center_y, 2, user_clr ) -- Right
 		surface.DrawCircle( center_x, y_d_c, 2, user_clr ) -- Bottom
 		
-		surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	// Left
-		surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	// Right
+		surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	-- Left
+		surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	-- Right
 	elseif ty == 10 then -- 			
 		--	  o
 		--	  |
 		--	  .
-		surface.DrawLine( center_x, y_d_f, center_x, center_y )	// Bottom/Down
+		surface.DrawLine( center_x, y_d_f, center_x, center_y )	-- Bottom/Down
 		surface.DrawCircle( center_x, math.max(y_d_c, y_d_c*((anchor/near)*0.9)), 2, user_clr ) -- Bottom
 	elseif ty == 11 then
 		--	  . 
@@ -553,8 +715,8 @@ function SWEP:DrawSight_CrossHairs()
 		surface.DrawCircle( center_x, center_y, (near/2), Color(heat[1],heat[2],heat[3], 250)) -- Cone Circle
 		
 		
-		surface.DrawLine( (x - far -5), center_y, (x - near), center_y )	// Left HEAT
-		surface.DrawLine( (x + far +5), center_y, (x + near), center_y )	// Right HEAT
+		surface.DrawLine( (x - far -5), center_y, (x - near), center_y )	-- Left HEAT
+		surface.DrawLine( (x + far +5), center_y, (x + near), center_y )	-- Right HEAT
 	end -- END IF DRAW
 end
 
@@ -581,7 +743,7 @@ function SWEP:DrawSight_Scope()
 	if not ( self.Weapon:Clip1() > 0 ) or (isTbl( self.Scope ) and self.Scope[1] == 0) then return end
 
 	local x, y = ScrW() / 2.0, ScrH() / 2.0 -- Never Touch
-	local LastShootTime = self.Weapon:GetNetworkedFloat( "LastShootTime", 0 )// Scale the size of the crosshair according to how long ago we fired our weapon
+	local LastShootTime = self.Weapon:GetNetworkedFloat( "LastShootTime", 0 )-- Scale the size of the crosshair according to how long ago we fired our weapon
 	local cone = self.Primary.Cone
 	local pwr = self.Primary.Recoil
 
@@ -655,7 +817,7 @@ function SWEP:DrawSight_Scope()
 		local y_d_f		= (y+y)		*1 -- y DOWN far
 		
 		
-		// No crosshair when ironsights is on
+		-- No crosshair when ironsights is on
 		if ( self.Weapon:GetNetworkedBool( "Ironsights" ) or (self.Owner:InVehicle()) ) then
 			surface.DrawCircle( center_x, center_y, 1, Color(255,250,250) ) -- DOT WHITE
 			surface.DrawCircle( center_x, center_y, 2, Color(0,0,0) ) -- DOT BLACK
@@ -680,48 +842,48 @@ function SWEP:DrawSight_Scope()
 			--   |
 			-- - o -
 			--   |
-			surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	// Left
-			surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	// Right
-			surface.DrawLine( center_x, y_u_f, center_x, y_u_c )	// Top/Up
-			surface.DrawLine( center_x, y_d_f, center_x, y_d_c )	// Bottom/Down
+			surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	-- Left
+			surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	-- Right
+			surface.DrawLine( center_x, y_u_f, center_x, y_u_c )	-- Top/Up
+			surface.DrawLine( center_x, y_d_f, center_x, y_d_c )	-- Bottom/Down
 
 		elseif ty == 2 then
 			--   ||
 			-- = o =
 			--   ||
-			surface.DrawLine( x_l_f, center_y-addy, x_l_c, center_y-addy )	// Left T
-			surface.DrawLine( x_r_f, center_y-addy, x_r_c, center_y-addy )	// Right T
-			surface.DrawLine( center_x-addx, y_u_f, center_x-addx, y_u_c )	// Top/Up  L 
-			surface.DrawLine( center_x-addx, y_d_f, center_x-addx, y_d_c )	// Bottom/Down  L
+			surface.DrawLine( x_l_f, center_y-addy, x_l_c, center_y-addy )	-- Left T
+			surface.DrawLine( x_r_f, center_y-addy, x_r_c, center_y-addy )	-- Right T
+			surface.DrawLine( center_x-addx, y_u_f, center_x-addx, y_u_c )	-- Top/Up  L 
+			surface.DrawLine( center_x-addx, y_d_f, center_x-addx, y_d_c )	-- Bottom/Down  L
 			
-			surface.DrawLine( x_l_f, center_y+addy, x_l_c, center_y+addy )	// Left B
-			surface.DrawLine( x_r_f, center_y+addy, x_r_c, center_y+addy )	// Right B
-			surface.DrawLine( center_x+addx, y_u_f, center_x+addx, y_u_c )	// Top/Up  R 
-			surface.DrawLine( center_x+addx, y_d_f, center_x+addx, y_d_c )	// Bottom/Down  R
+			surface.DrawLine( x_l_f, center_y+addy, x_l_c, center_y+addy )	-- Left B
+			surface.DrawLine( x_r_f, center_y+addy, x_r_c, center_y+addy )	-- Right B
+			surface.DrawLine( center_x+addx, y_u_f, center_x+addx, y_u_c )	-- Top/Up  R 
+			surface.DrawLine( center_x+addx, y_d_f, center_x+addx, y_d_c )	-- Bottom/Down  R
 
 		elseif ty == 3 then
 			-- 
 			-- - o -
 			--   |
 			
-			surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	// Left
-			surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	// Right
-			surface.DrawLine( center_x, y_d_f, center_x, y_d_c )	// Bottom/Down
+			surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	-- Left
+			surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	-- Right
+			surface.DrawLine( center_x, y_d_f, center_x, y_d_c )	-- Bottom/Down
 
 		elseif ty == 4 then
 			--   |
 			-- > o <
 			--   ^
-			surface.DrawLine( x_l_f, y_u_c, x_l_c, center_y )	// Left T
-			surface.DrawLine( x_r_f, y_u_c, x_r_c, center_y )	// Right T
+			surface.DrawLine( x_l_f, y_u_c, x_l_c, center_y )	-- Left T
+			surface.DrawLine( x_r_f, y_u_c, x_r_c, center_y )	-- Right T
 			
-			surface.DrawLine( x_l_f, y_d_c, x_l_c, center_y )	// Left B
-			surface.DrawLine( x_r_f, y_d_c, x_r_c, center_y )	// Right B
+			surface.DrawLine( x_l_f, y_d_c, x_l_c, center_y )	-- Left B
+			surface.DrawLine( x_r_f, y_d_c, x_r_c, center_y )	-- Right B
 		
-			surface.DrawLine( x_l_c, y_d_f, center_x, y_d_c )	// Bottom/Down  L
-			surface.DrawLine( x_r_c, y_d_f, center_x, y_d_c )	// Bottom/Down  R
+			surface.DrawLine( x_l_c, y_d_f, center_x, y_d_c )	-- Bottom/Down  L
+			surface.DrawLine( x_r_c, y_d_f, center_x, y_d_c )	-- Bottom/Down  R
 			
-			surface.DrawLine( center_x, y_u_f, center_x, y_u_c )	// Top/Up
+			surface.DrawLine( center_x, y_u_f, center_x, y_u_c )	-- Top/Up
 			surface.DrawCircle( center_x, y_u_f, 2, user_clr ) -- Top
 		elseif ty == 5 then
 			--   .
@@ -753,9 +915,9 @@ function SWEP:DrawSight_Scope()
 			-- '-o-'
 			--   '
 			--surface.DrawTexturedRect(
-			surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	// Left
-			surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	// Right
-			surface.DrawLine( center_x, y_d_f, center_x, y_d_c )	// Bottom/Down
+			surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	-- Left
+			surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	-- Right
+			surface.DrawLine( center_x, y_d_f, center_x, y_d_c )	-- Bottom/Down
 			
 			surface.DrawCircle( x_l_c, center_y, 2, user_clr ) -- Left
 			surface.DrawCircle( x_r_c, center_y, 2, user_clr ) -- Right
@@ -767,13 +929,13 @@ function SWEP:DrawSight_Scope()
 			surface.DrawCircle( x_r_c, center_y, 2, user_clr ) -- Right
 			surface.DrawCircle( center_x, y_d_c, 2, user_clr ) -- Bottom
 			
-			surface.DrawLine( x_l_f, center_y-addy, x_l_c, center_y-addy )	// Left T
-			surface.DrawLine( x_r_f, center_y-addy, x_r_c, center_y-addy )	// Right T
-			surface.DrawLine( center_x-addx, y_d_f, center_x-addx, y_d_c )	// Bottom/Down  L
+			surface.DrawLine( x_l_f, center_y-addy, x_l_c, center_y-addy )	-- Left T
+			surface.DrawLine( x_r_f, center_y-addy, x_r_c, center_y-addy )	-- Right T
+			surface.DrawLine( center_x-addx, y_d_f, center_x-addx, y_d_c )	-- Bottom/Down  L
 			
-			surface.DrawLine( x_l_f, center_y+addy, x_l_c, center_y+addy )	// Left B
-			surface.DrawLine( x_r_f, center_y+addy, x_r_c, center_y+addy )	// Right B
-			surface.DrawLine( center_x+addx, y_d_f, center_x+addx, y_d_c )	// Bottom/Down  R
+			surface.DrawLine( x_l_f, center_y+addy, x_l_c, center_y+addy )	-- Left B
+			surface.DrawLine( x_r_f, center_y+addy, x_r_c, center_y+addy )	-- Right B
+			surface.DrawLine( center_x+addx, y_d_f, center_x+addx, y_d_c )	-- Bottom/Down  R
 			
 		elseif ty == 9 then
 			--   
@@ -783,8 +945,8 @@ function SWEP:DrawSight_Scope()
 			surface.DrawCircle( x_r_c, center_y, 2, user_clr ) -- Right
 			surface.DrawCircle( center_x, y_d_c, 2, user_clr ) -- Bottom
 			
-			surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	// Left
-			surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	// Right
+			surface.DrawLine( x_l_f, center_y, x_l_c, center_y )	-- Left
+			surface.DrawLine( x_r_f, center_y, x_r_c, center_y )	-- Right
 		elseif ty == 10 then -- 
 			--   
 			-- '-o-'
@@ -829,8 +991,8 @@ function SWEP:DrawSight_Scope()
 			surface.DrawCircle( center_x, center_y, (near/2), Color(heat[1],heat[2],heat[3], 250)) -- Cone Circle
 			
 			
-			surface.DrawLine( (x - far -5), center_y, (x - near), center_y )	// Left HEAT
-			surface.DrawLine( (x + far +5), center_y, (x + near), center_y )	// Right HEAT
+			surface.DrawLine( (x - far -5), center_y, (x - near), center_y )	-- Left HEAT
+			surface.DrawLine( (x + far +5), center_y, (x + near), center_y )	-- Right HEAT
 			
 
 			

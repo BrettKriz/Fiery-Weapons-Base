@@ -1,11 +1,12 @@
-/* Fiery Weapons Base
+--[[--
+	Fiery Weapons Base
 	Made by: Nova Prospekt
 	
 	File: sh_anim
 	Side: SV?
 	
 	A Modifided weapon_cs_base
- */
+ --]]--
  
  	ErrorNoHalt(" <> sh_anim ")
 	--SWEP.ActivityTranslate = {}
