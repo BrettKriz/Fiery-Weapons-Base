@@ -20,7 +20,7 @@ if ( SERVER ) then
 	AddCSLuaFile( "shared.lua" )
 
 	-- Change between here and init  
-	SWEP.Weight				= 3 -- CONVERT FOR THE BETTER?
+	SWEP.Weight				= 50 -- CONVERT FOR THE BETTER?
 
 	SWEP.AutoSwitchTo		= false
 	SWEP.AutoSwitchFrom		= false
@@ -51,108 +51,127 @@ if ( CLIENT ) then
 	SWEP.CSMuzzleX				= false
 	SWEP.WepFolderPath			= "NOT SET! \n Add SWEP.WepFolderPath = to file!" -- OBSOLEET?
 	/*
-	SWEP.IconLetter			= "[]"
-	SWEP.WepSelectLetter	= SWEP.IconLetter
+	SWEP.IconLetter				= "[]"
+	SWEP.WepSelectLetter		= SWEP.IconLetter
 	
 	*/
 	SWEP.SelectIconFont		= nil--"CSKillIcons"
+	
+	-- FONT REF NAMES  --
+	local p 				= "Fiery_"
+	local t					= "_Font"
+	
+	SWEP.CSKillIcons 		= p .. "CSKillIcons"		.. t
+	SWEP.CSKillIcons2 		= p .. "CSKillIcons2"		.. t
+	SWEP.DODKillIcons 		= p .. "DODKillIcons"		.. t
+	SWEP.HLKillIcons 		= p .. "HLKillIcons"		.. t
+	SWEP.HLKillIcons2 		= p .. "HLKillIcons2"		.. t
 
+	SWEP.SelectNumbers 		= p .. "SelectNumbers"		.. t
+	SWEP.SelectNumbers2 	= p .. "SelectNumbers2"		.. t
+	SWEP.SelectNumbers3 	= p .. "SelectNumbers3"		.. t
+
+	SWEP.SelectFiremode 	= p .. "SelectFiremode"		.. t
+	SWEP.SelectFiremode2 	= p .. "SelectFiremode2"	.. t
+
+	SWEP.DODSelectIcons 	= p .. "DODSelectIcons"		.. t
+	SWEP.CSSelectIcons 		= p .. "CSSelectIcons"		.. t
+	SWEP.CSSelectIcons2 	= p .. "CSSelectIcons2"		.. t
+	SWEP.CSSelectIcons3 	= p .. "CSSelectIcons3"		.. t
+	SWEP.HLSelectIcons 		= p .. "HLSelectIcons"		.. t
+	
 	-- KILL ICON FONTS --
-	surface.CreateFont("CSKillIcons", {
+	surface.CreateFont(SWEP.CSKillIcons, {
 		font = "csd", 
 		size = ScreenScale(30), 
 		weight = 500
 	})
 	
-	surface.CreateFont("CSKillIcons2", {
+	surface.CreateFont(SWEP.CSKillIcons2, {
 		font = "Counter-Strike", 
 		size = ScreenScale(30), 
 		weight = 500
 	})
 	
-	surface.CreateFont("DODKillIcons", {
+	surface.CreateFont(SWEP.DODKillIcons, {
 		font = "Day of Defeat Logo", 
 		size = ScreenScale(30), 
 		weight = 500
 	})
 
-	surface.CreateFont("HLKillIcons", {
+	surface.CreateFont(SWEP.HLKillIcons, {
 		font = "hl2mp", 
 		size = ScreenScale(30), 
 		weight = 500
 	})
 	
-	surface.CreateFont("HLKillIcons2", { -- OCIW support
+	surface.CreateFont(SWEP.HLKillIcons2, { -- OCIW support
 		font = "HalfLife2", 
 		size = ScreenScale(30), 
 		weight = 500
 	})
-	
-	
-	
+
 		-- SELECT ICON NUMBER FONTS --
-	surface.CreateFont("SelectNumbers", { 
+	surface.CreateFont(SWEP.SelectNumbers, { 
 		font = "Counter-Strike", 
 		size = ScreenScale(18), 
 		weight = 500
 	})
 	
-	surface.CreateFont("SelectNumbers2", { 
+	surface.CreateFont(SWEP.SelectNumbers2, { 
 		font = "csd", 
 		size = ScreenScale(30), 
 		weight = 500
 	})
 	
-	surface.CreateFont("SelectNumbers3", {
+	surface.CreateFont(SWEP.SelectNumbers3, {
 		font = "HalfLife2", 
 		size = ScreenScale(18), 
 		weight = 500
 	})
-	
-	
+
 		-- SELECT ICON FIREMODE FONTS --
-	surface.CreateFont("SelectFiremode", { 
+	surface.CreateFont(SWEP.SelectFiremode, { 
 		font = "HalfLife2", 
 		size = ScreenScale(10), 
 		weight = 500
 	})
 	
-	surface.CreateFont("SelectFiremode2", {
+	surface.CreateFont(SWEP.SelectFiremode2, {
 		font = "Day of Defeat Logo", 
 		size = ScreenScale(10), 
 		weight = 500
 	})
-		
-		
+
 		-- SELECT ICON FONTS --
-	surface.CreateFont("DODSelectIcons", {
+	surface.CreateFont(SWEP.DODSelectIcons, {
 		font = "Day of Defeat Logo", 
 		size = ScreenScale(60), 
 		weight = 500
 	})
 	
-	surface.CreateFont("CSSelectIcons", {
+	surface.CreateFont(SWEP.CSSelectIcons, {
 		--font = "cstrike", 
 		font = "Counter-Strike", 
 		size = ScreenScale(60), 
 		weight = 500
 	})
 	
-	surface.CreateFont("CSSelectIcons2", {
+	surface.CreateFont(SWEP.CSSelectIcons2, {
 		--font = "cstrike", 
 		font = "csd", 
 		size = ScreenScale(60), 
 		weight = 500
 	})
 	
-	surface.CreateFont("CSSelectIcons3", {
+	surface.CreateFont(SWEP.CSSelectIcons3, {
 		--font = "cstrike", 
 		font = "cs", 
 		size = ScreenScale(60), 
 		weight = 500
 	})
 	
-	surface.CreateFont("HLSelectIcons", {
+	surface.CreateFont(SWEP.HLSelectIcons, {
 		font = "HalfLife2", 
 		size = ScreenScale(60), 
 		weight = 500
@@ -175,9 +194,9 @@ SWEP.DEBUG					= CreateConVar("swep_DEBUGing", "0", {FCVAR_CHEAT, FCVAR_NOTIFY},
 SWEP.Spawnable				= false
 SWEP.AdminSpawnable			= true
 
-SWEP.HoldType				= "rifle"		-- Sights
+SWEP.HoldType				= "rifle"		-- Sights   
 SWEP.HoldType2				= "hipfire2"	-- Hipfire
-SWEP.ReloadHoldType			= nil			-- for more excentric reloads
+SWEP.ReloadHoldType			= nil			-- for more excentric reloads 
 SWEP.RunHoldType 			= nil
 
 SWEP.DrawSound				= nil
@@ -189,7 +208,7 @@ SWEP.ViewModelFlip			= false -- Now a global for simplicity
 SWEP.WorldModelHoldFix		= false
 SWEP.WorldModel				= "models/weapons/w_rif_ak47.mdl"
 
--- PRIMARY
+-- PRIMARY   
 SWEP.Primary.IsPrimary		= true
 SWEP.Primary.IsSecondary	= false
 SWEP.Primary.Side			= "Primary"
@@ -221,7 +240,7 @@ SWEP.Primary.Ignite			= false
 SWEP.Primary.Power			= 3500
 SWEP.Primary.DelayShots		= false
 SWEP.Primary.DryMagEject	= false
--- SECONDARY
+-- SECONDARY    
 SWEP.Secondary.IsPrimary	= false
 SWEP.Secondary.IsSecondary	= true
 SWEP.Secondary.Side			= "Secondary"
@@ -252,7 +271,7 @@ SWEP.Secondary.Power		= 3500
 SWEP.Secondary.DelayShots	= false
 SWEP.Secondary.DryMagEject	= false
 
-SWEP.Range						= 55 *(12*3) -- Yards
+SWEP.Range						= 55 *(12*3) -- Yards 
 ---------------------------------
 -- Function Toggles-------------- 
 SWEP.ForceModifier			= nil
@@ -328,7 +347,8 @@ SWEP.ToggleBoneMod = false
 SWEP.InSpeed = false
 SWEP.NextSecondaryAttack = 0 -- Keep 0
 SWEP.ReloadingTime = 0.0
-
+SWEP.SerialNumber = "Init Issue"
+SWEP.AmmoDisc = "Init Issue"
 
 --SWEP.ArmOffset = Vector (0.85, -6.6, 3.5) -- This is so there is a decent default run angle
 --SWEP.ArmAngle = Vector (-13, 28, 2) 		-- Im not sure how people will like these run angles
@@ -365,33 +385,39 @@ SWEP.ReloadingTime = 0.0
 		Tracers[6] = "HelicopterTracer"
 		Tracers[7] = "GunshipTracer"
 		Tracers[8] = "LaserTracer" -- Hard to see headon 
-	AmmoTypes = {}
-		AmmoTypes["AR2"]					= 1
-		AmmoTypes["AR2AltFire"]				= 2
-		AmmoTypes["SMG1"]					= 4
+		
+	AmmoTypes = {} -- LOWER CASE THESE ALL
+		AmmoTypes["ar2"]					= 1
+		AmmoTypes["ar2altfire"]				= 2
+		AmmoTypes["smg1"]					= 4
 		AmmoTypes["357"]					= 5
-		AmmoTypes["XBowBolt"]				= 6
-		AmmoTypes["Buckshot"]				= 7
-		AmmoTypes["RPG_Round"]				= 8
-		AmmoTypes["SMG1_Grenade"]			= 9
-		AmmoTypes["Grenade"]				= 10
+		AmmoTypes["xbowbolt"]				= 6
+		AmmoTypes["xbow"]					= 6
+		AmmoTypes["buckshot"]				= 7
+		AmmoTypes["buck"]					= 7
+		AmmoTypes["shotgun"]				= 7
+		AmmoTypes["rpg_round"]				= 8
+		AmmoTypes["rpg"]					= 8
+		AmmoTypes["smg1_gGrenade"]			= 9
+		AmmoTypes["grenade"]				= 10
 		AmmoTypes["slam"]					= 11
-		AmmoTypes["AlyxGun"]				= 12
-		AmmoTypes["SniperRound"]			= 13
-		AmmoTypes["SniperPenetratedRound"]	= 14
-		AmmoTypes["Thumper"]				= 15
-		AmmoTypes["Gravity"]				= 16
-		AmmoTypes["Battery"]				= 17
-		AmmoTypes["GaussEnergy"]			= 18
-		AmmoTypes["CombineCannon"]			= 19
-		AmmoTypes["AirboatGun"]				= 20
-		AmmoTypes["StriderMinigun"]			= 21
-		AmmoTypes["HelicopterGun"]			= 22
-		AmmoTypes["9mmRound"]				= 23
-		AmmoTypes["MP5_Grenade"]			= 24
-		AmmoTypes["Hornet"]					= 25
-		AmmoTypes["StriderMinigunDirect"]	= 26
-		AmmoTypes["CombineHeavyCannon"]		= 27
+		AmmoTypes["alyxgun"]				= 12
+		AmmoTypes["sniperround"]			= 13
+		AmmoTypes["sniperpenetratedround"]	= 14
+		AmmoTypes["thumper"]				= 15
+		AmmoTypes["gravity"]				= 16
+		AmmoTypes["battery"]				= 17
+		AmmoTypes["gaussenergy"]			= 18
+		AmmoTypes["energy"]					= 18
+		AmmoTypes["combinecannon"]			= 19
+		AmmoTypes["airboatgun"]				= 20
+		AmmoTypes["striderminigun"]			= 21
+		AmmoTypes["helicoptergun"]			= 22
+		AmmoTypes["9mmround"]				= 23
+		AmmoTypes["mp5_grenade"]			= 24
+		AmmoTypes["hornet"]					= 25
+		AmmoTypes["striderminigundirect"]	= 26
+		AmmoTypes["combineheavycannon"]		= 27
 		
 		-- FILL WITH ALL AMMO TYPES!!!!
 
@@ -431,7 +457,27 @@ function SWEP:Initialize()
 	
 	--self:SetHoldType( self.HoldType )
 	self:DebugTalk("Hold Types: 1:"..tostring(self.HoldType).. " 2:"..tostring(self.HoldType2).." R:"..tostring(self.ReloadHoldType))
+	
+	ErrorNoHalt("SWEP.CSKillIcons	" .. tostring( self.CSKillIcons ) .. "\n")
+	ErrorNoHalt("SWEP.CSKillIcons2	" .. tostring( self.CSKillIcons2 ) .. "\n")
+	ErrorNoHalt("SWEP.DODKillIcons	" .. tostring( self.DODKillIcons ) .. "\n")
+	ErrorNoHalt("SWEP.HLKillIcons	" .. tostring( self.HLKillIcons ) .. "\n")
+	ErrorNoHalt("SWEP.HLKillIcons2	" .. tostring( self.HLKillIcons2 ) .. "\n")
 
+	ErrorNoHalt("SWEP.SelectNumbers	" .. tostring( self.SelectNumbers ) .. "\n")
+	ErrorNoHalt("SWEP.SelectNumbers2	" .. tostring( self.SelectNumbers2 ) .. "\n")
+	ErrorNoHalt("SWEP.SelectNumbers3	" .. tostring( self.SelectNumbers3 ) .. "\n")
+
+	ErrorNoHalt("SWEP.SelectFiremode	" .. tostring( self.SelectFiremode ) .. "\n")
+	ErrorNoHalt("SWEP.SelectFiremode2	" .. tostring( self.SelectFiremode2 ) .. "\n")
+
+	ErrorNoHalt("SWEP.DODSelectIcons	" .. tostring( self.DODSelectIcons ) .. "\n")
+	ErrorNoHalt("SWEP.CSSelectIcons	" .. tostring( self.CSSelectIcons ) .. "\n")
+	ErrorNoHalt("SWEP.CSSelectIcons2	" .. tostring( self.CSSelectIcons2 ) .. "\n")
+	ErrorNoHalt("SWEP.CSSelectIcons3	" .. tostring( self.CSSelectIcons3 ) .. "\n")
+	ErrorNoHalt("SWEP.HLSelectIcons	" .. tostring( self.HLSelectIcons ) .. "\n")
+	
+	ErrorNoHalt("SelectIconFont: " .. tostring(self.SelectIconFont).."\n\n")
 	--
 	if ( SERVER ) then
 		-- Give NPC instructions
@@ -488,6 +534,20 @@ function SWEP:InitCorrectLogic()
 	--self.Owner:SetAllowWeaponsInVehicle(true)
 	
 	-- Handle Killicons and select icons
+	-- self.SerialNumber			= tostring(self.Weapon:GetCreationID() or "******") 
+	self.AmmoDisc = ""
+	if self.Primary.Ammo ~= "none" then
+		self.AmmoDisc = (self.AmmoDisc .. " Primary: \t" .. tostring(self.Primary.Ammo))
+	end
+	if self.Secondary.Ammo ~= "none" then
+		self.AmmoDisc = (self.AmmoDisc .. "\n Secondary: \t" .. tostring(self.Secondary.Ammo))
+	end
+	--local prefixl = string.char( math.random( 60 , 90 ) ) .. "-" -- Country codes?
+	local prefixl = (self.SelectIconLetter or string.char( math.random( 60 , 90 ) )) .. " - " -- Country codes?
+	local filler = "00000"
+	local serialraw = tonumber(self.Weapon:EntIndex() or 1337) * 13
+	self.SerialNumber			= prefixl .. string.Right( filler .. tostring(serialraw), string.len(filler) )
+	
 	self.IconColor				= self.IconColor or Color( 255, 120, 45, 120 )
 	self.WepSelectFont 			= self.WepSelectFont or "csd" -- Needs to be shared ;D 
 	self.VehicleStatus			= self:InVehicle() or false
@@ -611,7 +671,7 @@ function SWEP:InitCorrectLogic()
 		-- Correct for some things.   
 		
 		self.UseHands = false
-		self.ArmOffset = self.ArmOffset or Vector(0.319, 0, 2.2) -- self.ArmOffset or 
+		self.ArmOffset = self.ArmOffset or Vector(0.319, 0, 2.2) -- self.ArmOffset or  
 		self.ArmAngle = self.ArmAngle or Vector(-23.101, 11.699, 13.199) -- self.ArmAngle or
 	elseif isC then
 		--ErrorNoHalt("C model detected - Offset: "..tostring(self.ArmOffset).." , Angle: "..tostring(self.ArmAngle).."\n")
@@ -626,14 +686,14 @@ function SWEP:InitCorrectLogic()
 	
 	
 	if not self.RunHoldType and (self:IsHoldForNormal( self.HoldType ) or self:IsHoldForNormal( self.HoldType2 )) then
-		-- Then clearly we dont need to use passive for holding
+		-- Then clearly we dont need to use passive for holding 
 		self.RunHoldType = "normal"
 	else
 		self.RunHoldType = "passive"
 	end
 	self:DebugTalk("RunHoldType: "..self.RunHoldType)
 	
-	-- @@@ How to figure out WorldIsCold
+	-- @@@ How to figure out WorldIsCold 
 	if self:WorldIsCold() then
 		self.Base_Heat = 25 -- IE below waters freezing point in F
 	end
@@ -651,7 +711,7 @@ function SWEP:InitCorrectLogic()
 end
 
 function SWEP:GuessCallibur(side)
-
+	-- Meow? 
 	if side == 1 and self.Primary.AmmoLetter then return self.Primary.AmmoLetter end
 	if side == 2 and self.Secondary.AmmoLetter then return self.Secondary.AmmoLetter end
 
@@ -798,20 +858,27 @@ function SWEP:Deploy()
 		self:DebugTalk("\n\n[i] Suppressed fake draw anim and delay ("..tostring( self:GetSeqDur() )..")\n\n")
 	else
 		-- UPDATE SCRIPT! @@@
-		-- Play animations
+		-- Play animations 
 		--	anim_name, pbr, snd, volume, idle_after, iron_off
-		--self:VMact("DRAW", 1.25, self.DrawSound, nil, true )
+		--self:VMact("DRAW", 1.25, self.DrawSound, nil, true ) 
 		self:VMact("DRAW", self:GetDrawRate() or 1.25, self.DrawSound) --
 		self:SetNextIdle("SOON")
 		
 		t = self:GetSeqDur()
-		-- Trim next event times
+		-- Trim next event times  
 		self:SetNextPrimAndSecon(t*0.95, t*0.80)
 		self.ReloadingTime = CurTime() + t*0.2
 		self.Weapon:SetNetworkedBool("reloading", false) -- This could be an issue with vehicles..
 
 	end
 	
+	ErrorNoHalt("\n-------------------\nViewmodel Sequence List:\n")
+	local kcnt = 0
+	for k,v in pairs(self.Owner:GetViewModel():GetSequenceList()) do 
+		ErrorNoHalt("\t"..tostring(k)..","..tostring(v).."\n")
+		kcnt = kcnt + 1
+	end
+	ErrorNoHalt("\n\t#: "..tostring(kcnt).."\n----------------\n")
 	-- Check ironsights
 	local b1 = tobool(self.IronSightsPos == nil)
 	local b2 = tobool(GetConVarNumber("swep_IronSights_FromFile"))
@@ -1191,7 +1258,6 @@ function SWEP:Reload() -- @@@ DECLUTER!!!!
 		end
 	end
 
-
 	-- Chambering Check
 	if tobool(self.Chambers) then
 		-- This area is specificly designed to require 2 Chambering motions to be done
@@ -1199,6 +1265,7 @@ function SWEP:Reload() -- @@@ DECLUTER!!!!
 			self:ChamberPrimary()
 			self.Weapon:SetVar("PrimaryMagOut", false)
 			return true
+			
 		elseif(self.Secondary.Chambered == false) then
 			self:ChamberSecondary()
 			self.Weapon:SetVar("SecondaryMagOut", false)
@@ -1265,7 +1332,7 @@ function SWEP:StandardReload() -- @@@RELOAD
 	
 	self:SetHoldType( self.ReloadHoldType or self.HoldType )
 		  --	anim_name, pbr, snd, volume, idle_after, iron_off
-	self:VMact("RELOAD", da_pbr, nil) -- self.ReloadSound
+	self:VMact("RELOAD", da_pbr, nil) -- self.ReloadSound 
 	at = self:GetSeqDur()	
 	fat = CurTime() + ( (at * da_pbr) )
 	self:SetNextIdle("SOON") -- This may be a double call location (used in idlethink)! @@@ 
@@ -1283,7 +1350,7 @@ function SWEP:StandardReload() -- @@@RELOAD
 	end
 
 	self:SafeTimer( at, function()
-						-- Fall back included
+						-- Fall back included  
 						self.Weapon:SetNetworkedBool( "reloading", false)
 						if self:AreArmsDown()  then
 							self:SetHoldType( self.RunHoldType or "normal" ) -- 
@@ -1725,11 +1792,12 @@ end
 
 /*---------------------------------------------------------
 	SecondaryAttack
+	-- Needs to be rewrote. 9/24/2019
 ---------------------------------------------------------*/
 function SWEP:SecondaryAttack( arg )
 
 	local eval = not self:CanSecondaryAttack() -- Creates a false return if trues
-	
+	self:Talk("Vanila Secondary call\n")
 	self:DebugTalk("\t@FireMode: "..tostring(self.FireMode).."\n")
 	self:DebugTalk("Secondary Attack - Can Attack? "..tostring(eval).."\n")
 	
@@ -1740,9 +1808,11 @@ function SWEP:SecondaryAttack( arg )
 -- tobool(tonumber(self.DEBUG))
 	--Msg("TF "..tostring(self:TesterFunc()))
 	local hm = self:HasModify()
+	local inR = self.Owner:KeyDown( IN_RELOAD )
+	local inE = ( self.Owner:KeyDown( IN_USE ) and not self.Owner:KeyReleased( IN_USE ) )
 	--ErrorNoHalt("[~] Has Modify? " .. tostring(hm))
 	
-	if not self.Owner:KeyDown( IN_RELOAD ) and ( self.Owner:KeyDown( IN_USE ) and not self.Owner:KeyReleased( IN_USE ) ) then  
+	if not inR and inE then  
 			--self.Owner:RemoveSuit()
 			--self:SetIronsights( !self.Weapon:GetNetworkedBool( "Ironsights", false ) )
 			--self.Weapon:SetNextSecondaryFire( CurTime() + 0.06 ) 
@@ -1760,7 +1830,7 @@ function SWEP:SecondaryAttack( arg )
 	else	
 		--self.Weapon:EmitSound("weapons/smg1/switch_burst.wav")
 		-- Standard click
-		if isTbl(self.Akimbo) then -- @@@ I dont think Akimbo is a table anymore
+		if not inR and isTbl(self.Akimbo) then -- @@@ I dont think Akimbo is a table anymore
 			self:FireSpare()
 			--self:Talk("Im in secondary at FIRE SPARE") 
 		elseif (self.AimAssist != false and GetConVar("swep_AutoAim"):GetBool()) then
@@ -1777,22 +1847,22 @@ function SWEP:SecondaryAttack( arg )
 end
 
 -- @@FIRESPARE 
-function SWEP:FireSpare() -- NEDDS WORK !!!!
+function SWEP:FireSpare() -- NEDDS WORK !!!! -- Whole system rewrite when?
 	--  @@@Edit
-	-- Make sure we can shoot first
+	-- Make sure we can shoot firstv 
 	local b1 = self:CanSecondaryAttack()
 	--self:Talk("Secondary Attack: Can? "..tostring(b1))
 	if not b1 then return end
-	
-	self.Weapon:SetVar("AkimboSide", true)
-
-	-- damage, bullets, aimcone
+	local hithere = self.Secondary.ShootAnim
+	self.Weapon:SetVar("AkimboSide", true) -- Legacey???? @@@
+	ErrorNoHalt("\t<>FS: "..tostring(hithere).."\n")
+	-- ( side, dmg, recoil, numbul, cone, ammo, forcedAnim, forceAmmoUsage)
 	self:ShootBullet( 	2,
 						self.Secondary.Damage 	or self.Primary.Damage,
 						self.Secondary.NumShots or self.Primary.NumShots,
 						self.Secondary.Cone 	or self.Primary.Cone 		or 0.05,
 						self.Secondary.Ammo,
-						self.Secondary.ShootAnim
+						hithere  -- Why is this going bool?
 						)
 	-- Remove 1 bullet from our clip
 	-- Punch the player's view @@@FIX ME!!
@@ -1808,7 +1878,7 @@ function SWEP:FireSpare() -- NEDDS WORK !!!!
 function SWEP:Recoil( recoil )
 	-- Recoil
 	-- @@@
-	
+	self.Owner:SetAnimation( PLAYER_ATTACK1 )
 	-- Dont let people in vehicles or npcs experience recoil
 	if self.Owner:IsNPC() then return end
 	if (self:InVehicle() and self.Owner:GetAllowWeaponsInVehicle() ) then
@@ -1849,7 +1919,7 @@ function SWEP:AddHeat( var )
 end
 
 function SWEP:GetHeat()
-	return self.Heat
+	return self.Heat -- A
 end
 
 function SWEP:TakePrimaryAmmo( num )
@@ -1943,50 +2013,52 @@ end
    Desc: +attack1 has been pressed, and animations are being sent.
 ---------------------------------------------------------*/
 function SWEP:PrimaryShootEffects( recoil, anim, snd, numshot )
-		--ErrorNoHalt("PrimaryShootEffects: "..tostring(anim).."\n")
-		if not numshot then 
-			numshot = 1
-			self:DebugTalk("Correcting number of shots to 1")
-		end
-		--self:Talk("PRIMARY")
-		self.Weapon:SetNetworkedFloat( "LastPrimaryShootTime", CurTime() ) -- @@@ USEFUL
+	--ErrorNoHalt("PrimaryShootEffects: "..tostring(anim).."\n")
+	if not numshot then 
+		numshot = 1
+		self:DebugTalk("Correcting number of shots to 1")
+	end
+	--self:Talk("PRIMARY")
+	self.Weapon:SetNetworkedFloat( "LastPrimaryShootTime", CurTime() ) -- @@@ USEFUL
 
-		local isempty = self.Weapon:Clip1() == 1 
-		-- @@@VARIANCE @@@
-		-- Prevent semi's from using this
-		-- @@@ Feature Plan
-		-- Model the spring to be based on 
-		-- # of shots per tick to decide
-		-- The variance!
-		local go = 0
-		if self.Primary.Automatic then
-			go = 1 
-		end
-		
-		if not self.FireVariance then
-			self.FireVariance = GetConVar("swep_FireVarience"):GetFloat()
-		end
-		
-		-- @@@DELAY VAR HERE!!!!
-		local amount	= self.FireVariance
-		-- 0.042 -- @@@@@@@
-		local variance 	= amount * go
-		-- Get a number thats +/- a scaler less than 0.05 usually
-		local scaler = math.random(1 - variance, 1 + variance )
-		-- Make this area more compact!
-		
-		self.Weapon:SetNextPrimaryFire( CurTime() + (self.Primary.Delay * scaler) )
-										-- Remove 1 bullet from our clip
-		if ( self.Owner:IsNPC() ) then return end
-		--self:Recoil(dmg)
-		
-		-- @@@CUSTOM RECOIL ! 
-		self:Recoil(recoil)
-		self.Owner:MuzzleFlash()
-		self:TakePrimaryAmmo( numshot )
-		if (self.Chambers == true)then
-			self.Primary.Chambered = false;
-		end
+	local isempty = self.Weapon:Clip1() == 1 
+	-- @@@VARIANCE @@@
+	-- Prevent semi's from using this
+	-- @@@ Feature Plan
+	-- Model the spring to be based on
+	-- # of shots per tick to decide
+	-- The variance!   
+	local go = 0
+	if self.Primary.Automatic then
+		go = 1 
+	end
+	
+	if not self.FireVariance then
+		self.FireVariance = GetConVar("swep_FireVarience"):GetFloat()
+	end
+	
+	-- @@@DELAY VAR HERE!!!! 
+	local amount	= self.FireVariance
+	-- 0.042 -- @@@@@@@
+	local variance 	= amount * go
+	-- Get a number thats +/- a scaler less than 0.05 usually
+	local scaler = math.random(1 - variance, 1 + variance )
+	-- Make this area more compact!
+	
+	self.Weapon:SetNextPrimaryFire( CurTime() + (self.Primary.Delay * scaler) )
+									-- Remove 1 bullet from our clip
+	
+	self:TakePrimaryAmmo( numshot ) -- Should NPCs get unlimited ammo?
+	if ( self.Owner:IsNPC() ) then return end
+
+	-- @@@CUSTOM RECOIL ! 
+	self:Recoil(recoil)
+	self.Owner:MuzzleFlash()
+	
+	
+	if (self.Chambers == true)then
+		self.Primary.Chambered = false;
+	end
 
 	self:DebugTalk("[~] PrimaryShootEffects snd:"..tostring(snd).." anim:"..tostring(anim).." Numshot: "..tostring(numshot))
 	if (snd == nil) then 
@@ -2003,18 +2075,30 @@ function SWEP:PrimaryShootEffects( recoil, anim, snd, numshot )
 		if type(anim) == "boolean" then
 			if isempty then
 				anim = "DRYFIRE"
+				--ErrorNoHalt("\n POOP DICK ALERT: #DryFire\n\n")   
 			else
 				anim = "PRIMARY"
+				--ErrorNoHalt("\n POOP DICK ALERT: #Primary\n\n")   
 			end
 		end
-		if type(anim) == "number" and anim == 0 then
-			anim = ""
-		end
-		-- VMact can do anything we need animation wise
-		self:VMact( anim, self.Primary.PBR, snd )
 		
+		if type(anim) == "number" then
+		
+			if anim == 0 then
+				--ErrorNoHalt("\n POOP DICK ALERT: #NUM anim is a blank str\n\n")  
+					anim = "Why God"
+				else
+					-- Nvm i Guess nothing its a number 
+					--ErrorNoHalt("\n POOP DICK ALERT!!!: #NUM anim is ".. tostring(anim).."\n\n")
+				end
+		
+		end
+		-- VMact can do anything we need animation wise '     
+		--ErrorNoHalt("\n\n<> <> SHIT IM SENDING TO VMact: " .. tostring(anim) .. " PBR: " .. tostring(self.Primary.PBR) .. " -> SND: "..tostring(snd))
+		self:VMact( anim, self.Primary.PBR, snd )
+
 	end
-	
+	-- Finally
 	if isempty and self.Primary.DryMagEject == true then
 		self:DropMagPrimary()
 	end
@@ -2037,7 +2121,7 @@ function SWEP:SecondaryShootEffects( recoil, anim, snd, numshot )
 		
 		
 		self.Weapon:SetNextSecondaryFire( CurTime() + self.Secondary.Delay * math.random(1-variance, 1+variance ) )
-										-- Remove 1 bullet from our clip
+										-- Remove 1 bullet from our clip 
 		--self:SecondaryShootEffects(nil, forcedAnim)
 		self.Owner:MuzzleFlash()
 	 
@@ -2094,8 +2178,10 @@ function SWEP:ShootBullet( side, dmg, recoil, numbul, cone, ammo, forcedAnim, fo
 	numbul 	= numbul 	or 1 -- Doesnt Have to be sent
 	cone 	= self:CurrentCone(cone) or cone or 0.01 -- Doesnt have to be sent 
 	if forcedAnim == nil then
+	ErrorNoHalt("\t<GAY SHIT HAPPENING> "..tostring(forcedAnim).."\n")
 		-- I cant remember the relivance, but very important?
 		forcedAnim = true
+		
 	end
 	-- self.Weapon:setVar("AkimboSide") == false
 
@@ -2115,7 +2201,7 @@ function SWEP:ShootBullet( side, dmg, recoil, numbul, cone, ammo, forcedAnim, fo
 		cone = GetConVarNumber("swep_cone")
 	end
 
-	local Ammo = AmmoTypes[ammo] or 3  -- AMMO doesn't have to be sent
+	local Ammo = AmmoTypes[ string.lower(ammo) ] or AmmoTypes[ ammo ] or 3  -- AMMO doesn't have to be sent
 	local bullet = {}
 	local f = 0
 	-- Aimvector:  -1 -> 1  (-90 to 90)
@@ -2154,8 +2240,12 @@ function SWEP:ShootBullet( side, dmg, recoil, numbul, cone, ammo, forcedAnim, fo
 	self.Weapon:SetNetworkedFloat( "LastShootTime", CurTime() ) --Primary, Secondary, Trinary
 	-- @@@ Weapon:LastShootTime() instead? integrate?
 
-	-- Check the side of fire 
-	if numbul > 1 and ( Ammo == 7 or (nil ~= forceAmmoUsage and isint(forceAmmoUsage)) ) then -- Add acception to shotguns
+	-- Check the side of fire  
+	local b1 = ( Ammo == 7 )
+	local b2 = (nil ~= forceAmmoUsage and isint(forceAmmoUsage)) -- Add checks for 1s and 0s
+	local b3 = b1 or b2
+	self:DebugTalk("> Shotgun Numbul Args: "..tostring(b1).." or "..tostring(b2).." -> "..tostring(b3).."\n")
+	if numbul > 1 and b3 then -- Add acception to shotguns
 		numbul = forceAmmoUsage or 1
 	end
 
@@ -3085,7 +3175,7 @@ function SWEP:HasModify()
 	local ModeLimit = 6
 	
 	local b1,b2,b3,b4,b5,b6 -- Add or cases here to keep boolean
-	b1 = #(self.data.modes or {}) > 1
+	b1 = #(self.data.modes or {}) > 1 or ((self.Primary.BurstFire or 0) > 1)
 	b2 = #(self.data.zooms or {}) > 1
 	b3 = self.Bipod
 	b4 = (self.Melee and (self.Primary.ClipSize > 0))
@@ -3363,7 +3453,7 @@ function SWEP:LaunchGrenade()
 	local up = side:Cross( aim )
 	local pos = self.Owner:GetShootPos() +  (aim * 25) + (side * 5) + (up * -6)	
 	--offsets the rocket so it spawns from the muzzle (hopefully)
-	-- @@@ Add code for Ironsights vs hipfire offsets
+	-- @@@ Add code for Ironsights vs hipfire offsets 
 	
 	local rocket = ents.Create( str )
 	

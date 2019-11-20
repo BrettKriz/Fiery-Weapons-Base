@@ -16,7 +16,7 @@ if ( CLIENT ) then
 	SWEP.IconLetter			= "0"
 	SWEP.IconFont			= "HLKillIcons"
 	SWEP.SelectIconLetter	= "b"
-	SWEP.SelectIconFont		= "HLSelectIcons"
+	-- SWEP.SelectIconFont		= "HLSelectIcons"
 	
 	killicon.AddFont( "weapon_spas12", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	

@@ -19,7 +19,7 @@ if ( CLIENT ) then
 	SWEP.IconLetter			= "w"
 	SWEP.IconFont			= "CSKillIcons"
 	SWEP.SelectIconLetter	= "W"
-	SWEP.SelectIconFont		= "CSSelectIcons"
+	-- SWEP.SelectIconFont		= "CSSelectIcons"
 	
 	killicon.AddFont( "weapon_m4", "CSKillIcons", SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
@@ -32,7 +32,8 @@ SWEP.Category				= "Fiery"
 SWEP.Spawnable				= true
 SWEP.AdminSpawnable			= true
 
-SWEP.HoldType				= "rifle"
+SWEP.HoldType				= "test1"
+
 SWEP.ViewModel				= "models/weapons/cstrike/c_rif_m4a1.mdl"
 SWEP.WorldModel				= "models/weapons/w_rif_m4a1.mdl"
 SWEP.Weight					= 7

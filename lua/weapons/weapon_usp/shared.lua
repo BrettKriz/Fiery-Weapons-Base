@@ -16,7 +16,7 @@ if ( CLIENT ) then
 	SWEP.IconLetter			= "a"
 	SWEP.IconFont			= "CSKillIcons"
 	SWEP.SelectIconLetter	= "A"
-	SWEP.SelectIconFont		= "CSSelectIcons"
+	-- SWEP.SelectIconFont		= "CSSelectIcons"
 	
 	killicon.AddFont( "weapon_usp", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
@@ -57,6 +57,6 @@ SWEP.IronSightsAng = Vector(-0.101, 0.045, 0)
 -- 
 
 SWEP.Primary.EmptyAnim		= ACT_VM_DRYFIRE
-SWEP.Primary.ShootAnim		= "shoot1"
+SWEP.Primary.ShootAnim		= "shoot1_unsil"
 SWEP.EmpytyIdleAnim			= ACT_VM_IDLE_EMPTY
 SWEP.IdleAnim 				= ACT_VM_IDLE

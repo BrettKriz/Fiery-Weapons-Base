@@ -16,33 +16,34 @@ if ( CLIENT ) then
 	SWEP.IconLetter			= "t"
 	SWEP.IconFont			= "CSKillIcons"
 	SWEP.SelectIconLetter	= "T"
-	SWEP.SelectIconFont		= "CSSelectIcons"
+	-- SWEP.SelectIconFont		= "CSSelectIcons"
 	
 	killicon.AddFont( "weapon_famas", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
 end
 
 
-SWEP.Base				= "weapon_fiery_base_auto_rifle"
-SWEP.Category			= "Fiery"
+SWEP.Base					= "weapon_fiery_base_auto_rifle"
+SWEP.Category				= "Fiery"
 
-SWEP.Spawnable			= true
-SWEP.AdminSpawnable		= true
+SWEP.Spawnable				= true
+SWEP.AdminSpawnable			= true
 
-SWEP.HoldType			= "rifle"
-SWEP.HoldType2			= "hipfire2"
-SWEP.ReloadHoldType		= "smg"
-SWEP.ViewModel			= "models/weapons/cstrike/c_rif_famas.mdl"
-SWEP.WorldModel			= "models/weapons/w_rif_famas.mdl"
-SWEP.ViewModelFlip		= false
+SWEP.HoldType				= "rifle"
+SWEP.HoldType2				= "hipfire2"
+SWEP.ReloadHoldType			= "pistol"
 
-SWEP.Weight				= 5
-SWEP.AutoSwitchTo		= false
-SWEP.AutoSwitchFrom		= false
+SWEP.ViewModel				= "models/weapons/cstrike/c_rif_famas.mdl"
+SWEP.WorldModel				= "models/weapons/w_rif_famas.mdl"
+SWEP.ViewModelFlip			= false
+
+SWEP.Weight					= 5
+SWEP.AutoSwitchTo			= false
+SWEP.AutoSwitchFrom			= false
 
 SWEP.Primary.Sound			= Sound( "Weapon_famas.Single" )
 SWEP.Primary.Recoil			= 0.9
-SWEP.Primary.Damage			= 36
+SWEP.Primary.Damage			= 34
 SWEP.Primary.NumShots		= 1
 SWEP.Primary.Cone			= 0.02
 SWEP.Primary.ClipSize		= 25

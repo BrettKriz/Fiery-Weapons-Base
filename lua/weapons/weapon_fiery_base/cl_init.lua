@@ -30,28 +30,23 @@ cl_crosshair_type  	= CreateClientConVar("cl_crosshair_type", 1, true, false)		-
 	Print Info
 ---------------------------------------------------------*/
 function SWEP:PrintWeaponInfo( x, y, alpha )
-	-- Add a reading setting 
+	-- Add a reading setting  
 	if ( self.DrawWeaponInfoBox == false ) then return end
 	
 	if (self.InfoMarkup == nil ) then
 		local str
 		local title_color = "<color=255,120,45,255>"
 		local text_color = "<color=150,151,150,255>"
-		local ammos = ""
-		--if self.Primary.Ammo ~= "none" then
-			ammos = (ammos .. " Prime -> " .. tostring(self.Primary.Ammo))
-		--end
-		--if self.Secondary.Ammo ~= "none" then
-			ammos = (ammos .. "\n Second -> " .. tostring(self.Secondary.Ammo))
-		--end
+		local ammos = self.AmmoDisc or "Mem issue"
+		
 		
 		str = "<font=HudSelectionText>"
 		str = str .. tostring(self.ClassName) .. "\n(" .. tostring(self.Base) .. ")\n"
 		local addAuthor = ""
-		if (self.Author != "Nova Prospekt") then addAuthor = "\nNova Prospekt" end -- self.isTemplate and 
+		if (self.Author != "Nova Prospekt") then addAuthor = "\n\t&\tNova Prospekt" end -- self.isTemplate and 
 		if ( self.Author != "" ) 			then str = str .. title_color .. "Author:</color>\t"		..text_color..self.Author..addAuthor.."</color>\n" 		end
 		if ( self.Contact != nil
-			and self.Contact != "") 		then str = str .. title_color .. "Contact:</color>\t"		..text_color..self.Contact.."</color>\n\n" 				end
+			and self.Contact != "") 		then str = str .. title_color .. "Contact:</color>\n"		..text_color..self.Contact.."</color>\n\n" 				end
 		if ( self.Purpose != nil
 			and self.Purpose != "" ) 		then str = str .. title_color .. "Purpose:</color>\n\t"		..text_color..self.Purpose.."</color>\n\n" 				end
 		if ( self.Instructions != nil
@@ -59,12 +54,12 @@ function SWEP:PrintWeaponInfo( x, y, alpha )
 		if ( self.Note != nil 
 			and self.Note != "" ) 			then str = str .. title_color .. "Note:</color>\n\t"			..text_color..self.Note.."</color>\n" 					end
 		
-		str = str .. title_color .. "~ Ammo ~ </color>" .. text_color .. ammos .. "</color>\n\n"
+		str = str .. title_color .. "Ammo \n</color>" .. text_color .. ammos .. "</color>\n"
+		-- Fun feature for RP \/ Allow for serial numbers to be scratched off ;D 
+		str = str .. "" .. title_color .. "Serial # \t</color>" .. text_color .. (self.SerialNumber or "Bad Mem") .. "</color>\n\n"
 		
 		if ( self.Lore != nil 
 		and self.Lore != "" ) 				then str = str ..text_color .. "..."						..self.Lore.."</color>\n" 					end
-		
-		
 		
 		str = str .. "</font>"
 		
@@ -88,33 +83,33 @@ end
 
 function SWEP:BuildFiremodeStr( side, arg )
 
-	local ans = ""
-	local p1 = "p" -- PISTOL
-	local p2 = "q" -- 357
-	local r1 = "r" -- SMG1
-	local r2 = "u" -- AR2
-	local s1 = "s" -- BUCK
-	local rg1 = "t" -- SMG1 RG
-	local rg2 = "z" -- Combine ball
-	local rocket = "x"
-	local xbow = "|"
-	local xbow2 = "w"
-	local gren = "v"	
-	local d = xbow -- Find better default!
-	local isSecond = (side == 2)
+	local ans 		= ""
+	local p1 		= "p" -- PISTOL
+	local p2 		= "q" -- 357
+	local r1 		= "r" -- SMG1
+	local r2 		= "u" -- AR2
+	local s1 		= "s" -- BUCK
+	local rg1 		= "t" -- SMG1 RG
+	local rg2 		= "z" -- Combine ball
+	local rocket 	= "x"
+	local xbow 		= "|"
+	local xbow2 	= "w"
+	local gren 		= "v"	
+	local d 		= xbow -- Find better default!
+	local isSecond 	= (side == 2)
 
 	-- DODS
-	if useFont == "SelectFiremode2" then
-		p1 = "4" -- PISTOL
-		p2 = "4" -- 357
-		r1 = "4" -- SMG1
-		r2 = "4" -- AR2
-		s1 = "4" -- BUCK
-		rg1 = "S" -- SMG1 RG
-		rg2 = "S" -- Combine ball
-		rocket = "S"
-		xbow = "4"
-		gren = "S"
+	if useFont == self.SelectFiremode2 then
+		p1 		= "4" -- PISTOL
+		p2 		= "4" -- 357
+		r1 		= "4" -- SMG1
+		r2 		= "4" -- AR2
+		s1 		= "4" -- BUCK
+		rg1 	= "S" -- SMG1 RG
+		rg2 	= "S" -- Combine ball
+		rocket 	= "S"
+		xbow 	= "4"
+		gren 	= "S"
 	end
 	
 	local fmi = {
@@ -149,12 +144,13 @@ function SWEP:BuildFiremodeStr( side, arg )
 	
 	local useAmmo = self.Weapon:GetPrimaryAmmoType()
 	local useFont = self.Primary.FiremodeFont
-	local burstNum = self.Primary.BurstFire or 3 -- Tie into a var plz!!
-	local isAuto = self.Primary.Automatic
-	if isSecond then
+	local burstNum = self.Primary.BurstFire or 0 -- Tie into a var plz!!
+	local isAuto = self.Primary.Automatic == true
+	
+	if isSecond == true then
 		useAmmo = self.Weapon:GetSecondaryAmmoType()
 		useFont = self.Secondary.FiremodeFont	
-		burstNum = self.Secondary.BurstFire or 3 -- Tie into a var plz!!
+		burstNum = self.Secondary.BurstFire or 0 -- Tie into a var plz!!
 		isAuto = self.Secondary.Automatic
 	elseif side ~= 1 then
 		ErrorNoHalt("@BuildFiremodeStr called with a bad SIDE arg of: "..tostring(side).." PLEASE FIX!\n")
@@ -162,18 +158,32 @@ function SWEP:BuildFiremodeStr( side, arg )
 	
 	-- Do stuff
 	local tl = tostring(arg or fmi[useAmmo] or "p") -- Target Letter
-	local cm = self.data.modes[self.FireMode] -- Current Mode
-	if cm == 1 then
-		-- Semi
-		ans = tl
-	elseif cm == 3 or isAuto then
-		-- Auto
-		ans = tostring("" .. tl .. tl .. tl .. tl)
-	elseif burstNum > 0 and cm == 2 then
-		-- BurstFire  
-		ans = tostring("" .. tl .. tl)
-	end
+	local cm = self.data.modes[self.FireMode] or 1 -- Current Mode
+	local hm = tobool(self.FireMode) ~= false and #self.data.modes > 1
+	local auto = tostring("" .. tl .. tl .. tl .. tl .. tl)
+	local burst = tostring("" .. tl .. tl .. tl)
+	ans = tl
 	
+	if hm == false then
+		if isAuto == true then
+			ans = auto
+			ErrorNoHalt("I pooped my pants and all i got was this dev msg\n")
+		end
+	else
+		if cm == 1 then
+			-- Semi
+			ans = tl
+			--ErrorNoHalt("SEMI \n")
+		elseif burstNum > 0 and cm == 2 then
+			-- BurstFire  
+			ans = burst
+			--ErrorNoHalt("BURST \n") 
+		elseif cm == 3 or isAuto == true then
+			-- Auto
+			ans = auto
+			--ErrorNoHalt("AUTO \n")
+		end
+	end
 	
 	return ans
 end
@@ -189,13 +199,18 @@ function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
 	local dods = (self.DoDWeaponDraw == true)
 	local css = (self.HL2WeaponDraw ~= true)and(self.DoDWeaponDraw ~= true)
 	
-	local useFont 	= self.SelectIconFont or "CSSelectIcons3"
-	local useFont2 	= self.IconFont or "CSKillIcons2"
-	local useFont3 	= self.SelectIconFont2 or "CSSelectIcons3"
-	local useFont4 	= self.Primary.FiremodeFont or "SelectFiremode"
-	local useFont5 	= self.Secondary.FiremodeFont or "SelectFiremode"
-	if useFont == "HL2SelectIcons" then
-		useFont3 = "HL2SelectIcons"
+	local useFont 	= self.SelectIconFont 			or self.CSSelectIcons
+	local useFont2 	= self.IconFont 				or self.CSKillIcons2
+	local useFont3 	= self.SelectIconFont2 			or self.CSSelectIcons3
+	local useFont4 	= self.Primary.FiremodeFont 	or self.SelectFiremode
+	local useFont5 	= self.Secondary.FiremodeFont 	or self.SelectFiremode
+	
+	if nil == useFont then
+		ErrorNoHalt("[!!!!!] lol it chose a nil over a font!!\n")
+	end
+	
+	if useFont == self.HL2SelectIcons then
+		useFont3 = self.HL2SelectIcons
 	end
 
 	local useLetter	= self.SelectIconLetter or self.IconLetter or nil
@@ -203,8 +218,8 @@ function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
 	local useLetter3 = self:BuildFiremodeStr(1) -- useFont4
 	local useLetter4 = self:BuildFiremodeStr(2) -- useFont5
 	
-	local useNFont	= self.SelectIconNumberFont or "SelectNumbers"
-	local ammoLetter = self.Primary.AmmoLetter or self:GuessCallibur()
+	local useNFont	= self.SelectIconNumberFont or self.SelectNumbers
+	--local ammoLetter = self.Primary.AmmoLetter or self:GuessCallibur()
 	-- guess calibur
 	local cal = self.Primary.AmmoLetter or self:GuessCallibur(1)
 	local cal2 = self.Secondary.AmmoLetter or self:GuessCallibur(2)
@@ -223,6 +238,8 @@ function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
 	local c0 = Color( 255, 120, 45, 200 )
 	local c1 = Color( 255, 125, 55, math.Rand(10, 100) )
 	local c2 = Color( 255, 135, 70, math.Rand(10, 100) )
+	
+	local grn = Color( 0, 255, 10, 125 )
 	
 	local c3n = 20 -- Light White
 	local c3 = Color( c3n, c3n, c3n, 255 )
@@ -245,17 +262,25 @@ function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
 	local c7 = Color( 5, 250, 5, 255 )
 
 	if not useLetter then 
-		useLetter 	= self.IconLetter
+		useLetter 		= self.IconLetter
+		
 		if css then
-			useFont		= "CSSelectIcons"
+			useFont		= self.CSSelectIcons
 		elseif hl2 then
-			useFont		= "HL2SelectIcons"
+			useFont		= self.HL2SelectIcons
 		elseif dods then
-			useFont		= "DoDSelectIcons"
+			useFont		= self.DoDSelectIcons
+		else
+			ErrorNoHalt("[!] Font leak detected in cl_init\n")
 		end
 		-- 
 	end
 	
+	if useFont == self.CSSelectIcons3 then
+		-- Adjust 
+		useLetter = useLetter2
+	end
+	--ErrorNoHalt("useFont = "..tostring(useFont).."\n")
 	-- Display ammo in the background
 	--draw.SimpleText( cal, "CSKillIcons", x + wide/2, y + tall*0.2, c51, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP )
 	--						"SelectNumbers2"
@@ -273,13 +298,25 @@ function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
 			yr1 =  math.Rand(-14, 14)
 			yr2 = math.Rand(-9, 9)
 		end
-		-- try to fool them into thinking they're playing a Tony Hawks game
+		-- try to fool them into thinking they're playing a Tony Hawks game 
+		-- Can we bury this joke? Its 2019 and Tony needs to retire
+		--[[
+		draw.SimpleText( useLetter, useFont, x + wide/2 + xr1, y + tall*0.2+ yr1, grn, TEXT_ALIGN_CENTER )
+		draw.SimpleText( useLetter, useFont, x + wide/2 + xr2, y + tall*0.2+ yr2, grn, TEXT_ALIGN_CENTER )
+		--]]
+		--
 		draw.SimpleText( useLetter, useFont, x + wide/2 + xr1, y + tall*0.2+ yr1, c1, TEXT_ALIGN_CENTER )
 		draw.SimpleText( useLetter, useFont, x + wide/2 + xr2, y + tall*0.2+ yr2, c2, TEXT_ALIGN_CENTER )
 		--]]
 	else
+		--
 		draw.SimpleText( useLetter, useFont, x + wide/2, y + tall*0.2, c1, TEXT_ALIGN_CENTER )
 		draw.SimpleText( useLetter, useFont, x + wide/2, y + tall*0.2, c2, TEXT_ALIGN_CENTER )
+		--]]
+		--[[
+		draw.SimpleText( useLetter, useFont, x + wide/2, y + tall*0.2,grn, TEXT_ALIGN_CENTER )
+		draw.SimpleText( useLetter, useFont, x + wide/2, y + tall*0.2, grn, TEXT_ALIGN_CENTER )
+		--]]
 	end
 	
 	if !true then
@@ -288,9 +325,17 @@ function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
 		draw.SimpleText( useLetter, useFont, bg_n + x + wide/2, bg_n + y + tall*0.2, c4, TEXT_ALIGN_CENTER )
 		draw.SimpleText( useLetter, useFont, x + wide/2, y + tall*0.2, c0, TEXT_ALIGN_CENTER )
 	else
+		--ErrorNoHalt("UseFont = " .. tostring(useFont) .. "\n")
+		--[[
+		draw.SimpleText( tostring(useFont), useFont, x + wide/2, y + tall*0.2, grn, TEXT_ALIGN_CENTER )
+		draw.SimpleText( useLetter2, useFont3, (bg_n2) + x + wide/2, (bg_n2) + y + tall*0.2, c4, TEXT_ALIGN_CENTER )
+		draw.SimpleText( useLetter2, useFont3, x + wide/2, y + tall*0.2, c0, TEXT_ALIGN_CENTER )
+		--]]
+		--
 		draw.SimpleText( useLetter, useFont, x + wide/2, y + tall*0.2, c0, TEXT_ALIGN_CENTER )
 		draw.SimpleText( useLetter2, useFont3, (bg_n2) + x + wide/2, (bg_n2) + y + tall*0.2, c4, TEXT_ALIGN_CENTER )
 		draw.SimpleText( useLetter2, useFont3, x + wide/2, y + tall*0.2, c0, TEXT_ALIGN_CENTER )
+		--]]
 	end
 	
 	-- Draw Clip Amounts
@@ -320,8 +365,8 @@ function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
 		surface.DrawText( self.WepSelectLetter or self.IconLetter )
 	end
 	--]]
-		-- Draw weapon info box 
 	
+	-- Draw weapon info box 
 	if clip1 > -1 and self.Primary.ClipSize > 0 then
 		local uc = c51
 		
@@ -335,17 +380,18 @@ function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
 		local fmy = y + ( tall*0.10	)
 		
 		draw.SimpleText( clip1s, useNFont, 1 + clx, 1 + cly, c4, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
-		draw.SimpleText( cal, "CSKillIcons", 1 + cax, 1 + cay, c4, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( cal, self.CSKillIcons, 1 + cax, 1 + cay, c4, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
 		draw.SimpleText( useLetter3, useFont4, 1 + fmx, 1 + fmy, c4, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )	
 		
 		draw.SimpleText( clip1s, useNFont, -1 + clx, -1 + cly, c3, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
-		draw.SimpleText( cal, "CSKillIcons", -1 + cax, -1 + cay, c3, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( cal, self.CSKillIcons, -1 + cax, -1 + cay, c3, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
 		draw.SimpleText( useLetter3, useFont4, -1 + fmx, -1 + fmy, c3, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
 		
 		draw.SimpleText( clip1s, useNFont,	 clx, cly, uc, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
-		draw.SimpleText( cal, "CSKillIcons", cax, cay, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( cal, self.CSKillIcons, cax, cay, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
 		draw.SimpleText( useLetter3, useFont4, fmx, fmy, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
 	end
+	
 	if clip2 > -1 and self.Secondary.ClipSize > 0 then
 		local uc = c52
 		
@@ -357,16 +403,17 @@ function SWEP:DrawWeaponSelection( x, y, wide, tall, alpha )
 		
 		local fmx = x + ( wide*0.2	) -- Cal
 		local fmy = y + ( tall*0.9	)
+		
 		draw.SimpleText( clip2s, useNFont,		-1 + clx, -1 + cly, c4, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
-		draw.SimpleText( cal2, "CSKillIcons", 	-1 + cax, -1 + cay, c4, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( cal2, self.CSKillIcons, 	-1 + cax, -1 + cay, c4, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
 		draw.SimpleText( useLetter4, useFont5, 	-1 + cax, -1 + cay, c4, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
 		
 		draw.SimpleText( clip2s, useNFont, 		1 + clx, 1 + cly, c3, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
-		draw.SimpleText( cal2, "CSKillIcons", 	1 + cax, 1 + cay, c3, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( cal2, self.CSKillIcons, 	1 + cax, 1 + cay, c3, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
 		draw.SimpleText( useLetter4, useFont5, 	1 + cax, 1 + cay, c3, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
 		
 		draw.SimpleText( clip2s, useNFont, 		clx, cly, uc, TEXT_ALIGN_RIGHT, TEXT_ALIGN_TOP  )
-		draw.SimpleText( cal2, "CSKillIcons", 	cax, cay, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
+		draw.SimpleText( cal2, self.CSKillIcons, 	cax, cay, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
 		draw.SimpleText( useLetter4, useFont5, 	cax, cay, uc, TEXT_ALIGN_LEFT, TEXT_ALIGN_TOP  )
 	end
 	

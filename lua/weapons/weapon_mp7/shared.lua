@@ -17,8 +17,8 @@ if ( CLIENT ) then
 	SWEP.IconLetter			= "/"
 	SWEP.IconFont			= "HLKillIcons"
 	SWEP.SelectIconLetter	= "a"
-	SWEP.SelectIconFont		= "HLSelectIcons"
-	SWEP.SelectIconFont2	= "HLSelectIcons"
+	-- SWEP.SelectIconFont		= "HLSelectIcons"
+	-- SWEP.SelectIconFont2	= "HLSelectIcons"
 	
 	killicon.AddFont( "weapon_mp7", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
@@ -32,6 +32,9 @@ SWEP.Spawnable				= true
 SWEP.AdminSpawnable			= true
 
 SWEP.HoldType				= "smg"
+SWEP.HoldType2				= "hipfire2"
+SWEP.ReloadHoldType			= "pistol"
+
 SWEP.ViewModel				= "models/weapons/c_smg1.mdl"
 SWEP.WorldModel				= "models/weapons/w_smg1.mdl"
 SWEP.Mag					= "models/weapons/w_smg_mp7_mag.mdl"

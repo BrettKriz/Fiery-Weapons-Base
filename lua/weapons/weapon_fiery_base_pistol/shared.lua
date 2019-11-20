@@ -16,7 +16,7 @@ if ( CLIENT ) then
 	SWEP.IconLetter			= "c"
 	SWEP.IconFont			= "CSKillIcons"
 	SWEP.SelectIconLetter	= "a"
-	SWEP.SelectIconFont		= "CSSelectIcons3"
+	-- SWEP.SelectIconFont		= "CSSelectIcons3"
 	--
 	killicon.AddFont( "weapon_fiery_base_pistol", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	

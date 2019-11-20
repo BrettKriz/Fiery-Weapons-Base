@@ -16,8 +16,8 @@ if ( CLIENT ) then
 	SWEP.IconLetter			= "."
 	SWEP.IconFont			= "HLKillIcons"
 	SWEP.SelectIconLetter	= "e"
-	SWEP.SelectIconFont		= "HLSelectIcons"
-	SWEP.SelectIconFont2	= "HLSelectIcons"
+	-- SWEP.SelectIconFont		= "HLSelectIcons"
+	-- SWEP.SelectIconFont2	= "HLSelectIcons"
 	
 	killicon.AddFont( "weapon_fiery_357", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 

@@ -35,7 +35,7 @@ SWEP.Primary.Delay 			= 0.07
 SWEP.Primary.Automatic 		= false
 SWEP.Primary.Ammo 			= "pistol"
 
-SWEP.Secondary.Sound 			= Sound("Weapon_Elite.Single")
+SWEP.Secondary.Sound 		= Sound("Weapon_Elite.Single")
 SWEP.Secondary.Recoil		= 0.75
 SWEP.Secondary.Damage		= 20
 SWEP.Secondary.NumShots		= 1
@@ -47,3 +47,10 @@ SWEP.Secondary.Ammo			= "pistol"
 
 SWEP.DryFires				= true -- Unlock Dry Fire
 SWEP.UsesHands				= true
+
+	SWEP.Primary.EmptyAnim		= 4
+	SWEP.Primary.ShootAnim		= 2 -- + 1 if still animating
+	-- If the weapon should be held like a shotgun when not in iron sight
+	-- If the held animation is crossbow, then it will be held like an AR2
+	SWEP.Secondary.EmptyAnim	= 7			 -- No dryfire anims for secondary attacks(normally)
+	SWEP.Secondary.ShootAnim	= 5 -- + 1 if still animating

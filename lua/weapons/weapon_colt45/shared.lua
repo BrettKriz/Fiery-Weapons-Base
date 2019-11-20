@@ -8,7 +8,7 @@ end
 
 if ( CLIENT ) then
 
-	SWEP.PrintName			= "M1911 .45"
+	SWEP.PrintName			= "1911 .45"
 	SWEP.Lore				= "A legendary handgun!\nFeel the history flow though your fingers!.."
 	SWEP.Author				= "Nova Prospekt"
 	SWEP.Slot				= 1
@@ -17,7 +17,7 @@ if ( CLIENT ) then
 	SWEP.IconLetter			= "y"
 	SWEP.IconFont			= "CSKillIcons"
 	SWEP.SelectIconLetter	= "Y"
-	SWEP.SelectIconFont		= "CSSelectIcons"
+	-- SWEP.SelectIconFont		= "CSSelectIcons"
 	
 	killicon.AddFont( "weapon_colt45", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
@@ -82,5 +82,4 @@ SWEP.EmptyDrawAnim			= ACT_VM_DRAW_EMPTY
 
 SWEP.EmpytyIdleAnim			= ACT_VM_IDLE_EMPTY
 SWEP.IdleAnim 				= ACT_VM_IDLE
-
 /*---------------------------------------------------------*/

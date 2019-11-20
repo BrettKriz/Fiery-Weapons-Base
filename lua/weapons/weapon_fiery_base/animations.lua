@@ -43,7 +43,9 @@ function SWEP:TestAnims()
 			self:VMact(arod[x])
 			end)
 	end
-	
+	--local ls = model:LookupSequence(anim_name)
+			--ErrorNoHalt("\nLS: "..tostring(ls).."\n")
+			--model:SendViewModelMatchingSequence(ls)
 	self:Snowball( function() self:Talk("TESTING ALL ANIMATIONS!") end)
 	
 	for k,v in pairs(ACTs) do
@@ -124,7 +126,7 @@ end
    Desc: Translates ACT enum's into Strings of the enums
 ---------------------------------------------------------*/
 function SWEP:ACTtoSTR(arg)
-	if not arg then return end
+	if not arg then return -1 end
 	if arg == nil or not (type(arg) == "number") then return end
 	
 	if tonumber(arg) != nil then
@@ -133,7 +135,7 @@ function SWEP:ACTtoSTR(arg)
 	
 	local ans = table.KeyFromValue(ACTs, arg)
 	if ans == nil then
-		Error("Failed to find KEY from the VALUE: " .. tostring(arg))
+		Error("Failed to find KEY from the VALUE: " .. tostring(arg).."\n")
 		return
 	end
 	return ans
@@ -260,7 +262,7 @@ function SWEP:PreDrawViewModel( vm, wep, ply ) -- @@@
 	--vm:SetMaterial( "engine/occlusionproxy" ) -- Hide that view model with hacky material
 	
 end
-
+-- SelectWeightedSequence
 /*---------------------------------------------------------
    Name: VeiwModel Action Engine
    Author: Nova Prospekt [6/28/11]
@@ -271,14 +273,25 @@ function SWEP:VMact(anim_name, pbr, snd, volume, idle_after, iron_off)
 	-- Just to note, sound can be a table -> {sound, dmg, origin}
 	if (anim_name==nil and pbr==nil and snd==nil and idle_after==nil and iron_off==nil ) then return end
 	
-	// Welcome to the Animation Engine.
+	-- Welcome to the Animation Engine.
 	if not pbr 			then pbr 			= 1.0		end
 	if not type(volume) == "number" then	volume = tonumber(volume) or nil end
 	if not idle_after 	then idle_after 	= false 	end
 	if not iron_off 	then iron_off 		= false 	end -- lol loopback
 	
-	if anim_name != "" then
-		s_arg = self:VMEXEAnim(anim_name) or snd  -- THIS EXECUTES THE ANIMATIONS
+	if nil == anim_name then
+		ErrorNoHalt("   ANIM NAME IS NULL, FIX UR SHIT\n\n")
+	elseif anim_name != "" then
+		--ErrorNoHalt("   ENTERING EXE ANIM\n")
+		
+		if type(anim_name) == "string" then
+			ErrorNoHalt("\n< ANIMATION IS STRING "..tostring(anim_name).." \n")
+			s_arg = self:VMEXEAnim(anim_name) or snd  -- THIS EXECUTES THE ANIMATIONS 
+		elseif type(anim_name) == "number" then
+		ErrorNoHalt("\n< ANIMATION IS ENUM\n")
+			s_arg = self:VMEXEAnim( anim_name ) or snd
+			--s_arg = self:VMEXEAnim( self:ACTtoSTR(anim_name) ) or snd
+		end
 	end
 	local player_anim_time 	= self.Owner:SequenceDuration()
 	local VM_anim_time		= self:SequenceDuration()
@@ -407,6 +420,8 @@ function SWEP:EXESound(snd, vol) -- Can recieve either just a sound or a table
 	-- May need a revision soon, 	08/29/2015
 	-- Yeah I wish I had more time 	04/05/2016
 	-- Maybe time soon?				11/03/2016
+	-- Soo might have to map it out and rebuild
+	-- When I get the time			09/16/2019
 function SWEP:VMEXEAnim(anim_name, dmg) 
 	-- GOALS:
 	-- Define needed variables in each option block
@@ -415,7 +430,8 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 	-- [i] Arguments list as last option #MaxModular
 	
 	if (anim_name == nil) or (self.Owner:IsNPC()) then return end
-	local NOW = CurTime()
+	
+	local NOW = CurTime() -- Snapshot the time.
 	local options = {"PRIMARY", "SECONDARY", "DRYFIRE", "RELOAD", "DRAW", "IDLE"}
 	local model = self.Owner:GetViewModel()
 	local snd = nil
@@ -427,12 +443,13 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 	local addaft = ""
 	-- Start
 	self:DebugTalk("ANIM as string: " .. tostring(anim_name).."\n")
-	
+
 	if type(anim_name) == "string" and table.HasValue(options, string.upper(anim_name)) then
+		--ErrorNoHalt("\n\t~~~~~~~~~~~~~~ Yeah so im in this area?\n")
 		an = string.upper(anim_name)
 		ANIM = "ACT_VM_" .. an -- Keep it this way
 		isempty = false
-
+		--ErrorNoHalt("\nANIM: " ..tostring(ANIM).. " an: "..tostring(an).."\n")
 		-- and not self.Weapon:GetNWBool("reloading", false)
 		-- @@@Primary/Secondary COnsideration!!
 		if self.Weapon:Clip1() < 1 then -- 0 and below
@@ -465,7 +482,7 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 -- PRIMARY	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		if an == "PRIMARY" or an == "DRYFIRE" then -- SHOOT
 			--self:Talk("Prim "..tostring(true).."\n")
-			self.Owner:SetAnimation( PLAYER_ATTACK1 )
+			
 			
 			if addin == "_SILENCED" then
 				self:AddHeat(0.80)
@@ -517,7 +534,7 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 			-- @@@ADD CODE FOR AKIMBO
 			-- stbl_tag = shot
 			ANIM = "ACT_VM_SECONDARYATTACK"
-			self.Owner:SetAnimation( PLAYER_ATTACK1 )
+
 
 -- RELOAD	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		elseif an == "RELOAD" then -- RELOAD
@@ -552,26 +569,7 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 				self:DebugTalk("Using nonEmpty")
 				ANIM = self.DrawAnim or ANIM
 			end
-			-- Send 3rd person anims 
-			self:SetHoldType("normal")
-			self.Owner:SetAnimation( PLAYER_IDLE )
-			-- Send 3rd person anims for later
-			self:SafeTimer(self:GetSeqDur()*0.80, function() 
-				local b1 = self.Weapon:GetNWBool("Ironsights")
-				if self:AreArmsDown() then
-					self:SetHoldType( self.RunHoldType or "normal" )
-				else
-					if b1 then
-						--self:SafeTimer(IRONSIGHT_TIME/4, function()
-							self:SetHoldType( self.HoldType )
-						--end)
-					else
-						--self:SafeTimer(IRONSIGHT_TIME/4, function()
-							self:SetHoldType( self.HoldType2 or self.HoldType )
-						--end)
-					end
-				end
-			end)
+			self:doDrawTrans()
 			
 -- IDLE		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 	
 		elseif an == "IDLE" then -- IDLE
@@ -608,7 +606,10 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 
 		answer = self:STRtoACT(ANIM) -- o(1)
 
-		if type(answer) == "string" then
+		if nil == answer then
+			ErrorNoHalt("[!] This shit isnt in the STRtoACT")
+			return false
+		elseif type(answer) == "string" then
 			answer = self:STRtoACT(answer)
 			ErrorNoHalt("[!] Rare error: Double ACT look up!\tResult: "..tostring(answer).."\n")
 		end
@@ -617,10 +618,96 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 		self.Weapon:SendWeaponAnim( answer ) -- NUMBER
 		
 	elseif isint(anim_name) then 
-	self.DebugTalk("\n\tVMEXECAnim Sending an Int:  "..anim_name.."\n")
-		self.Weapon:SendWeaponAnim(anim_name) -- Just yeah, do it, no help, they sent a number
+		ErrorNoHalt(" INT AREA <><><><><><>\n")
+		local toint = tonumber(anim_name)
+		local ls
+		
+		self.DebugTalk("\n\tVMEXECAnim Sending an Int:  "..anim_name.."\n")
+		if toint > 64 then -- These are already sequences
+			self.Weapon:SendWeaponAnim(anim_name) -- Just yeah, do it, no help, they sent a number
+		else
+			ls = toint
+			if self.Akimbo then
+				--[[
+					0,idle
+					1,idle_leftempty -- Left goes empty first
+					2,shoot_left1 -- "First" in sequence
+					3,shoot_left2 -- Even shots left, on last 2nd bullet
+					4,shoot_leftlast -- Will show right non-empty
+					5,shoot_right1
+					6,shoot_right2-- Odd shots right, to last 1 bullet
+					7,shoot_rightlast -- Will show left empty too
+					8,reload
+					9,draw
+					10,adjustment -- lmao some weird stuff
+				]]--
+				local pst, sst, hhhh
+				hhhh = 0.65
+				pst = (self.Weapon:GetNWFloat( "LastPrimaryShootTime") + (self:GetSeqDur())*hhhh)
+				sst = (self.Weapon:GetNWFloat( "LastSecondaryShootTime") + (self:GetSeqDur())*hhhh)
+				local isPK, isSK
+				isPM = NOW < pst
+				isSM = NOW < sst
+				
+				-- Primary and SECONDARY
+				if ls == 2 then
+					if self.Weapon:Clip1() < 1 then
+						ls = 4
+						
+					elseif isSM then
+						ls = 3
+						self:Talk("Left 2")
+					end
+				elseif ls == 5 then
+					if self.Weapon:Clip1() < 1 then
+						ls = 7
+						
+					elseif isPM then
+						ls = 6
+						self:Talk("Right 2")
+					end
+				end
+			end
+			
+			model:SendViewModelMatchingSequence( ls )
+		end
+
 	elseif type(anim_name) == "string" then
-		model:SetSequence(model:LookupSequence(anim_name))
+		ErrorNoHalt("\n NON-OPTION STRING AREA <><><>"..tostring(anim_name).."<><><>\n")
+		--model:SetSequence(model:LookupSequence(anim_name)) 
+		--local stbl = {"RELOAD", "DRAW", "IDLE"}
+		local filterstr = string.upper(anim_name) or "PRIMARY"
+		local nah = false
+		-- Look for markers
+		if string.find(filterstr, "RELOAD") or false then
+			self.Owner:SetAnimation( PLAYER_RELOAD )
+		elseif string.find(filterstr, "DRAW") or false then
+			self:doDrawTrans()
+		elseif string.find(filterstr, "IDLE") or false then
+			self.Owner:SetAnimation( PLAYER_IDLE )
+		else
+			local toint = tonumber(anim_name)
+			local ls
+			if nil == toint then
+				-- Hmmm
+				ErrorNoHalt("WHY IS MY STRING NOT AN INT Q,Q")
+			else
+				if toint > 50 then -- These are already sequences
+					ls = model:LookupSequence(anim_name)
+				else
+					ls = toint
+				end
+			end
+			
+			ErrorNoHalt("\nLS: "..tostring(ls).."\n")
+			model:SendViewModelMatchingSequence(ls)
+			nah = true
+			--model:SetAnimation(  )
+		end
+		
+		if nah == false then
+			self.Weapon:SendWeaponAnim( self:STRtoACT(filterstr) )
+		end
 		-- for strings of the enumerations
 	end
 -- END		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -629,6 +716,50 @@ function SWEP:VMEXEAnim(anim_name, dmg)
 	else
 		return snd
 	end
+end
+
+function SWEP:doDrawTrans()
+	-- Send 3rd person anims 
+	if self:AreArmsDown() then
+			self:SetHoldType( self.RunHoldType or "normal" )
+		else
+			if b1 then
+				--self:SafeTimer(IRONSIGHT_TIME/4, function()
+					self:SetHoldType( self.HoldType )
+					--ErrorNoHalt("HoldType Time" .. tostring(self.Owner:SequenceDuration()) .. "\n")
+				--end)
+			else
+				--self:SafeTimer(IRONSIGHT_TIME/4, function()
+					self:SetHoldType( self.HoldType2 or self.HoldType )
+					--ErrorNoHalt("HoldType Time" .. tostring(self.Owner:SequenceDuration()) .. "\n")
+				--end)
+			end
+		end
+	self.Owner:SetAnimation( PLAYER_ATTACK1 )
+	self:SetHoldType("normal")
+	--ErrorNoHalt("HoldType Time " .. tostring(self.Owner:SequenceDuration()) .. " VS " .. tostring(self:GetSeqDur()).."\n")
+	-- Send 3rd person anims for later
+	self:SafeTimer(self.Owner:SequenceDuration() * 0.54, function() 
+		-- This transition shouldn't have ironsights enabled
+		-- In time to catch this block, but we cant assume
+		local b1 = self.Weapon:GetNWBool("Ironsights")
+		if self:AreArmsDown() then
+			self:SetHoldType( self.RunHoldType or "normal" )
+		else
+			self.Owner:SetAnimation( PLAYER_ATTACK1 )
+			if b1 then
+				--self:SafeTimer(IRONSIGHT_TIME/4, function()
+					self:SetHoldType( self.HoldType )
+					ErrorNoHalt("HoldType Time" .. tostring(self.Owner:SequenceDuration()) .. "\n")
+				--end)
+			else
+				--self:SafeTimer(IRONSIGHT_TIME/4, function()
+					self:SetHoldType( self.HoldType2 or self.HoldType )
+					ErrorNoHalt("HoldType Time" .. tostring(self.Owner:SequenceDuration()) .. "\n")
+				--end)
+			end
+		end
+	end)
 end
 
 	ACTs = {}

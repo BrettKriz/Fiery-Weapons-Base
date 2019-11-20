@@ -81,7 +81,7 @@ function SWEP:SetHoldType( t )
 	local size = table.Count(ActIndex)
 	local str1 = "HoldType Index Size: " .. tostring(size)
 	local str2 = ActIndex[3]
-	self:DebugTalk( str1 .. "\n" .. str2 .. "\n" )
+	self:DebugTalk( "SetHoldType "..str1 .. "\n" .. str2 .. "\n" )
 
 	--[[
 	for i = 0, size, 1 do
@@ -109,27 +109,30 @@ function SWEP:SetHoldType( t )
 		self:Beep("BAD INDEX @ SH_ANIM ~ " .. tostring(t))
 		if ( t == "csspistol" ) then
 			index = 1663
+		elseif ( t == "test1" ) then
+			index = 1653 
 		else
-			index = ActIndex[tostring(t)]
-			self:Beep("Attempting to find animation based on t arg @@@sh_anim")
+			index = ActIndex[tostring(t)] or 1663
+			self:DebugTalk("Attempting to find animation based on t arg @@@sh_anim")
 		end
 	end
 
 --	index = ACT_HL2MP_IDLE_DUEL
-
+-- ACT_HL2MP_IDLE_SUITCASE 	1713 
 	self.ActivityTranslate = {}
-	self.ActivityTranslate [ ACT_MP_STAND_IDLE ] 				= index
-	self.ActivityTranslate [ ACT_MP_WALK ] 						= index+1
-	self.ActivityTranslate [ ACT_MP_RUN ] 						= index+2
-	self.ActivityTranslate [ ACT_MP_CROUCH_IDLE ] 				= index+3
-	self.ActivityTranslate [ ACT_MP_CROUCHWALK ] 				= index+4
-	self.ActivityTranslate [ ACT_MP_ATTACK_STAND_PRIMARYFIRE ] 	= index+5
-	self.ActivityTranslate [ ACT_MP_ATTACK_CROUCH_PRIMARYFIRE ] = index+5
-	self.ActivityTranslate [ ACT_MP_RELOAD_STAND ]		 		= index+6
-	self.ActivityTranslate [ ACT_MP_RELOAD_CROUCH ]		 		= index+6
-	self.ActivityTranslate [ ACT_MP_JUMP ] 						= index+7
-	self.ActivityTranslate [ ACT_RANGE_ATTACK1 ] 				= index+8
-	self.ActivityTranslate [ ACT_MP_SWIM ] 						= index+9
+	 -- FILL IT
+	self.ActivityTranslate [ ACT_MP_STAND_IDLE 					] = index
+	self.ActivityTranslate [ ACT_MP_WALK 						] = index+1
+	self.ActivityTranslate [ ACT_MP_RUN 						] = index+2
+	self.ActivityTranslate [ ACT_MP_CROUCH_IDLE 				] = index+3
+	self.ActivityTranslate [ ACT_MP_CROUCHWALK 					] = index+4
+	self.ActivityTranslate [ ACT_MP_ATTACK_STAND_PRIMARYFIRE 	] = index+5
+	self.ActivityTranslate [ ACT_MP_ATTACK_CROUCH_PRIMARYFIRE 	] = index+5
+	self.ActivityTranslate [ ACT_MP_RELOAD_STAND 				] = index+6
+	self.ActivityTranslate [ ACT_MP_RELOAD_CROUCH 				] = index+6
+	self.ActivityTranslate [ ACT_MP_JUMP 						] = index+7
+	self.ActivityTranslate [ ACT_RANGE_ATTACK1 					] = index+8
+	self.ActivityTranslate [ ACT_MP_SWIM 						] = index+9
 	
 	self:Talk("\nself.ActivityTranslate [ ACT_MP_ATTACK_STAND_PRIMARYFIRE ] = "..tostring(self.ActivityTranslate [ ACT_MP_ATTACK_STAND_PRIMARYFIRE ]).."\n")
 	-- Add convar for using paassive or normal while taking cover. for rp 
@@ -146,6 +149,19 @@ function SWEP:SetHoldType( t )
 			self.ActivityTranslate [ ACT_MP_JUMP ] 						= ACT_HL2MP_JUMP_SLAM
 		--end
 		self:Talk("Debug Point1")
+	elseif t == "test1" then
+		self.ActivityTranslate [ ACT_MP_STAND_IDLE 					] = index
+		self.ActivityTranslate [ ACT_MP_WALK 						] = index+1
+		self.ActivityTranslate [ ACT_MP_RUN 						] = index+2
+		self.ActivityTranslate [ ACT_MP_CROUCH_IDLE 				] = index+3
+		self.ActivityTranslate [ ACT_MP_CROUCHWALK 					] = index+4
+		self.ActivityTranslate [ ACT_MP_ATTACK_STAND_PRIMARYFIRE 	] = index+5
+		self.ActivityTranslate [ ACT_MP_ATTACK_CROUCH_PRIMARYFIRE 	] = index+5
+		self.ActivityTranslate [ ACT_MP_RELOAD_STAND 				] = index+6
+		self.ActivityTranslate [ ACT_MP_RELOAD_CROUCH 				] = index+6
+		self.ActivityTranslate [ ACT_MP_JUMP 						] = index+7
+		self.ActivityTranslate [ ACT_RANGE_ATTACK1 					] = index+8
+		self.ActivityTranslate [ ACT_MP_SWIM 						] = index+9
 	elseif t == "passive" then
 		self.ActivityTranslate [ ACT_MP_CROUCH_IDLE ] 				= norm+3
 		self.ActivityTranslate [ ACT_MP_CROUCHWALK ] 				= norm+4
@@ -408,7 +424,7 @@ function SWEP:GenerateTranslationTbl()
 	end
 	--]]
 	
-	local index = acts[ string.lower(t) ]
+	local index = acts[ string.lower(t) ] or ACT_HL2MP_IDLE
 	
 	if (index == nil) or not isint(index) then
 		-- cry

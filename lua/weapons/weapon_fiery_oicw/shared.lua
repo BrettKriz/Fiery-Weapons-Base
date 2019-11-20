@@ -24,7 +24,7 @@ if ( CLIENT ) then
 	SWEP.IconFont 			= "HLKillIcons2"
 	SWEP.IconLetter			= "f"
 	SWEP.SelectIconLetter	= "f"
-	SWEP.SelectIconFont		= "HLSelectIcons"
+	-- SWEP.SelectIconFont		= "HLSelectIcons"
 
 	
 --	surface.CreateFont("halflife2", ScreenScale(30), 500, true, true, "CSKillIcons")

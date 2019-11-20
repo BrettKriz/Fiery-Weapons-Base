@@ -13,10 +13,13 @@ if ( CLIENT ) then
 	SWEP.Slot				= 3
 	SWEP.SlotPos			= 1
 
-	SWEP.IconLetter			= "b"
-	SWEP.IconFont			= "CSKillIcons"
+	--SWEP.IconLetter			= "b"
+	SWEP.IconLetter			= "B"
+	--SWEP.IconFont			= "CSKillIcons"
+	SWEP.IconFont			= "Fiery_CSKillIcons2_Font"
 	SWEP.SelectIconLetter	= "B"
-	SWEP.SelectIconFont		= "CSSelectIcons"
+	-- SWEP.SelectIconFont		= "CSSelectIcons"
+--	SWEP.Note				= "
 	
 	killicon.AddFont( "weapon_ak-47", SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ) )
 	
@@ -53,8 +56,6 @@ SWEP.Primary.AmmoLetter		= "V"
 SWEP.Secondary.Automatic	= false
 SWEP.Secondary.Ammo			= "none"
 
---SWEP.Range						= 55 *(12*3) -- Yards
-SWEP.Range						= 5
 
 SWEP.IronSightsPos = Vector(-6.6, 0, 2.039)
 SWEP.IronSightsAng = Vector(2.549, 0.017, 0)

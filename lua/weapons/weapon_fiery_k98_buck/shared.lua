@@ -18,7 +18,7 @@ if ( CLIENT ) then
 	SWEP.IconFont			= "DODKillIcons"
 	
 	SWEP.SelectIconLetter	= "2"
-	SWEP.SelectIconFont		= "DODSelectIcons"
+	-- SWEP.SelectIconFont		= "DODSelectIcons"
 
 	killicon.AddFont( SWEP.Name, SWEP.IconFont, SWEP.IconLetter, Color( 255, 80, 0, 255 ))
 end
